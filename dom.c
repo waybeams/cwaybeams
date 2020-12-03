@@ -1,6 +1,10 @@
 #include "dom.h"
 #include <stdarg.h>
 
+static int nextId(void) {
+  return lastId++;
+}
+
 uint8_t name(char *n) {
   printf("%s\n", n);
   return 0;
@@ -17,7 +21,8 @@ uint8_t height(int h) {
 }
 
 uint8_t box(Context *ctx, ...) {
-  printf("box\n");
+  int id = nextId();
+  printf("box id:%d defined\n", id);
   return 0;
 }
 

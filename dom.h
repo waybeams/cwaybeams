@@ -5,9 +5,15 @@
 #include <stdint.h>
 #include <stdio.h>
 
+
+static int lastId = 0;
+
 typedef struct Context {
+  int id;
 } Context;
 
+
+static int nextId(void);
 
 uint8_t name(char*);
 uint8_t width(int);
