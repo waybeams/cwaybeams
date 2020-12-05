@@ -6,21 +6,21 @@ static unsigned int incrId(void) {
 }
 
 static Element* getNextElement(Context *ctx) {
-  if (ctx->nextElement == NULL) {
-    printf("YOO NULL");
-  }
+  // if (ctx->nextElement == NULL) {
+    // printf("YOO NULL\n");
+  // }
 
-  return ctx->nextElement;
+  // return ctx->nextElement;
 }
 
-Element* container(Context *ctx) {
-  Element* elem = getNextElement(ctx);
+uint8_t container(Context *ctx) {
+  Element elem = ctx->nextElement;
   ctx->elements[ctx->lastIndex++] = elem;
 
-  Element* nextElem;
-  nextElem->id = incrId();
+  Element nextElem = { .id = incrId() };
+
   ctx->nextElement = nextElem;
-  return elem;
+  return 0;
 }
 
 uint8_t name(char *n) {

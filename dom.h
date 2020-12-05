@@ -18,9 +18,9 @@ typedef struct Element {
 } Element;
 
 typedef struct Context {
-  Element* nextElement;
+  Element nextElement;
   int lastIndex;
-  Element* elements[MAX_ELEMENT_COUNT];
+  Element elements[MAX_ELEMENT_COUNT];
 } Context;
 
 uint8_t name(char*);

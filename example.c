@@ -16,7 +16,7 @@ uint8_t render(Context *ctx, char *title) {
 
 int main(void) {
   printf("HELLO WORLD\n");
-  Context *ctx;
-  render(ctx, "Main Title");
+  Context ctx = {0};
+  render(&ctx, "Main Title");
   return 0;
 }
