@@ -1,9 +1,7 @@
 #ifndef __dom_h__
 #define __dom_h__
 
-#include <stdarg.h>
 #include <stdint.h>
-#include <stdio.h>
 
 #define MAX_ELEMENT_COUNT 65535
 

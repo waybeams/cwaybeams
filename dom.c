@@ -1,6 +1,7 @@
 #include "dom.h"
 #include <stdarg.h>
 #include <string.h>
+#include <stdio.h>
 
 static unsigned int lastId = 0;
 
