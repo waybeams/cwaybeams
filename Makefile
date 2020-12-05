@@ -23,3 +23,6 @@ debug: example-debug
 
 clean:
 	rm -rf dist
+
+ctags:
+	ctags -R .

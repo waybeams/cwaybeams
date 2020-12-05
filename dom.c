@@ -3,30 +3,47 @@
 #include <string.h>
 #include <stdio.h>
 
-static unsigned int lastId = 0;
-
-static unsigned int incrId(void) {
-  return lastId += 1;
-}
+static ElementId lastId = 1;
 
 void printElement(Element *elem) {
   printf("-----------------\n");
   printf("id: %d\n", elem->id);
+  printf("parentId: %d\n", elem->parentId);
   printf("name: %s\n", elem->name);
   printf("layout: %d\n", elem->layout);
   printf("width: %d\n", elem->width);
   printf("height: %d\n", elem->height);
 }
 
-uint8_t container(Context *ctx, Layout layout) {
+Element nextElement(Context *ctx) {
   Element elem = ctx->nextElement;
-  elem.layout = layout;
-  ctx->elements[ctx->lastIndex++] = elem;
+  // if (elem.id == 0) {
+    // elem.id = 1;
+  // }
+  return elem;
+}
 
-  Element nextElem = { .id = incrId() };
+unsigned int container(Context *ctx, Layout layout) {
+  Element elem = nextElement(ctx);
+  elem.layout = layout;
+  ctx->elements[ctx->lastElementIndex++] = elem;
+
+  Element nextElem = { .id = lastId += 1 };
 
   ctx->nextElement = nextElem;
-  return 0;
+  return elem.id;
+}
+
+unsigned int vbox(Context *ctx, ...) {
+  return container(ctx, LAYOUT_VERTICAL);
+}
+
+unsigned int hbox(Context *ctx, ...) {
+  return container(ctx, LAYOUT_HORIZONTAL);
+}
+
+unsigned int box(Context *ctx, ...) {
+  return container(ctx, LAYOUT_STACK);
 }
 
 uint8_t name(Context *ctx, char *n) {
@@ -47,22 +64,22 @@ uint8_t height(Context *ctx, unsigned int h) {
   return 0;
 }
 
-uint8_t vbox(Context *ctx, ...) {
-  container(ctx, LAYOUT_VERTICAL);
-  return 0;
-}
-
-uint8_t hbox(Context *ctx, ...) {
-  container(ctx, LAYOUT_HORIZONTAL);
-  return 0;
-}
-
-uint8_t box(Context *ctx, ...) {
-  container(ctx, LAYOUT_STACK);
-  return 0;
-}
-
 uint8_t children(Context *ctx, ...) {
   printf("children\n");
+  va_list kids;
+
+  Element parent = ctx->nextElement;
+
+  va_start(kids, ctx);
+  unsigned int kid_id;
+  do {
+    kid_id = va_arg(kids, unsigned int);
+    if (kid_id != 0) {
+      printf("kid: %d\n", kid_id);
+      ctx->elements[kid_id].parentId = parent.id;
+    }
+  } while (kid_id != 0);
+
+  va_end(kids);
   return 0;
 }
