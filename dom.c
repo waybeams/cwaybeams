@@ -1,8 +1,26 @@
 #include "dom.h"
 #include <stdarg.h>
 
-static int nextId(void) {
+static unsigned int incrId(void) {
   return lastId++;
+}
+
+static Element* getNextElement(Context *ctx) {
+  if (ctx->nextElement == NULL) {
+    printf("YOO NULL");
+  }
+
+  return ctx->nextElement;
+}
+
+Element* container(Context *ctx) {
+  Element* elem = getNextElement(ctx);
+  ctx->elements[ctx->lastIndex++] = elem;
+
+  Element* nextElem;
+  nextElem->id = incrId();
+  ctx->nextElement = nextElem;
+  return elem;
 }
 
 uint8_t name(char *n) {
@@ -10,19 +28,20 @@ uint8_t name(char *n) {
   return 0;
 }
 
-uint8_t width(int w) {
+uint8_t width(unsigned int w) {
   printf("width: %d\n", w);
   return 0;
 }
 
-uint8_t height(int h) {
+uint8_t height(unsigned int h) {
   printf("height: %d\n", h);
   return 0;
 }
 
 uint8_t box(Context *ctx, ...) {
-  int id = nextId();
-  printf("box id:%d defined\n", id);
+  container(ctx);
+
+  // printf("box id:%d created\n", elem->id);
   return 0;
 }
 
