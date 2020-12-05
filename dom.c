@@ -1,5 +1,6 @@
 #include "dom.h"
 #include <stdarg.h>
+#include <string.h>
 
 static unsigned int lastId = 0;
 
@@ -11,12 +12,14 @@ void printElement(Element *elem) {
   printf("-----------------\n");
   printf("id: %d\n", elem->id);
   printf("name: %s\n", elem->name);
+  printf("layout: %d\n", elem->layout);
   printf("width: %d\n", elem->width);
   printf("height: %d\n", elem->height);
 }
 
-uint8_t container(Context *ctx) {
+uint8_t container(Context *ctx, Layout layout) {
   Element elem = ctx->nextElement;
+  elem.layout = layout;
   ctx->elements[ctx->lastIndex++] = elem;
 
   Element nextElem = { .id = incrId() };
@@ -43,10 +46,18 @@ uint8_t height(Context *ctx, unsigned int h) {
   return 0;
 }
 
-uint8_t box(Context *ctx, ...) {
-  container(ctx);
+uint8_t vbox(Context *ctx, ...) {
+  container(ctx, LAYOUT_VERTICAL);
+  return 0;
+}
 
-  // printf("box id:%d created\n", elem->id);
+uint8_t hbox(Context *ctx, ...) {
+  container(ctx, LAYOUT_HORIZONTAL);
+  return 0;
+}
+
+uint8_t box(Context *ctx, ...) {
+  container(ctx, LAYOUT_STACK);
   return 0;
 }
 

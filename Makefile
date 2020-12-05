@@ -8,11 +8,11 @@ dist:
 	mkdir -p ./dist
 
 example: Makefile dist $(CEE_FILES)
-	gcc -Wall -o dist/example $(CEE_FILES)
+	gcc -Wall -Werror -o dist/example $(CEE_FILES)
 	ls -lah dist/example
 
 example-debug: Makefile dist $(CEE_FILES)
-	gcc -g -o dist/example-debug $(CEE_FILES)
+	gcc -g -Wall -Werror -o dist/example-debug $(CEE_FILES)
 
 example-optimize: Makefile dist $(CEE_FILES)
 	gcc -O3 -o dist/example-optimize $(CEE_FILES)

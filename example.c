@@ -2,13 +2,13 @@
 #include "dom.h"
 
 uint8_t render(Context *c, char *title) {
-  return box(c,
+  return vbox(c,
     name(c, title),
     width(c, 800),
     height(c, 600),
     children(c,
-      box(c, name(c, "boxa")),
-      box(c, name(c, "boxb"))
+      hbox(c, name(c, "hboxa")),
+      vbox(c, name(c, "vboxb"))
     )
   );
 }
