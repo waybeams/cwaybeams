@@ -7,9 +7,6 @@
 
 #define MAX_ELEMENT_COUNT 65535
 
-static unsigned int lastId = 0;
-static unsigned int nextId(void);
-
 typedef struct Element {
   unsigned int id;
   char* name;
@@ -23,11 +20,13 @@ typedef struct Context {
   Element elements[MAX_ELEMENT_COUNT];
 } Context;
 
-uint8_t name(char*);
-uint8_t width(unsigned int);
-uint8_t height(unsigned int);
+uint8_t name(Context *ctx, char*);
+uint8_t width(Context *ctx, unsigned int);
+uint8_t height(Context *ctx, unsigned int);
 
 uint8_t box(Context *ctx, ...);
 uint8_t children(Context *ctx, ...);
+
+void printElement(Element *elem);
 
 #endif
