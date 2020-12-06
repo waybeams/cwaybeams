@@ -39,7 +39,8 @@ typedef struct Element {
   Layout layout;
   unsigned int width;
   unsigned int height;
-  unsigned int *children;
+  unsigned int childCount;
+  ElementId *children;
 } Element;
 
 typedef struct Context {

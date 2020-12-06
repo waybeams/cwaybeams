@@ -15,9 +15,8 @@ void printElement(Element *elem) {
   printf("width: %d\n", elem->width);
   printf("height: %d\n", elem->height);
 
-  // int count = sizeof(elem->children);
-  // printf("elem size: %d", sizeof(elem->children[0]));
-  // printf("child count: %d", count);
+  int count = elem->childCount;
+  printf("elem count: %d\n", count);
   // for (int i = 0; i < count; i++) {
     // printf("child[%d]: %d", i, elem->children[i]);
   // }
@@ -77,6 +76,8 @@ uint8_t children(Context *ctx, unsigned int count, ...) {
 
   Element parent = ctx->nextElement;
   unsigned int *children;
+  int elemSize = sizeof(ElementId);
+  printf("ELEM SIZE %d\n", elemSize);
   children = malloc(count * sizeof(ElementId));
   printf("children size %d\n", count);
   parent.children = children;
@@ -88,6 +89,7 @@ uint8_t children(Context *ctx, unsigned int count, ...) {
     if (kid_id != 0) {
       // printf("kid: %d\n", kid_id);
       ctx->elements[kid_id].parentId = parent.id;
+      ctx->elements[kid_id].childCount = count;
       parent.children[i] = kid_id;
     }
   }
