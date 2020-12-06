@@ -40,7 +40,7 @@ typedef struct Element {
   unsigned int width;
   unsigned int height;
   unsigned int childCount;
-  ElementId *children;
+  ElementId *childIds;
 } Element;
 
 typedef struct Context {
@@ -48,7 +48,7 @@ typedef struct Context {
   Element elements[MAX_ELEMENT_COUNT];
   int lastElementIndex;
   int lastRelationIndex;
-  ElementId *pendingChildren;
+  ElementId *pendingChildIds;
   unsigned int pendingChildCount;
 } Context;
 
