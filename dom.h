@@ -41,7 +41,11 @@ typedef struct Element {
   unsigned int height;
   unsigned int childCount;
   ElementId *childIds;
+  struct Element *children;
 } Element;
+
+// Allow self-referential struct definition.
+typedef struct Element Element;
 
 typedef struct Context {
   Element nextElement;

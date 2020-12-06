@@ -25,15 +25,17 @@ unsigned int container(Context *ctx, Layout layout) {
   Element elem = ctx->nextElement;
   elem.id = lastId++;
   elem.layout = layout;
-  printf("container for %d %s\n", elem.id, elem.name);
   if (ctx->pendingChildCount > 0) {
-    printf("Assigning %d childIds to id %d\n",
-        ctx->pendingChildCount, elem.id);
+    //printf(">> Assigning %d childIds to id %d\n",
+        //ctx->pendingChildCount, elem.id);
     elem.childIds = ctx->pendingChildIds;
     elem.childCount = ctx->pendingChildCount;
     ctx->pendingChildCount = 0;
     ctx->pendingChildIds = NULL;
   }
+
+  // printf("container for %d %s\n", elem.id, elem.name);
+  printElement(&elem);
 
   ctx->elements[elem.id] = elem;
 

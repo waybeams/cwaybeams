@@ -35,14 +35,9 @@ int main(void) {
   printElement(&c.elements[2]);
   printElement(&c.elements[3]);
   printElement(&c.elements[4]);
-  */
-  printElement(&c.elements[0]);
-  printElement(&c.elements[1]);
-  printElement(&c.elements[2]);
-  printElement(&c.elements[3]);
-  printElement(&c.elements[4]);
   printElement(&c.elements[5]);
   printElement(&c.elements[6]);
+  */
 
   printElement(&c.elements[7]);
   return 0;
