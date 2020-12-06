@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "dom.h"
 
-uint8_t render(Context *c, char *title) {
+Element* render(Context *c, char *title) {
   return vbox(c,
     name(c, title),
     width(c, 800),
@@ -11,7 +11,7 @@ uint8_t render(Context *c, char *title) {
       hbox(c, name(c, "hboxb")),
       hbox(c,
         name(c, "hboxc"),
-        children(c,
+        children(c, 1,
           hbox(c, name(c, "deeper"))
         )
       ),
@@ -30,15 +30,15 @@ int main(void) {
   end(&c);
 
   /*
-  printElement(&c.elements[0]);
-  printElement(&c.elements[1]);
-  printElement(&c.elements[2]);
-  printElement(&c.elements[3]);
-  printElement(&c.elements[4]);
-  printElement(&c.elements[5]);
-  printElement(&c.elements[6]);
+  printElement(c.elements[0]);
+  printElement(c.elements[1]);
+  printElement(c.elements[2]);
+  printElement(c.elements[3]);
+  printElement(c.elements[4]);
+  printElement(c.elements[5]);
+  printElement(c.elements[6]);
+  // printElement(c.elements[7]);
   */
 
-  printElement(&c.elements[7]);
   return 0;
 }

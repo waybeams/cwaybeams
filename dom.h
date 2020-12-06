@@ -27,7 +27,8 @@
 typedef unsigned int ElementId;
 
 typedef enum Layout {
-  LAYOUT_STACK = 0,
+  LAYOUT_DEFAULT = 0,
+  LAYOUT_STACK,
   LAYOUT_VERTICAL,
   LAYOUT_HORIZONTAL,
 } Layout;
@@ -45,11 +46,11 @@ typedef struct Element {
 } Element;
 
 // Allow self-referential struct definition.
-typedef struct Element Element;
+// typedef struct Element Element;
 
 typedef struct Context {
   Element nextElement;
-  Element elements[MAX_ELEMENT_COUNT];
+  Element *elements[MAX_ELEMENT_COUNT];
   int lastElementIndex;
   int lastRelationIndex;
   ElementId *pendingChildIds;
@@ -63,9 +64,9 @@ uint8_t height(Context *ctx, unsigned int h);
 uint8_t children(Context *ctx, unsigned int count, ...);
 
 // Entities
-unsigned int vbox(Context *ctx, ...);
-unsigned int hbox(Context *ctx, ...);
-unsigned int box(Context *ctx, ...);
+Element* vbox(Context *ctx, ...);
+Element* hbox(Context *ctx, ...);
+Element* box(Context *ctx, ...);
 
 void printElement(Element *elem);
 void begin(Context *ctx);
