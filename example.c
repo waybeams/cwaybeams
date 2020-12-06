@@ -26,8 +26,11 @@ int main(void) {
   printf("HELLO WORLD\n");
   Context c = {0};
   begin(&c);
-  render(&c, "Main Title");
+  Element *root = render(&c, "Main Title");
   end(&c);
+
+  printf("+++++++++++++++++++++++++++\n");
+  printElement(root, 0);
 
   /*
   printElement(c.elements[0]);
@@ -37,7 +40,6 @@ int main(void) {
   printElement(c.elements[4]);
   printElement(c.elements[5]);
   printElement(c.elements[6]);
-  // printElement(c.elements[7]);
   */
 
   return 0;

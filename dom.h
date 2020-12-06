@@ -62,7 +62,7 @@ Element* vbox(Context *ctx, ...);
 Element* hbox(Context *ctx, ...);
 Element* box(Context *ctx, ...);
 
-void printElement(Element *elem);
+void printElement(Element *elem, uint8_t depth);
 void begin(Context *ctx);
 void end(Context *ctx);
 

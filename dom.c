@@ -28,20 +28,27 @@ void copyElement(Element *target, Element *source) {
   target->children = source->children;
 }
 
-void printElement(Element *elem) {
-  printf("addr: %p\n", elem);
-  printf("id: %d\n", elem->id);
-  printf("parentId: %d\n", elem->parentId);
-  printf("name: %s\n", elem->name);
-  printf("layout: %d\n", elem->layout);
-  printf("width: %d\n", elem->width);
-  printf("height: %d\n", elem->height);
-  printf("childCount: %d\n", elem->childCount);
+void printElement(Element *elem, uint8_t depth) {
+  char tabs[20] = "\0";
+  printf("depth: %d\n", depth);
+  for (int i = 0; i < depth; i++) {
+    strcat(tabs, "\t");
+  }
+
+  printf("%sid: %d\n", tabs, elem->id);
+  printf("%sname: %s\n", tabs, elem->name);
+  printf("%saddr: %p\n", tabs, elem);
+  printf("%sparentId: %d\n", tabs, elem->parentId);
+  printf("%slayout: %d\n", tabs, elem->layout);
+  printf("%swidth: %d\n", tabs, elem->width);
+  printf("%sheight: %d\n", tabs, elem->height);
+  printf("%schildCount: %d\n", tabs, elem->childCount);
   for (int i = 0; i < elem->childCount; i++) {
     Element *child = &elem->children[i];
-    printf(" >> child[%d].id: %d\n", i, child->id);
+    printf("%s>> child[%d].id: %d\n", tabs, i, child->id);
+    printElement(child, depth + 1);
   }
-  printf("-----------------\n");
+  printf("%s-----------------\n", tabs);
 }
 
 Element* container(Context *ctx, Layout layout) {
@@ -55,25 +62,23 @@ Element* container(Context *ctx, Layout layout) {
   }
 
   resetPendingElement();
-  printElement(elem);
+  printElement(elem, 0);
   return elem;
 }
 
 uint8_t children(Context *ctx, unsigned int count, ...) {
-  va_list kids;
-  printf(">>>>>>> children count %d\n", count);
-  Element children[count];
-  va_start(kids, count);
-  Element *child;
+  va_list vargs;
+  Element *kids;
+  kids = malloc(count * sizeof(Element));
+
+  va_start(vargs, count);
   for (int i = 0; i < count; i++) {
-    child = va_arg(kids, Element*);
-    printf("CHILD ID: %d\n", child->id);
-    children[i] = *child;
+    kids[i] = *va_arg(vargs, Element*);
   }
 
-  va_end(kids);
+  va_end(vargs);
 
-  pendingElement->children = children;
+  pendingElement->children = kids;
   pendingElement->childCount = count;
   return 0;
 }
