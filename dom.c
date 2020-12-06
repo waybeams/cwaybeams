@@ -79,10 +79,10 @@ uint8_t children(Context *ctx, unsigned int count, ...) {
 
   ElementId *childIds;
   childIds = malloc(count * sizeof(ElementId));
-  printf("childIds size %d\n", count);
+  printf("children count %d\n", count);
   // parent.childIds = childIds;
 
-  // Element *children;
+  Element children[count];
   // children = malloc(count * sizeof(Element*));
 
   va_start(kids, count);
@@ -90,10 +90,9 @@ uint8_t children(Context *ctx, unsigned int count, ...) {
   Element *child;
   for (int i = 0; i < count; i++) {
     child = va_arg(kids, Element*);
-    printf("CHILD: %d\n", child->id);
-    // children[i] = *child;
+    printf("CHILD ID: %d\n", child->id);
+    children[i] = *child;
     // if (child != NULL) {
-
       // childIds[i] = child->id
       // printf("kid: %d\n", childId);
       // ctx->elements[childId].parentId = parent.id;
@@ -103,6 +102,7 @@ uint8_t children(Context *ctx, unsigned int count, ...) {
 
   va_end(kids);
 
+  pendingElement->children = children;
   pendingElement->childIds = childIds;
   pendingElement->childCount = count;
 
