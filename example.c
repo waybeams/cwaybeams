@@ -6,7 +6,7 @@ uint8_t render(Context *c, char *title) {
     name(c, title),
     width(c, 800),
     height(c, 600),
-    children(c,
+    children(c, 6,
       hbox(c, name(c, "hboxa")),
       hbox(c, name(c, "hboxb")),
       hbox(c, name(c, "hboxc")),

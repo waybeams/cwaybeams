@@ -39,7 +39,7 @@ typedef struct Element {
   Layout layout;
   unsigned int width;
   unsigned int height;
-  unsigned int *childIds;
+  unsigned int *children;
 } Element;
 
 typedef struct Context {
@@ -53,7 +53,7 @@ typedef struct Context {
 uint8_t name(Context *ctx, char*);
 uint8_t width(Context *ctx, unsigned int w);
 uint8_t height(Context *ctx, unsigned int h);
-uint8_t children(Context *ctx, ...);
+uint8_t children(Context *ctx, unsigned int count, ...);
 
 // Entities
 unsigned int vbox(Context *ctx, ...);
