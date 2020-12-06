@@ -9,7 +9,12 @@ uint8_t render(Context *c, char *title) {
     children(c, 6,
       hbox(c, name(c, "hboxa")),
       hbox(c, name(c, "hboxb")),
-      hbox(c, name(c, "hboxc")),
+      hbox(c,
+        name(c, "hboxc"),
+        children(c,
+          hbox(c, name(c, "deeper"))
+        )
+      ),
       hbox(c, name(c, "hboxd")),
       hbox(c, name(c, "hboxe")),
       vbox(c, name(c, "vboxb"))
@@ -20,13 +25,25 @@ uint8_t render(Context *c, char *title) {
 int main(void) {
   printf("HELLO WORLD\n");
   Context c = {0};
+  begin(&c);
   render(&c, "Main Title");
+  end(&c);
 
+  /*
+  printElement(&c.elements[0]);
+  printElement(&c.elements[1]);
+  printElement(&c.elements[2]);
+  printElement(&c.elements[3]);
+  printElement(&c.elements[4]);
+  */
   printElement(&c.elements[0]);
   printElement(&c.elements[1]);
   printElement(&c.elements[2]);
   printElement(&c.elements[3]);
   printElement(&c.elements[4]);
   printElement(&c.elements[5]);
+  printElement(&c.elements[6]);
+
+  printElement(&c.elements[7]);
   return 0;
 }

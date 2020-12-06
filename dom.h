@@ -48,6 +48,8 @@ typedef struct Context {
   Element elements[MAX_ELEMENT_COUNT];
   int lastElementIndex;
   int lastRelationIndex;
+  ElementId *pendingChildren;
+  unsigned int pendingChildCount;
 } Context;
 
 // Properties
@@ -62,5 +64,7 @@ unsigned int hbox(Context *ctx, ...);
 unsigned int box(Context *ctx, ...);
 
 void printElement(Element *elem);
+void begin(Context *ctx);
+void end(Context *ctx);
 
 #endif

@@ -14,29 +14,30 @@ void printElement(Element *elem) {
   printf("layout: %d\n", elem->layout);
   printf("width: %d\n", elem->width);
   printf("height: %d\n", elem->height);
+  printf("childCount: %d\n", elem->childCount);
 
-  int count = elem->childCount;
-  printf("elem count: %d\n", count);
-  // for (int i = 0; i < count; i++) {
-    // printf("child[%d]: %d", i, elem->children[i]);
-  // }
-}
-
-Element nextElement(Context *ctx) {
-  Element elem = ctx->nextElement;
-  // if (elem.id == 0) {
-    // elem.id = 1;
-  // }
-  return elem;
+  for (int i = 0; i < elem->childCount; i++) {
+    printf(" >> child[%d]: %d\n", i, elem->children[i]);
+  }
 }
 
 unsigned int container(Context *ctx, Layout layout) {
-  Element elem = nextElement(ctx);
+  Element elem = ctx->nextElement;
+  elem.id = lastId++;
   elem.layout = layout;
-  ctx->elements[ctx->lastElementIndex++] = elem;
+  printf("container for %d %s\n", elem.id, elem.name);
+  if (ctx->pendingChildCount > 0) {
+    printf("Assigning %d children to id %d\n",
+        ctx->pendingChildCount, elem.id);
+    elem.children = ctx->pendingChildren;
+    elem.childCount = ctx->pendingChildCount;
+    ctx->pendingChildCount = 0;
+    ctx->pendingChildren = NULL;
+  }
 
-  Element nextElem = { .id = lastId += 1 };
+  ctx->elements[elem.id] = elem;
 
+  Element nextElem = {};
   ctx->nextElement = nextElem;
   return elem.id;
 }
@@ -54,7 +55,7 @@ unsigned int box(Context *ctx, ...) {
 }
 
 uint8_t name(Context *ctx, char *n) {
-  printf("%s\n", n);
+  printf("name: %s\n", n);
   ctx->nextElement.name = n;
   return 0;
 }
@@ -74,26 +75,37 @@ uint8_t height(Context *ctx, unsigned int h) {
 uint8_t children(Context *ctx, unsigned int count, ...) {
   va_list kids;
 
-  Element parent = ctx->nextElement;
-  unsigned int *children;
-  int elemSize = sizeof(ElementId);
-  printf("ELEM SIZE %d\n", elemSize);
+  // Element parent = ctx->nextElement;
+  // int elemSize = sizeof(ElementId);
+  // printf("ELEM SIZE %d\n", elemSize);
+
+  ElementId *children;
   children = malloc(count * sizeof(ElementId));
   printf("children size %d\n", count);
-  parent.children = children;
+  // parent.children = children;
 
   va_start(kids, count);
-  unsigned int kid_id;
+  unsigned int childId;
   for (int i = 0; i < count; i++) {
-    kid_id = va_arg(kids, unsigned int);
-    if (kid_id != 0) {
-      // printf("kid: %d\n", kid_id);
-      ctx->elements[kid_id].parentId = parent.id;
-      ctx->elements[kid_id].childCount = count;
-      parent.children[i] = kid_id;
+    childId = va_arg(kids, unsigned int);
+    if (childId != 0) {
+      children[i] = childId;
+      // printf("kid: %d\n", childId);
+      // ctx->elements[childId].parentId = parent.id;
+      // ctx->elements[childId].childCount = count;
+      // parent.children[i] = childId;
     }
   }
 
   va_end(kids);
+
+  ctx->pendingChildren = children;
+  ctx->pendingChildCount = count;
   return 0;
+}
+
+void begin(Context *ctx) {
+}
+
+void end(Context *ctx) {
 }
