@@ -41,7 +41,6 @@ typedef struct Element {
   unsigned int width;
   unsigned int height;
   unsigned int childCount;
-  ElementId *childIds;
   struct Element *children;
 } Element;
 
@@ -49,12 +48,7 @@ typedef struct Element {
 // typedef struct Element Element;
 
 typedef struct Context {
-  Element nextElement;
   Element *elements[MAX_ELEMENT_COUNT];
-  int lastElementIndex;
-  int lastRelationIndex;
-  ElementId *pendingChildIds;
-  unsigned int pendingChildCount;
 } Context;
 
 // Properties
