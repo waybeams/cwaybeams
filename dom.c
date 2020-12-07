@@ -1,14 +1,14 @@
 #include "dom.h"
 #include <stdarg.h>
-#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 static ElementId lastId = 1;
 
 static Element *pendingElement;
 
-void resetPendingElement() {
+static void resetPendingElement() {
   free(pendingElement);
   pendingElement = NULL;
   pendingElement = malloc(sizeof(Element));
@@ -54,6 +54,9 @@ void printElement(Element *elem, uint8_t depth) {
 Element* container(Context *ctx, Layout layout) {
   Element *elem;
   elem = malloc(sizeof(Element));
+  if (elem == NULL) {
+    return NULL;
+  }
   copyElement(elem, pendingElement);
 
   elem->id = lastId++;
@@ -62,7 +65,8 @@ Element* container(Context *ctx, Layout layout) {
   }
 
   resetPendingElement();
-  printElement(elem, 0);
+  // printElement(elem, 0);
+  // printf("elem %d\n", elem->id);
   return elem;
 }
 

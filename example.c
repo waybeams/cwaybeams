@@ -1,5 +1,8 @@
-#include <stdio.h>
 #include "dom.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/time.h>
+#include <sys/types.h>
 
 Element* render(Context *c, char *title) {
   return vbox(c,
@@ -22,16 +25,33 @@ Element* render(Context *c, char *title) {
   );
 }
 
+int exec(Context *c) {
+  struct timeval st, et;
+  gettimeofday(&st, NULL);
+  render(c, "Main Title");
+  gettimeofday(&et, NULL);
+  int elapsed = ((et.tv_sec - st.tv_sec) * 1000000) + (et.tv_usec - st.tv_usec);
+  printf("Creation Time: %d micro seconds\n", elapsed);
+  return elapsed;
+}
+
 int main(void) {
-  printf("HELLO WORLD\n");
+  int count = 100;
+  // int durations[count];
+  int duration;
+  int sum = 0;
   Context c = {0};
   begin(&c);
-  Element *root = render(&c, "Main Title");
+  for (int i = 0; i < count; i++) {
+    duration = exec(&c);
+    // durations[i] = duration;
+    sum += duration;
+  }
   end(&c);
 
-  printf("+++++++++++++++++++++++++++\n");
-  printElement(root, 0);
+  printf("Average %d\n", sum / count);
 
+  // printElement(root, 0);
   /*
   printElement(c.elements[0]);
   printElement(c.elements[1]);

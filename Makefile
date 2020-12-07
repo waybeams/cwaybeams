@@ -18,6 +18,9 @@ example-optimize: Makefile dist $(CEE_FILES)
 	gcc -O3 -o dist/example-optimize $(CEE_FILES)
 	ls -lah dist/example-optimize
 
+run-opt: example-optimize
+		./dist/example-optimize
+
 debug: example-debug
 	gdb -ex run dist/example-debug
 
