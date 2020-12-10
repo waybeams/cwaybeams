@@ -18,8 +18,6 @@ Element* render(Context *c, char *title) {
           hbox(c, name(c, "deeper"))
         )
       ),
-      hbox(c, name(c, "hboxd")),
-      hbox(c, name(c, "hboxe")),
       vbox(c, name(c, "vboxb"))
     )
   );
@@ -36,7 +34,7 @@ int exec(Context *c) {
 }
 
 int main(void) {
-  int count = 100;
+  int count = 1;
   // int durations[count];
   int duration;
   int sum = 0;

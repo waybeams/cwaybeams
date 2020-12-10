@@ -35,13 +35,9 @@ void printElement(Element *elem, uint8_t depth) {
     strcat(tabs, "\t");
   }
 
-  printf("%sid: %d\n", tabs, elem->id);
-  printf("%sname: %s\n", tabs, elem->name);
-  printf("%saddr: %p\n", tabs, elem);
-  printf("%sparentId: %d\n", tabs, elem->parentId);
-  printf("%slayout: %d\n", tabs, elem->layout);
-  printf("%swidth: %d\n", tabs, elem->width);
-  printf("%sheight: %d\n", tabs, elem->height);
+  printf("%sname: %s layout: %d\n", tabs, elem->name, elem->layout);
+  printf("%sid: %d parent: %d addr: %p\n", tabs, elem->id, elem->parentId, elem);
+  printf("%sw: %d h: %d\n", tabs, elem->width, elem->height);
   printf("%schildCount: %d\n", tabs, elem->childCount);
   for (int i = 0; i < elem->childCount; i++) {
     Element *child = &elem->children[i];
@@ -65,7 +61,7 @@ Element* container(Context *ctx, Layout layout) {
   }
 
   resetPendingElement();
-  // printElement(elem, 0);
+  printElement(elem, 0);
   // printf("elem %d\n", elem->id);
   return elem;
 }
