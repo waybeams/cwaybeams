@@ -5,27 +5,55 @@
 #include <string.h>
 
 static ElementId lastId = 1;
+static char *DEFAULT_NAME = "default";
 
-static void resetPendingElement(Context *ctx) {
-  free(ctx->pending);
-  // ctx->pending = NULL;
-  Element *pending = malloc(sizeof(Element));
-  pending->childCount = 0;
-  pending->id = 0;
-  pending->name = "";
-  pending->width = 0;
-  pending->height = 0;
-  ctx->pending = pending;
+static struct Element *newElement() {
+  Element *elem = malloc(sizeof(Element));
+  if (elem == NULL) {
+    // malloc failed to get memory.
+    return NULL;
+  }
+
+  elem->childCount = 0;
+  elem->id = 0;
+  elem->name = DEFAULT_NAME;
+  elem->width = 0;
+  elem->height = 0;
+  elem->children = NULL;
+
+  return elem;
 }
 
-void copyElement(Element *target, Element *source) {
+void freeElement(struct Element *elem) {
+  unsigned int count = elem->childCount;
+  for (int i = 0; i < count; i++) {
+    freeElement(&elem->children[i]);
+  }
+  free(elem);
+}
+
+/*
+static void copyChildren(Element *target, Element *source) {
+  unsigned int childCount = source->childCount;
+  target->children = malloc(sizeof(Element) * childCount);
+  if (target->children != NULL) {
+    for (int i = 0; i < childCount; i++) {
+      copyElement(&target->children[i], &source->children[i]);
+    }
+  }
+}
+
+static void copyElement(Element *target, Element *source) {
   target->id = source->id;
   target->height = source->height;
-  target->name = source->name;
   target->width = source->width;
   target->childCount = source->childCount;
-  target->children = source->children;
+  target->children = NULL;
+
+  strcpy(target->name, source->name);
+  copyChildren(target, source);
 }
+*/
 
 void printElement(Element *elem, uint8_t depth) {
   char tabs[20] = "\0";
@@ -38,37 +66,34 @@ void printElement(Element *elem, uint8_t depth) {
   printf("%sid: %d parent: %d addr: %p\n", tabs, elem->id, elem->parentId, elem);
   printf("%sw: %d h: %d\n", tabs, elem->width, elem->height);
   printf("%schildCount: %d\n", tabs, elem->childCount);
-  for (int i = 0; i < elem->childCount; i++) {
-    Element *child = &elem->children[i];
-    printf("%s>> child[%d].id: %d\n", tabs, i, child->id);
-    printElement(child, depth + 1);
-  }
+  // for (int i = 0; i < elem->childCount; i++) {
+    // Element *child = &elem->children[i];
+    // printf("%s>> child[%d].id: %d\n", tabs, i, child->id);
+    // printElement(child, depth + 1);
+  // }
   printf("%s-----------------\n", tabs);
 }
 
-Element* container(Context *ctx, Layout layout) {
-  Element *elem;
-  elem = malloc(sizeof(Element));
+Element *container(Context *ctx, Layout layout) {
+  Element *elem = malloc(sizeof(Element));
   if (elem == NULL) {
     return NULL;
   }
-  copyElement(elem, ctx->pending);
+
+  // copyElement(elem, ctx->pending);
 
   elem->id = lastId++;
-  if (elem->layout == LAYOUT_DEFAULT) {
-    elem->layout = layout;
-  }
+  elem->layout = layout;
 
-  resetPendingElement(ctx);
-  printElement(elem, 0);
+  ctx->pending = newElement();
+  // printElement(elem, 0);
   // printf("elem %d\n", elem->id);
   return elem;
 }
 
 uint8_t children(Context *ctx, unsigned int count, ...) {
   va_list vargs;
-  Element *kids;
-  kids = malloc(count * sizeof(Element));
+  Element *kids = malloc(count * sizeof(Element));
 
   va_start(vargs, count);
   for (int i = 0; i < count; i++) {
@@ -77,45 +102,46 @@ uint8_t children(Context *ctx, unsigned int count, ...) {
 
   va_end(vargs);
 
-  ctx->pending->children = kids;
   ctx->pending->childCount = count;
+  ctx->pending->children = kids;
   return 0;
 }
 
-Element* vbox(Context *ctx, ...) {
+Element* vbox(...) {
   return container(ctx, LAYOUT_VERTICAL);
 }
 
-Element* hbox(Context *ctx, ...) {
+Element* hbox(...) {
   return container(ctx, LAYOUT_HORIZONTAL);
 }
 
-Element* box(Context *ctx, ...) {
+Element* box(...) {
   return container(ctx, LAYOUT_STACK);
 }
 
-uint8_t name(Context *ctx, char *n) {
+uint8_t name(char *n) {
   // printf("name: %s\n", n);
   ctx->pending->name = n;
   return 0;
 }
 
-uint8_t width(Context *ctx, unsigned int w) {
+uint8_t width(unsigned int w) {
   // printf("width: %d\n", w);
   ctx->pending->width = w;
   return 0;
 }
 
-uint8_t height(Context *ctx, unsigned int h) {
+uint8_t height(unsigned int h) {
   // printf("height: %d\n", h);
   ctx->pending->height = h;
   return 0;
 }
 
-void begin(Context *ctx) {
-  resetPendingElement(ctx);
+void begin() {
+  // ctx->pending = newElement();
 }
 
-void end(Context *ctx) {
-  resetPendingElement(ctx);
+void end() {
+  // resetPendingElement(ctx);
 }
+

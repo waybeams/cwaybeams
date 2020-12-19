@@ -26,6 +26,21 @@
 
 typedef unsigned int ElementId;
 
+typedef enum AttrName {
+  None = 0,
+  Flex,
+  HFlex,
+  HPercent,
+  Height,
+  VFlex,
+  VPercent,
+  Width,
+  XOffset,
+  XPos,
+  YOffset,
+  YPos
+} AttrName;
+
 typedef enum Layout {
   LAYOUT_DEFAULT = 0,
   LAYOUT_STACK,
@@ -36,7 +51,7 @@ typedef enum Layout {
 typedef struct Element {
   ElementId id;
   ElementId parentId;
-  char* name;
+  char *name;
   Layout layout;
   unsigned int width;
   unsigned int height;
@@ -46,6 +61,21 @@ typedef struct Element {
 
 // Allow self-referential struct definition.
 // typedef struct Element Element;
+
+typedef struct AttrChar {
+  AttrName name;
+  char *value;
+} AttrChar;
+
+typedef struct AttrInt {
+  AttrName name;
+  int value;
+} AttrInt;
+
+typedef struct AttrFloat {
+  AttrName name;
+  int value;
+} AttrInt;
 
 typedef struct Context {
   Element *elements[MAX_ELEMENT_COUNT];
@@ -66,5 +96,7 @@ Element* box(Context *ctx, ...);
 void printElement(Element *elem, uint8_t depth);
 void begin(Context *ctx);
 void end(Context *ctx);
+void freeElement(struct Element *elem);
+
 
 #endif

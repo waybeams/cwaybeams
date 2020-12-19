@@ -5,12 +5,13 @@
 #include <sys/types.h>
 
 Element* render(Context *c, char *title) {
-  return vbox(c,
-    name(c, title),
-    width(c, 800),
-    height(c, 600),
-    children(c, 6,
-      hbox(c, name(c, "hboxa")),
+  return vbox(
+    name(title),
+    width(800),
+    height(600),
+    children(6,
+      hbox(name("hboxa")),
+      /*
       hbox(c, name(c, "hboxb")),
       hbox(c,
         name(c, "hboxc"),
@@ -18,7 +19,8 @@ Element* render(Context *c, char *title) {
           hbox(c, name(c, "deeper"))
         )
       ),
-      vbox(c, name(c, "vboxb"))
+      */
+      vbox(name("vboxb"))
     )
   );
 }
@@ -46,6 +48,7 @@ int main(void) {
     sum += duration;
   }
   end(&c);
+  freeElement(c.pending);
 
   printf("Average %d\n", sum / count);
 
