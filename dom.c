@@ -6,17 +6,16 @@
 
 static ElementId lastId = 1;
 
-static Element *pendingElement;
-
-static void resetPendingElement() {
-  free(pendingElement);
-  pendingElement = NULL;
-  pendingElement = malloc(sizeof(Element));
-  pendingElement->childCount = 0;
-  pendingElement->id = 0;
-  pendingElement->name = "";
-  pendingElement->width = 0;
-  pendingElement->height = 0;
+static void resetPendingElement(Context *ctx) {
+  free(ctx->pending);
+  // ctx->pending = NULL;
+  Element *pending = malloc(sizeof(Element));
+  pending->childCount = 0;
+  pending->id = 0;
+  pending->name = "";
+  pending->width = 0;
+  pending->height = 0;
+  ctx->pending = pending;
 }
 
 void copyElement(Element *target, Element *source) {
@@ -35,7 +34,7 @@ void printElement(Element *elem, uint8_t depth) {
     strcat(tabs, "\t");
   }
 
-  printf("%sname: %s layout: %d\n", tabs, elem->name, elem->layout);
+  // printf("%sname: %s layout: %d\n", tabs, elem->name, elem->layout);
   printf("%sid: %d parent: %d addr: %p\n", tabs, elem->id, elem->parentId, elem);
   printf("%sw: %d h: %d\n", tabs, elem->width, elem->height);
   printf("%schildCount: %d\n", tabs, elem->childCount);
@@ -53,14 +52,14 @@ Element* container(Context *ctx, Layout layout) {
   if (elem == NULL) {
     return NULL;
   }
-  copyElement(elem, pendingElement);
+  copyElement(elem, ctx->pending);
 
   elem->id = lastId++;
   if (elem->layout == LAYOUT_DEFAULT) {
     elem->layout = layout;
   }
 
-  resetPendingElement();
+  resetPendingElement(ctx);
   printElement(elem, 0);
   // printf("elem %d\n", elem->id);
   return elem;
@@ -78,8 +77,8 @@ uint8_t children(Context *ctx, unsigned int count, ...) {
 
   va_end(vargs);
 
-  pendingElement->children = kids;
-  pendingElement->childCount = count;
+  ctx->pending->children = kids;
+  ctx->pending->childCount = count;
   return 0;
 }
 
@@ -97,26 +96,26 @@ Element* box(Context *ctx, ...) {
 
 uint8_t name(Context *ctx, char *n) {
   // printf("name: %s\n", n);
-  pendingElement->name = n;
+  ctx->pending->name = n;
   return 0;
 }
 
 uint8_t width(Context *ctx, unsigned int w) {
   // printf("width: %d\n", w);
-  pendingElement->width = w;
+  ctx->pending->width = w;
   return 0;
 }
 
 uint8_t height(Context *ctx, unsigned int h) {
   // printf("height: %d\n", h);
-  pendingElement->height = h;
+  ctx->pending->height = h;
   return 0;
 }
 
 void begin(Context *ctx) {
-  resetPendingElement();
+  resetPendingElement(ctx);
 }
 
 void end(Context *ctx) {
-  resetPendingElement();
+  resetPendingElement(ctx);
 }

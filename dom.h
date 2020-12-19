@@ -49,6 +49,7 @@ typedef struct Element {
 
 typedef struct Context {
   Element *elements[MAX_ELEMENT_COUNT];
+  Element *pending;
 } Context;
 
 // Properties
