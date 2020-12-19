@@ -4,14 +4,20 @@
 #include <sys/time.h>
 #include <sys/types.h>
 
-Element* render(Context *c, char *title) {
+Element* render(char *title) {
+  return newElement(3,
+    name(title),
+    width(800),
+    height(600)
+  );
+
+  /*
   return vbox(
     name(title),
     width(800),
     height(600),
     children(6,
       hbox(name("hboxa")),
-      /*
       hbox(c, name(c, "hboxb")),
       hbox(c,
         name(c, "hboxc"),
@@ -19,49 +25,16 @@ Element* render(Context *c, char *title) {
           hbox(c, name(c, "deeper"))
         )
       ),
-      */
       vbox(name("vboxb"))
     )
   );
-}
-
-int exec(Context *c) {
-  struct timeval st, et;
-  gettimeofday(&st, NULL);
-  render(c, "Main Title");
-  gettimeofday(&et, NULL);
-  int elapsed = ((et.tv_sec - st.tv_sec) * 1000000) + (et.tv_usec - st.tv_usec);
-  printf("Creation Time: %d micro seconds\n", elapsed);
-  return elapsed;
+  */
 }
 
 int main(void) {
-  int count = 1;
-  // int durations[count];
-  int duration;
-  int sum = 0;
-  Context c = {0};
-  begin(&c);
-  for (int i = 0; i < count; i++) {
-    duration = exec(&c);
-    // durations[i] = duration;
-    sum += duration;
-  }
-  end(&c);
-  freeElement(c.pending);
-
-  printf("Average %d\n", sum / count);
-
-  // printElement(root, 0);
-  /*
-  printElement(c.elements[0]);
-  printElement(c.elements[1]);
-  printElement(c.elements[2]);
-  printElement(c.elements[3]);
-  printElement(c.elements[4]);
-  printElement(c.elements[5]);
-  printElement(c.elements[6]);
-  */
+  Element *root = render("ROOT ELEMENT");
+  printElement(root);
+  freeElement(root);
 
   return 0;
 }

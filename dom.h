@@ -32,6 +32,7 @@ typedef enum AttrName {
   HFlex,
   HPercent,
   Height,
+  Name,
   VFlex,
   VPercent,
   Width,
@@ -59,23 +60,13 @@ typedef struct Element {
   struct Element *children;
 } Element;
 
-// Allow self-referential struct definition.
-// typedef struct Element Element;
-
-typedef struct AttrChar {
+typedef struct Attr {
   AttrName name;
-  char *value;
-} AttrChar;
-
-typedef struct AttrInt {
-  AttrName name;
-  int value;
-} AttrInt;
-
-typedef struct AttrFloat {
-  AttrName name;
-  int value;
-} AttrInt;
+  unsigned int uIntValue;
+  int intValue;
+  float floatValue;
+  char *charValue;
+} Attr;
 
 typedef struct Context {
   Element *elements[MAX_ELEMENT_COUNT];
@@ -83,20 +74,18 @@ typedef struct Context {
 } Context;
 
 // Properties
-uint8_t name(Context *ctx, char*);
-uint8_t width(Context *ctx, unsigned int w);
-uint8_t height(Context *ctx, unsigned int h);
-uint8_t children(Context *ctx, unsigned int count, ...);
+Attr *name(char*);
+Attr *width(unsigned int w);
+Attr *height(unsigned int h);
+
+Element *newElement(unsigned int count, ...);
 
 // Entities
-Element* vbox(Context *ctx, ...);
-Element* hbox(Context *ctx, ...);
-Element* box(Context *ctx, ...);
+// Element* vbox(...);
+// Element* hbox(...);
+// Element* box(...);
 
-void printElement(Element *elem, uint8_t depth);
-void begin(Context *ctx);
-void end(Context *ctx);
-void freeElement(struct Element *elem);
-
+void printElement(Element *elem);
+void freeElement(Element *elem);
 
 #endif

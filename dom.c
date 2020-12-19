@@ -5,57 +5,65 @@
 #include <string.h>
 
 static ElementId lastId = 1;
-static char *DEFAULT_NAME = "default";
 
-static struct Element *newElement() {
+void applyNameAttr(Element *elem, char name[]) {
+  int nameLen = strlen(name) + 1;
+  char *elemName = malloc(nameLen);
+  strcpy(elemName, name);
+  elem->name = elemName;
+}
+
+void applyAttr(Element *elem, Attr *attr) {
+  if (attr->name == Name) {
+    applyNameAttr(elem, attr->charValue);
+  } else if (attr->name == Width) {
+    elem->width = attr->uIntValue;
+  } else if (attr->name == Height) {
+    elem->height = attr->uIntValue;
+  } else {
+    printf("UNKNOWN ELEMENT: %d\n", attr->name);
+  }
+}
+
+Element *newElement(unsigned int attrCount, ...) {
+  int i;
   Element *elem = malloc(sizeof(Element));
   if (elem == NULL) {
     // malloc failed to get memory.
     return NULL;
   }
 
-  elem->childCount = 0;
-  elem->id = 0;
-  elem->name = DEFAULT_NAME;
-  elem->width = 0;
-  elem->height = 0;
-  elem->children = NULL;
+  elem->id = lastId++;
+
+  // Process Attrs
+  va_list vargs;
+  Attr *attr;
+  va_start(vargs, attrCount);
+  for (i = 0; i < attrCount; i++) {
+    attr = va_arg(vargs, Attr*);
+    applyAttr(elem, attr);
+    free(attr);
+  }
+
+  va_end(vargs);
 
   return elem;
 }
 
-void freeElement(struct Element *elem) {
-  unsigned int count = elem->childCount;
-  for (int i = 0; i < count; i++) {
-    freeElement(&elem->children[i]);
-  }
+void freeElement(Element *elem) {
+  free(elem->name);
   free(elem);
 }
 
-/*
-static void copyChildren(Element *target, Element *source) {
-  unsigned int childCount = source->childCount;
-  target->children = malloc(sizeof(Element) * childCount);
-  if (target->children != NULL) {
-    for (int i = 0; i < childCount; i++) {
-      copyElement(&target->children[i], &source->children[i]);
-    }
-  }
-}
+void printElement(Element *elem) {
+  printf("------------------------\n");
+  printf("elem.id: %d\n", elem->id);
+  printf("elem.name: %s\n", elem->name);
+  printf("elem.width: %d\n", elem->width);
+  printf("elem.height: %d\n", elem->height);
 
-static void copyElement(Element *target, Element *source) {
-  target->id = source->id;
-  target->height = source->height;
-  target->width = source->width;
-  target->childCount = source->childCount;
-  target->children = NULL;
-
-  strcpy(target->name, source->name);
-  copyChildren(target, source);
-}
-*/
-
-void printElement(Element *elem, uint8_t depth) {
+  /*
+  int depth = 0;
   char tabs[20] = "\0";
   printf("depth: %d\n", depth);
   for (int i = 0; i < depth; i++) {
@@ -72,76 +80,49 @@ void printElement(Element *elem, uint8_t depth) {
     // printElement(child, depth + 1);
   // }
   printf("%s-----------------\n", tabs);
+  */
 }
 
-Element *container(Context *ctx, Layout layout) {
-  Element *elem = malloc(sizeof(Element));
-  if (elem == NULL) {
+/*
+Element* vbox(unsigned int count, ...) {
+  return container(LAYOUT_VERTICAL);
+}
+
+Element* hbox(unsigned int count, ...) {
+  return container(LAYOUT_HORIZONTAL);
+}
+
+Element* box(unsigned int count, ...) {
+  return container(LAYOUT_STACK);
+}
+*/
+
+Attr *name(char *n) {
+  Attr *s = malloc(sizeof(Attr));
+  if (s == NULL) {
     return NULL;
   }
-
-  // copyElement(elem, ctx->pending);
-
-  elem->id = lastId++;
-  elem->layout = layout;
-
-  ctx->pending = newElement();
-  // printElement(elem, 0);
-  // printf("elem %d\n", elem->id);
-  return elem;
+  s->name = Name;
+  s->charValue = n;
+  return s;
 }
 
-uint8_t children(Context *ctx, unsigned int count, ...) {
-  va_list vargs;
-  Element *kids = malloc(count * sizeof(Element));
-
-  va_start(vargs, count);
-  for (int i = 0; i < count; i++) {
-    kids[i] = *va_arg(vargs, Element*);
+Attr *width(unsigned int w) {
+  Attr *s = malloc(sizeof(Attr));
+  if (s == NULL) {
+    return NULL;
   }
-
-  va_end(vargs);
-
-  ctx->pending->childCount = count;
-  ctx->pending->children = kids;
-  return 0;
+  s->name = Width;
+  s->uIntValue = w;
+  return s;
 }
 
-Element* vbox(...) {
-  return container(ctx, LAYOUT_VERTICAL);
+Attr *height(unsigned int h) {
+  Attr *s = malloc(sizeof(Attr));
+  if (s == NULL) {
+    return NULL;
+  }
+  s->name = Height;
+  s->uIntValue = h;
+  return s;
 }
-
-Element* hbox(...) {
-  return container(ctx, LAYOUT_HORIZONTAL);
-}
-
-Element* box(...) {
-  return container(ctx, LAYOUT_STACK);
-}
-
-uint8_t name(char *n) {
-  // printf("name: %s\n", n);
-  ctx->pending->name = n;
-  return 0;
-}
-
-uint8_t width(unsigned int w) {
-  // printf("width: %d\n", w);
-  ctx->pending->width = w;
-  return 0;
-}
-
-uint8_t height(unsigned int h) {
-  // printf("height: %d\n", h);
-  ctx->pending->height = h;
-  return 0;
-}
-
-void begin() {
-  // ctx->pending = newElement();
-}
-
-void end() {
-  // resetPendingElement(ctx);
-}
-
