@@ -20,6 +20,9 @@ void applyAttr(Element *elem, Attr *attr) {
     elem->width = attr->uIntValue;
   } else if (attr->name == Height) {
     elem->height = attr->uIntValue;
+  } else if (attr->name == Children) {
+    elem->children = attr->children;
+    elem->childCount = attr->uIntValue;
   } else {
     printf("UNKNOWN ELEMENT: %d\n", attr->name);
   }
@@ -34,6 +37,7 @@ Element *newElement(unsigned int attrCount, ...) {
   }
 
   elem->id = lastId++;
+  elem->children = NULL;
 
   // Process Attrs
   va_list vargs;
@@ -51,6 +55,11 @@ Element *newElement(unsigned int attrCount, ...) {
 }
 
 void freeElement(Element *elem) {
+  unsigned int childCount = elem->childCount;
+  for (int i = 0; i < childCount; i++) {
+    free(&elem->children[i]);
+  }
+  free(elem->children);
   free(elem->name);
   free(elem);
 }
@@ -124,5 +133,24 @@ Attr *height(unsigned int h) {
   }
   s->name = Height;
   s->uIntValue = h;
+  return s;
+}
+
+Attr *children(unsigned int count, ...) {
+  Attr *s = malloc(sizeof(Attr) + (count * sizeof(Element)));
+  if (s == NULL) {
+    return NULL;
+  }
+  s->name = Children;
+  va_list vargs;
+  va_start(vargs, count);
+  Element *kids[count];
+  for (int i = 0; i < count; i++) {
+    kids[i] = va_arg(vargs, Element*);
+  }
+  memcpy(&s->children, kids, sizeof(kids));
+  va_end(vargs);
+  // Save the child count to another field.
+  s->uIntValue = count;
   return s;
 }

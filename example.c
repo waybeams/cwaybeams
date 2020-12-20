@@ -4,11 +4,14 @@
 #include <sys/time.h>
 #include <sys/types.h>
 
-Element* render(char *title) {
+Element* customRender(char *title) {
   return newElement(3,
     name(title),
     width(800),
-    height(600)
+    height(600),
+    children(1,
+      newElement(1, name("child-1"))
+    )
   );
 
   /*
@@ -32,7 +35,7 @@ Element* render(char *title) {
 }
 
 int main(void) {
-  Element *root = render("ROOT ELEMENT");
+  Element *root = customRender("ROOT ELEMENT");
   printElement(root);
   freeElement(root);
 

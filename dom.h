@@ -28,6 +28,7 @@ typedef unsigned int ElementId;
 
 typedef enum AttrName {
   None = 0,
+  Children,
   Flex,
   HFlex,
   HPercent,
@@ -66,6 +67,7 @@ typedef struct Attr {
   int intValue;
   float floatValue;
   char *charValue;
+  Element *children;
 } Attr;
 
 typedef struct Context {
@@ -73,10 +75,11 @@ typedef struct Context {
   Element *pending;
 } Context;
 
-// Properties
+// Attributes
 Attr *name(char*);
 Attr *width(unsigned int w);
 Attr *height(unsigned int h);
+Attr *children(unsigned int count, ...);
 
 Element *newElement(unsigned int count, ...);
 
