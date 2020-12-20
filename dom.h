@@ -119,6 +119,6 @@ Element *newBox(unsigned int count, ...);
 
 void printElement(Element *elem);
 void freeElement(Element *elem);
-void freeRoot(Element *elem);
+void freeElement(Element *elem);
 
 #endif

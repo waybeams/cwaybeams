@@ -4,38 +4,24 @@
 #include <sys/time.h>
 #include <sys/types.h>
 
-Element* customRender(char *title) {
+Element* uiTree(char *title) {
   return box(
     name(title),
     width(800),
     height(600),
     children(
-      box(name("child-3"))
+      box(name("child-1")),
+      box(name("child-2")),
+      box(name("child-3")),
+      box(name("child-4")),
+      box(name("child-5")),
+      box(name("child-6"))
     )
   );
-
-  /*
-  return vbox(
-    name(title),
-    width(800),
-    height(600),
-    children(6,
-      hbox(name("hboxa")),
-      hbox(c, name(c, "hboxb")),
-      hbox(c,
-        name(c, "hboxc"),
-        children(c, 1,
-          hbox(c, name(c, "deeper"))
-        )
-      ),
-      vbox(name("vboxb"))
-    )
-  );
-  */
 }
 
 int main(void) {
-  Element *root = customRender("root");
+  Element *root = uiTree("root");
   printElement(root);
   freeElement(root);
   return 0;

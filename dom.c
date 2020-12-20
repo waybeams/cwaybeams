@@ -46,13 +46,12 @@ void freeAttr(Attr *attr) {
 }
 
 void freeElement(Element *elem) {
-  if (elem->childCount > 0) {
-    // for (int i = 0; i < elem->childCount; i++) {
-      // freeElement(&elem->children[i]);
-    // }
-    free(elem->children);
+  printf("FREE ELEM WITH PARENT: %d\n", elem->parentId);
+  for (int i = 0; i < elem->childCount; i++) {
+    freeElement(&elem->children[i]);
   }
   free(elem->name);
+  free(elem->children);
   free(elem);
 }
 
@@ -108,41 +107,7 @@ void printElement(Element *elem) {
   printf("elem.width: %d\n", elem->width);
   printf("elem.height: %d\n", elem->height);
   printf("elem.childCount: %d\n", elem->childCount);
-
-  /*
-  int depth = 0;
-  char tabs[20] = "\0";
-  printf("depth: %d\n", depth);
-  for (int i = 0; i < depth; i++) {
-    strcat(tabs, "\t");
-  }
-
-  // printf("%sname: %s layout: %d\n", tabs, elem->name, elem->layout);
-  printf("%sid: %d parent: %d addr: %p\n", tabs, elem->id, elem->parentId, elem);
-  printf("%sw: %d h: %d\n", tabs, elem->width, elem->height);
-  printf("%schildCount: %d\n", tabs, elem->childCount);
-  // for (int i = 0; i < elem->childCount; i++) {
-    // Element *child = &elem->children[i];
-    // printf("%s>> child[%d].id: %d\n", tabs, i, child->id);
-    // printElement(child, depth + 1);
-  // }
-  printf("%s-----------------\n", tabs);
-  */
 }
-
-/*
-Element* vbox(unsigned int count, ...) {
-  return container(LAYOUT_VERTICAL);
-}
-
-Element* hbox(unsigned int count, ...) {
-  return container(LAYOUT_HORIZONTAL);
-}
-
-Element* box(unsigned int count, ...) {
-  return container(LAYOUT_STACK);
-}
-*/
 
 Attr *name(char *n) {
   Attr *s = newAttr();
