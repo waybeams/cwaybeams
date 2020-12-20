@@ -7,25 +7,66 @@
 static ElementId lastId = 1;
 
 void applyNameAttr(Element *elem, char name[]) {
-  int nameLen = strlen(name) + 1;
-  char *elemName = malloc(nameLen);
-  strcpy(elemName, name);
-  elem->name = elemName;
+  elem->name = malloc(strlen(name) + 1);
+  strcpy(elem->name, name);
+}
+
+void applyChildrenAttr(Element *elem, unsigned int count, Element *kids) {
+  // Copy children array contents to element->children
+  printf("Apply CHILDREN: %d\n", count);
+
 }
 
 void applyAttr(Element *elem, Attr *attr) {
   if (attr->name == Name) {
+    printf("Apply Name: %s\n", attr->charValue);
     applyNameAttr(elem, attr->charValue);
   } else if (attr->name == Width) {
+    printf("Apply Width: %d\n", attr->uIntValue);
     elem->width = attr->uIntValue;
   } else if (attr->name == Height) {
+    printf("Apply Height: %d\n", attr->uIntValue);
     elem->height = attr->uIntValue;
   } else if (attr->name == Children) {
-    elem->children = attr->children;
-    elem->childCount = attr->uIntValue;
+    printf("Apply Children count: %d\n", attr->uIntValue);
+    applyChildrenAttr(elem, attr->uIntValue, attr->children);
   } else {
     printf("UNKNOWN ELEMENT: %d\n", attr->name);
   }
+}
+
+void freeAttr(Attr *attr) {
+  if (attr->charValue != NULL) {
+    free(attr->charValue);
+  }
+  if (attr->children != NULL) {
+    free(attr->children);
+  }
+  free(attr);
+}
+
+void freeElement(Element *elem) {
+  unsigned int childCount = elem->childCount;
+  for (int i = 0; i < childCount; i++) {
+    freeElement(&elem->children[i]);
+  }
+  if (elem->name != NULL) {
+    free(elem->name);
+  }
+  if (elem->children != NULL) {
+    free(elem->children);
+  }
+  free(elem);
+}
+
+Attr *newAttr(void) {
+  Attr *attr = malloc(sizeof(Attr));
+  if (attr == NULL) {
+    return NULL;
+  }
+  attr->charValue = NULL;
+  attr->children = NULL;
+  return attr;
 }
 
 Element *newElement(unsigned int attrCount, ...) {
@@ -35,33 +76,23 @@ Element *newElement(unsigned int attrCount, ...) {
     // malloc failed to get memory.
     return NULL;
   }
-
   elem->id = lastId++;
+  elem->name = NULL;
   elem->children = NULL;
+  elem->childCount = 0;
+  elem->parentId = 0;
 
   // Process Attrs
   va_list vargs;
-  Attr *attr;
   va_start(vargs, attrCount);
   for (i = 0; i < attrCount; i++) {
-    attr = va_arg(vargs, Attr*);
+    Attr *attr = va_arg(vargs, Attr*);
     applyAttr(elem, attr);
-    free(attr);
+    freeAttr(attr);
   }
-
   va_end(vargs);
 
   return elem;
-}
-
-void freeElement(Element *elem) {
-  unsigned int childCount = elem->childCount;
-  for (int i = 0; i < childCount; i++) {
-    free(&elem->children[i]);
-  }
-  free(elem->children);
-  free(elem->name);
-  free(elem);
 }
 
 void printElement(Element *elem) {
@@ -70,6 +101,7 @@ void printElement(Element *elem) {
   printf("elem.name: %s\n", elem->name);
   printf("elem.width: %d\n", elem->width);
   printf("elem.height: %d\n", elem->height);
+  printf("elem.childCount: %d\n", elem->childCount);
 
   /*
   int depth = 0;
@@ -107,17 +139,18 @@ Element* box(unsigned int count, ...) {
 */
 
 Attr *name(char *n) {
-  Attr *s = malloc(sizeof(Attr));
+  Attr *s = newAttr();
   if (s == NULL) {
     return NULL;
   }
   s->name = Name;
-  s->charValue = n;
+  s->charValue = malloc(strlen(n) + 1);
+  strcpy(s->charValue, n);
   return s;
 }
 
 Attr *width(unsigned int w) {
-  Attr *s = malloc(sizeof(Attr));
+  Attr *s = newAttr();
   if (s == NULL) {
     return NULL;
   }
@@ -127,7 +160,7 @@ Attr *width(unsigned int w) {
 }
 
 Attr *height(unsigned int h) {
-  Attr *s = malloc(sizeof(Attr));
+  Attr *s = newAttr();
   if (s == NULL) {
     return NULL;
   }
@@ -137,11 +170,13 @@ Attr *height(unsigned int h) {
 }
 
 Attr *children(unsigned int count, ...) {
-  Attr *s = malloc(sizeof(Attr) + (count * sizeof(Element)));
+  Attr *s = newAttr();
   if (s == NULL) {
     return NULL;
   }
   s->name = Children;
+  s->uIntValue = count;
+
   va_list vargs;
   va_start(vargs, count);
   Element *kids[count];
@@ -150,7 +185,6 @@ Attr *children(unsigned int count, ...) {
   }
   memcpy(&s->children, kids, sizeof(kids));
   va_end(vargs);
-  // Save the child count to another field.
-  s->uIntValue = count;
   return s;
 }
+

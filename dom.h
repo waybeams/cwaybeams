@@ -53,11 +53,11 @@ typedef enum Layout {
 typedef struct Element {
   ElementId id;
   ElementId parentId;
-  char *name;
   Layout layout;
   unsigned int width;
   unsigned int height;
   unsigned int childCount;
+  char *name;
   struct Element *children;
 } Element;
 

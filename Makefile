@@ -10,7 +10,11 @@ DEBUG_CFLAGS += -O0
 OPT_CFLAGS := -O3
 
 VALGRIND_FLAGS := --leak-check=full
+VALGRIND_FLAGS += --tool=memcheck
 VALGRIND_FLAGS += --track-origins=yes
+VALGRIND_FLAGS += --leak-resolution=high
+VALGRIND_FLAGS += --show-mismatched-frees=yes
+VALGRIND_FLAGS += -s
 
 # Build and run optimized binary
 run: example-optimize

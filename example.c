@@ -5,13 +5,13 @@
 #include <sys/types.h>
 
 Element* customRender(char *title) {
-  return newElement(3,
+  return newElement(4,
     name(title),
     width(800),
     height(600),
     children(1,
-      newElement(1, name("child-1"))
-    )
+      newElement(1,
+        name("child-1")))
   );
 
   /*
@@ -35,7 +35,7 @@ Element* customRender(char *title) {
 }
 
 int main(void) {
-  Element *root = customRender("ROOT ELEMENT");
+  Element *root = customRender("root");
   printElement(root);
   freeElement(root);
 
