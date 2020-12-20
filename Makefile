@@ -1,15 +1,22 @@
 
+DEBUG=true
+
 CEE_FILES=*.c
 
 CFLAGS := -Wall
 CFLAGS += -Werror
-
-DEBUG_CFLAGS := -g
-DEBUG_CFLAGS += -O0
+ifeq ($(DEBUG), true)
+CFLAGS += -ggdb
+CFLAGS += -O0
+else
+CFLAGS += -Werror
+CFLAGS += -Os
+endif
 
 OPT_CFLAGS := -O3
 
 VALGRIND_FLAGS := --leak-check=full
+VALGRIND_FLAGS += --show-leak-kinds=all
 VALGRIND_FLAGS += --tool=memcheck
 VALGRIND_FLAGS += --track-origins=yes
 VALGRIND_FLAGS += --leak-resolution=high
@@ -26,7 +33,7 @@ dist:
 
 # Build the debug binary
 example-debug: Makefile dist $(CEE_FILES)
-	gcc $(DEBUG_CFLAGS) $(CFLAGS) -o dist/example-debug $(CEE_FILES)
+	gcc $(CFLAGS) -o dist/example-debug $(CEE_FILES)
 
 # Build the optimized binary
 example-optimize: Makefile dist $(CEE_FILES)

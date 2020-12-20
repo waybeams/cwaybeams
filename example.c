@@ -5,13 +5,13 @@
 #include <sys/types.h>
 
 Element* customRender(char *title) {
-  return newElement(4,
+  return box(
     name(title),
     width(800),
     height(600),
-    children(1,
-      newElement(1,
-        name("child-1")))
+    children(
+      box(name("child-3"))
+    )
   );
 
   /*

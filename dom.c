@@ -13,12 +13,12 @@ void applyNameAttr(Element *elem, char name[]) {
 }
 
 void applyChildrenAttr(Element *elem, unsigned int count, Element *kids) {
-  // Copy children array contents to element->children
-  printf("Apply CHILDREN: %d\n", count);
-  int bytes = sizeof(Element) * count;
-  elem->children = malloc(bytes);
-  memcpy(elem->children, kids, bytes);
   elem->childCount = count;
+  elem->children = calloc(count, sizeof(Element));
+  memcpy(elem->children, kids, count * sizeof(Element));
+  for (int i = 0; i < count; i++) {
+    elem->children[i].parentId = elem->id;
+  }
 }
 
 void applyAttr(Element *elem, Attr *attr) {
@@ -32,7 +32,7 @@ void applyAttr(Element *elem, Attr *attr) {
     printf("Apply Height: %d\n", attr->uIntValue);
     elem->height = attr->uIntValue;
   } else if (attr->name == Children) {
-    printf("Apply Children count: %d\n", attr->uIntValue);
+    printf(">> Apply Children count: %d\n", attr->uIntValue);
     applyChildrenAttr(elem, attr->uIntValue, attr->children);
   } else {
     printf("UNKNOWN ELEMENT: %d\n", attr->name);
@@ -40,25 +40,26 @@ void applyAttr(Element *elem, Attr *attr) {
 }
 
 void freeAttr(Attr *attr) {
-  if (attr->charValue != NULL) {
-    free(attr->charValue);
-  }
-  if (attr->children != NULL) {
-    free(attr->children);
-  }
+  free(attr->charValue);
+  free(attr->children);
   free(attr);
 }
 
 void freeElement(Element *elem) {
-  free(elem->name);
-  for (int i = 0; i < elem->childCount; i++) {
-    Element *child = &elem->children[i];
-    freeElement(child);
+  if (elem->childCount > 0) {
+    // for (int i = 0; i < elem->childCount; i++) {
+      // freeElement(&elem->children[i]);
+    // }
+    free(elem->children);
   }
-  // if (elem->children != NULL) {
-    // free(&elem->children);
-  // }
+  free(elem->name);
   free(elem);
+}
+
+void freeRoot(Element *elem) {
+  for (int i = 0; i < elem->childCount; i++) {
+    freeElement(&elem->children[i]);
+  }
 }
 
 Attr *newAttr(void) {
@@ -74,17 +75,17 @@ Attr *newAttr(void) {
   return attr;
 }
 
-Element *newElement(unsigned int attrCount, ...) {
+Element *newBox(unsigned int attrCount, ...) {
   int i;
   Element *elem = malloc(sizeof(Element));
-  if (elem == NULL) {
+  // if (elem == NULL) {
     // malloc failed to get memory.
-    return NULL;
-  }
+    // return NULL;
+  // }
+  elem->childCount = 0;
   elem->id = lastId++;
   elem->name = '\0';
   elem->children = NULL;
-  elem->childCount = 0;
   elem->parentId = 0;
 
   // Process Attrs
@@ -174,7 +175,7 @@ Attr *height(unsigned int h) {
   return s;
 }
 
-Attr *children(unsigned int count, ...) {
+Attr *newChildren(unsigned int count, ...) {
   Attr *s = newAttr();
   if (s == NULL) {
     return NULL;
@@ -184,11 +185,13 @@ Attr *children(unsigned int count, ...) {
 
   va_list vargs;
   va_start(vargs, count);
-  Element *kids[count];
-  for (int i = 0; i < count; i++) {
-    kids[i] = va_arg(vargs, Element*);
+  s->children = malloc(count * sizeof(Element));
+  if (s->children == NULL) {
+    return NULL;
   }
-  memcpy(&s->children, kids, sizeof(kids));
+  for (int i = 0; i < count; i++) {
+    s->children[i] = va_arg(vargs, Element);
+  }
   va_end(vargs);
   return s;
 }
