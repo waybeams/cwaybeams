@@ -7,6 +7,7 @@
 static ElementId lastId = 1;
 
 void applyNameAttr(Element *elem, char name[]) {
+  printf("Apply name attr with: %ld\n", strlen(name));
   elem->name = malloc(strlen(name) + 1);
   strcpy(elem->name, name);
 }
@@ -14,7 +15,10 @@ void applyNameAttr(Element *elem, char name[]) {
 void applyChildrenAttr(Element *elem, unsigned int count, Element *kids) {
   // Copy children array contents to element->children
   printf("Apply CHILDREN: %d\n", count);
-
+  int bytes = sizeof(Element) * count;
+  elem->children = malloc(bytes);
+  memcpy(elem->children, kids, bytes);
+  elem->childCount = count;
 }
 
 void applyAttr(Element *elem, Attr *attr) {
@@ -46,16 +50,14 @@ void freeAttr(Attr *attr) {
 }
 
 void freeElement(Element *elem) {
-  unsigned int childCount = elem->childCount;
-  for (int i = 0; i < childCount; i++) {
-    freeElement(&elem->children[i]);
+  free(elem->name);
+  for (int i = 0; i < elem->childCount; i++) {
+    Element *child = &elem->children[i];
+    freeElement(child);
   }
-  if (elem->name != NULL) {
-    free(elem->name);
-  }
-  if (elem->children != NULL) {
-    free(elem->children);
-  }
+  // if (elem->children != NULL) {
+    // free(&elem->children);
+  // }
   free(elem);
 }
 
@@ -64,6 +66,9 @@ Attr *newAttr(void) {
   if (attr == NULL) {
     return NULL;
   }
+  attr->uIntValue = 0;
+  attr->intValue = 0;
+  attr->floatValue = 0.0;
   attr->charValue = NULL;
   attr->children = NULL;
   return attr;
@@ -77,7 +82,7 @@ Element *newElement(unsigned int attrCount, ...) {
     return NULL;
   }
   elem->id = lastId++;
-  elem->name = NULL;
+  elem->name = '\0';
   elem->children = NULL;
   elem->childCount = 0;
   elem->parentId = 0;

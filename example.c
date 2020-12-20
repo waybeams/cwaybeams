@@ -38,6 +38,5 @@ int main(void) {
   Element *root = customRender("root");
   printElement(root);
   freeElement(root);
-
   return 0;
 }
