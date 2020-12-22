@@ -30,28 +30,11 @@
 /* Note dummy first argument _ and ##__VA_ARGS__ instead of __VA_ARGS__ */
 #define PP_NARG(...)     PP_NARG_(_, ##__VA_ARGS__, PP_RSEQ_N())
 
+/**
+ * Wrap variadic macros with expected names.
+ */
 #define box(...)     newBox(PP_NARG(__VA_ARGS__), __VA_ARGS__)
 #define children(...)     newChildren(PP_NARG(__VA_ARGS__), __VA_ARGS__)
-
-/*
-// Make variadic functions work without forcing developers to
-// indicate the number of variable arguments.
-//
-// Implementation shamelessly copied from here:
-//   https://modelingwithdata.org/arch/00000022.htm
-#define varad_head(type, name) \
-         type variadic_##name(variadic_type_##name x)
-
-#define varad_declare(type, name, ...) \
-        typedef struct {            \
-                    __VA_ARGS__       ;  \
-                } variadic_type_##name;     \
-    varad_head(type, name);
-
-#define varad_var(name, value) name = x.name ? x.name : (value);
-#define varad_link(name,...) \
-        variadic_##name((variadic_type_##name) {__VA_ARGS__})
-*/
 
 typedef unsigned int ElementId;
 
@@ -83,26 +66,15 @@ typedef struct Element {
   ElementId id;
   ElementId parentId;
   Layout layout;
-  unsigned int width;
-  unsigned int height;
-  unsigned int childCount;
-  char *name;
-  struct Element *children;
+  unsigned int attrCount;
+  struct Attr *attrs;
 } Element;
 
 typedef struct Attr {
   AttrName name;
-  unsigned int uIntValue;
-  int intValue;
-  float floatValue;
-  char *charValue;
-  Element *children;
+  unsigned int dataSize;
+  unsigned char *data;
 } Attr;
-
-typedef struct Context {
-  Element *elements[MAX_ELEMENT_COUNT];
-  Element *pending;
-} Context;
 
 // Attributes
 Attr *name(char*);
@@ -119,6 +91,6 @@ Element *newBox(unsigned int count, ...);
 
 void printElement(Element *elem);
 void freeElement(Element *elem);
-void freeElement(Element *elem);
+void freeRoot(Element *elem);
 
 #endif

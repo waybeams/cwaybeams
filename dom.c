@@ -6,94 +6,42 @@
 
 static ElementId lastId = 1;
 
-void applyNameAttr(Element *elem, char name[]) {
-  printf("Apply name attr with: %ld\n", strlen(name));
-  elem->name = malloc(strlen(name) + 1);
-  strcpy(elem->name, name);
-}
-
-void applyChildrenAttr(Element *elem, unsigned int count, Element *kids) {
-  elem->childCount = count;
-  elem->children = calloc(count, sizeof(Element));
-  memcpy(elem->children, kids, count * sizeof(Element));
-  for (int i = 0; i < count; i++) {
-    elem->children[i].parentId = elem->id;
-  }
-}
-
-void applyAttr(Element *elem, Attr *attr) {
-  if (attr->name == Name) {
-    printf("Apply Name: %s\n", attr->charValue);
-    applyNameAttr(elem, attr->charValue);
-  } else if (attr->name == Width) {
-    printf("Apply Width: %d\n", attr->uIntValue);
-    elem->width = attr->uIntValue;
-  } else if (attr->name == Height) {
-    printf("Apply Height: %d\n", attr->uIntValue);
-    elem->height = attr->uIntValue;
-  } else if (attr->name == Children) {
-    printf(">> Apply Children count: %d\n", attr->uIntValue);
-    applyChildrenAttr(elem, attr->uIntValue, attr->children);
-  } else {
-    printf("UNKNOWN ELEMENT: %d\n", attr->name);
-  }
-}
-
 void freeAttr(Attr *attr) {
-  free(attr->charValue);
-  free(attr->children);
-  free(attr);
+  free(attr->data);
 }
 
 void freeElement(Element *elem) {
   printf("FREE ELEM WITH PARENT: %d\n", elem->parentId);
-  for (int i = 0; i < elem->childCount; i++) {
-    freeElement(&elem->children[i]);
+  for (int i = 0; i < elem->attrCount; i++) {
+    Attr attr = elem->attrs[i];
+    freeAttr(&attr);
   }
-  free(elem->name);
-  free(elem->children);
+  free(elem->attrs);
   free(elem);
 }
 
-void freeRoot(Element *elem) {
-  for (int i = 0; i < elem->childCount; i++) {
-    freeElement(&elem->children[i]);
-  }
-}
-
 Attr *newAttr(void) {
-  Attr *attr = malloc(sizeof(Attr));
+  Attr *attr = malloc(sizeof(struct Attr));
   if (attr == NULL) {
     return NULL;
   }
-  attr->uIntValue = 0;
-  attr->intValue = 0;
-  attr->floatValue = 0.0;
-  attr->charValue = NULL;
-  attr->children = NULL;
+  attr->dataSize = 0;
   return attr;
 }
 
 Element *newBox(unsigned int attrCount, ...) {
   int i;
-  Element *elem = malloc(sizeof(Element));
-  // if (elem == NULL) {
-    // malloc failed to get memory.
-    // return NULL;
-  // }
-  elem->childCount = 0;
+  Element *elem = malloc(sizeof(struct Element));
   elem->id = lastId++;
-  elem->name = '\0';
-  elem->children = NULL;
   elem->parentId = 0;
+  elem->attrCount = attrCount;
+  elem->attrs = malloc(attrCount * sizeof(struct Attr));
 
   // Process Attrs
   va_list vargs;
   va_start(vargs, attrCount);
   for (i = 0; i < attrCount; i++) {
-    Attr *attr = va_arg(vargs, Attr*);
-    applyAttr(elem, attr);
-    freeAttr(attr);
+    elem->attrs[i] = va_arg(vargs, struct Attr);
   }
   va_end(vargs);
 
@@ -103,10 +51,7 @@ Element *newBox(unsigned int attrCount, ...) {
 void printElement(Element *elem) {
   printf("------------------------\n");
   printf("elem.id: %d\n", elem->id);
-  printf("elem.name: %s\n", elem->name);
-  printf("elem.width: %d\n", elem->width);
-  printf("elem.height: %d\n", elem->height);
-  printf("elem.childCount: %d\n", elem->childCount);
+  printf("elem.parentId: %d\n", elem->parentId);
 }
 
 Attr *name(char *n) {
@@ -115,8 +60,9 @@ Attr *name(char *n) {
     return NULL;
   }
   s->name = Name;
-  s->charValue = malloc(strlen(n) + 1);
-  strcpy(s->charValue, n);
+  s->dataSize = strlen(n) + 1;
+  // s->data = malloc(s->dataSize);
+  // strcpy(s->data, n);
   return s;
 }
 
@@ -126,7 +72,7 @@ Attr *width(unsigned int w) {
     return NULL;
   }
   s->name = Width;
-  s->uIntValue = w;
+  //s->data = h;
   return s;
 }
 
@@ -136,7 +82,8 @@ Attr *height(unsigned int h) {
     return NULL;
   }
   s->name = Height;
-  s->uIntValue = h;
+  s->dataSize = sizeof(unsigned int);
+  //s->data = h;
   return s;
 }
 
@@ -146,17 +93,17 @@ Attr *newChildren(unsigned int count, ...) {
     return NULL;
   }
   s->name = Children;
-  s->uIntValue = count;
+  s->dataSize = count * sizeof(struct Element);
 
   va_list vargs;
   va_start(vargs, count);
-  s->children = malloc(count * sizeof(Element));
-  if (s->children == NULL) {
-    return NULL;
-  }
-  for (int i = 0; i < count; i++) {
-    s->children[i] = va_arg(vargs, Element);
-  }
+  // s->data = malloc(s->dataSize);
+  // if (s->data == NULL) {
+    // return NULL;
+  // }
+  // for (int i = 0; i < count; i++) {
+    // s->data[i] = (unsigned char *)va_arg(vargs, struct Element*);
+  // }
   va_end(vargs);
   return s;
 }

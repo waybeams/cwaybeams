@@ -1,6 +1,5 @@
 
-DEBUG=true
-
+DIST := dist
 CEE_FILES=*.c
 
 CFLAGS := -Wall
@@ -8,9 +7,11 @@ CFLAGS += -Werror
 ifeq ($(DEBUG), true)
 CFLAGS += -ggdb
 CFLAGS += -O0
+OUTFILE := $(DIST)/example-debug
 else
 CFLAGS += -Werror
 CFLAGS += -Os
+OUTFILE := $(DIST)/example
 endif
 
 OPT_CFLAGS := -O3
@@ -24,29 +25,25 @@ VALGRIND_FLAGS += --show-mismatched-frees=yes
 VALGRIND_FLAGS += -s
 
 # Build and run optimized binary
-run: example-optimize
-		./dist/example-optimize
+run: $(OUTFILE)
+		./$(OUTFILE)
 
 # Create the dist directory
 dist:
 	mkdir -p ./dist
 
 # Build the debug binary
-example-debug: Makefile dist $(CEE_FILES)
-	gcc $(CFLAGS) -o dist/example-debug $(CEE_FILES)
-
-# Build the optimized binary
-example-optimize: Makefile dist $(CEE_FILES)
-	gcc $(OPT_FLAGS) $(CFLAGS) -o dist/example-optimize $(CEE_FILES)
-	ls -lah dist/example-optimize
+$(OUTFILE): Makefile dist $(CEE_FILES)
+	gcc $(CFLAGS) -o $(OUTFILE) $(CEE_FILES)
+	ls -lah $(OUTFILE)
 
 # Build for debug and run with Valgrind
-valgrind: example-debug
-	valgrind $(VALGRIND_FLAGS) dist/example-debug
+valgrind: $(OUTFILE)
+	valgrind $(VALGRIND_FLAGS) $(OUTFILE)
 
 # Build and run the debug binary
-debug: example-debug
-	gdb -ex run dist/example-debug
+debug: $(OUTFILE)
+	gdb -ex run $(OUTFILE)
 
 # Remove generated artifacts
 clean:
