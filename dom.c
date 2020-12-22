@@ -7,7 +7,7 @@
 static ElementId lastId = 1;
 
 void freeAttr(Attr *attr) {
-  free(attr->data);
+  // free(attr->data);
 }
 
 void freeElement(Element *elem) {
