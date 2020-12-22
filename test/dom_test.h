@@ -1,3 +1,6 @@
 #include <dom.h>
 
-char *testNewAttr(void);
+char *testNewHeight(void);
+char *testNewWidth(void);
+char *testNewName(void);
+char *testNewElement(void);

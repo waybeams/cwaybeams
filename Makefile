@@ -17,7 +17,6 @@ DIST 						:= dist
 CEE_FILES 	:=*.c
 TESTDIR 			:= test
 TESTSRCS		 := $(wildcard test/*.c)
-TESTMAIN   := test/test_main.c
 TESTHDRS   := $(wildcard test/*.h)
 TEST_FILES :=test/*.c
 
@@ -82,7 +81,6 @@ test: $(CEE_FILES) $(TESTSRCS) $(TESTHDRS)
 	gcc -I$(PROJDIR) \
 			-I$(TESTDIR) \
 			$(TESTSRCS) \
-			$(TESTMaIN) \
 			"$<" -DTEST_MODE \
 			-fsanitize=leak \
 			-Wunused \

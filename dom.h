@@ -67,7 +67,7 @@ typedef struct Element {
   ElementId parentId;
   Layout layout;
   unsigned int attrCount;
-  struct Attr *attrs;
+  struct Attr **attrs;
 } Element;
 
 /**
@@ -95,6 +95,11 @@ Element *newBox(unsigned int count, ...);
 
 void printElement(Element *elem);
 void freeElement(Element *elem);
+void freeAttr(Attr *attr);
 void freeRoot(Element *elem);
+
+// Attribute value getters
+unsigned int uintAttr(Attr *attr);
+char *charAttr(Attr *attr);
 
 #endif

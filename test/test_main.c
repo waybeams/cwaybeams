@@ -7,12 +7,10 @@ char *allTests(void) {
   // Begin the test suite
   muSuiteStart();
 
-  muRunTest(testNewAttr);
-
-  // muRunTest(testRingingInitialState);
-  // muRunTest(testRingingWithData);
-  // muRunTest(testRingingWithInitialOutlier);
-  // muRunTest(testRingingWithInitialOutliers);
+  muRunTest(testNewWidth);
+  muRunTest(testNewHeight);
+  muRunTest(testNewName);
+  // muRunTest(testNewElement);
 
   return NULL;
 }

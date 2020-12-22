@@ -9,8 +9,8 @@
  ******************************************************************************
  */
 
-#ifndef STM32_CORE_INC_DEBUG_H_
-#define STM32_CORE_INC_DEBUG_H_
+#ifndef _DEBUG_H_
+#define _DEBUG_H_
 
 #include <stdio.h>
 #include <errno.h>
@@ -47,5 +47,5 @@
 #define check_debug(A, M, ...) if (!(A)) { debug(M, ##__VA_ARGS__);\
   errno = 0; goto error; }
 
-#endif  // STM32_CORE_INC_DEBUG_H_
+#endif  // _DEBUG_H_
 
