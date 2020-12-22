@@ -4,24 +4,35 @@ export
 # Makefile for C project
 ################################################################
 
+.PHONY: test
+
 # Set DEBUG=true if 'make debug'
 ifneq (,$(findstring debug,$(MAKECMDGOALS)))
 DEBUG := true
 endif
 
-DIST := dist
-CEE_FILES=*.c
+PROJDIR    := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+PROJNAME	  := cwaybeam
+DIST 						:= dist
+CEE_FILES 	:=*.c
+TESTDIR 			:= test
+TESTSRCS		 := $(wildcard test/*.c)
+TESTMAIN   := test/test_main.c
+TESTHDRS   := $(wildcard test/*.h)
+TEST_FILES :=test/*.c
+
+TESTBIN		  := $(DIST)/$(PROJNAME)-test
 
 CFLAGS := -Wall
 CFLAGS += -Werror
 ifeq ($(DEBUG), true)
 CFLAGS += -ggdb
 CFLAGS += -O0
-OUTFILE := $(DIST)/example-debug
+OUTFILE := $(DIST)/$(PROJNAME)-dbg
 else
 CFLAGS += -Werror
 CFLAGS += -Os
-OUTFILE := $(DIST)/example
+OUTFILE := $(DIST)/$(PROJNAME)
 endif
 
 OPT_CFLAGS := -O3
@@ -65,6 +76,21 @@ ifneq (,$(findstring debug,$(MAKECMDGOALS)))
 else
 	@echo "ERROR: Must run 'make debug gdb'"
 endif
+
+# Built and run tests
+test: $(CEE_FILES) $(TESTSRCS) $(TESTHDRS)
+	gcc -I$(PROJDIR) \
+			-I$(TESTDIR) \
+			$(TESTSRCS) \
+			$(TESTMaIN) \
+			"$<" -DTEST_MODE \
+			-fsanitize=leak \
+			-Wunused \
+			-lm \
+			-ggdb \
+			-o $(TESTBIN)
+	@echo $(TESTBIN)
+	./$(TESTBIN)
 
 # Remove generated artifacts
 clean:
