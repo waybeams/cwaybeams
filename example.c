@@ -4,7 +4,7 @@
 #include <sys/time.h>
 #include <sys/types.h>
 
-Element* uiTree(char *title) {
+Element* uiControl(char *title) {
   return box(
     name(title),
     width(800),
@@ -13,7 +13,7 @@ Element* uiTree(char *title) {
 }
 
 int main(void) {
-  Element *root = uiTree("root-node");
+  Element *root = uiControl("root-node");
   printElement(root);
   freeElement(root);
   return 0;

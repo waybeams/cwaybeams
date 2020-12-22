@@ -7,7 +7,7 @@
 static ElementId lastId = 1;
 
 void freeAttr(Attr *attr) {
-  // free(attr->data);
+  free(attr->data);
 }
 
 void freeElement(Element *elem) {
@@ -16,7 +16,6 @@ void freeElement(Element *elem) {
     Attr attr = elem->attrs[i];
     freeAttr(&attr);
   }
-  free(elem->attrs);
   free(elem);
 }
 
@@ -61,8 +60,8 @@ Attr *name(char *n) {
   }
   s->name = Name;
   s->dataSize = strlen(n) + 1;
-  // s->data = malloc(s->dataSize);
-  // strcpy(s->data, n);
+  s->data = (unsigned char *)malloc(s->dataSize);
+  memcpy(s->data, &n, s->dataSize);
   return s;
 }
 
@@ -72,7 +71,9 @@ Attr *width(unsigned int w) {
     return NULL;
   }
   s->name = Width;
-  //s->data = h;
+  s->dataSize = sizeof(unsigned int);
+  s->data = (unsigned char *)malloc(s->dataSize);
+  memcpy(s->data, &w, s->dataSize);
   return s;
 }
 
@@ -83,7 +84,8 @@ Attr *height(unsigned int h) {
   }
   s->name = Height;
   s->dataSize = sizeof(unsigned int);
-  //s->data = h;
+  s->data = (unsigned char *)malloc(s->dataSize);
+  memcpy(s->data, &h, s->dataSize);
   return s;
 }
 
@@ -93,7 +95,7 @@ Attr *newChildren(unsigned int count, ...) {
     return NULL;
   }
   s->name = Children;
-  s->dataSize = count * sizeof(struct Element);
+  // s->dataSize = count * sizeof(struct Element);
 
   va_list vargs;
   va_start(vargs, count);

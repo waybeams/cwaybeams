@@ -1,3 +1,13 @@
+export
+
+################################################################
+# Makefile for C project
+################################################################
+
+# Set DEBUG=true if 'make debug'
+ifneq (,$(findstring debug,$(MAKECMDGOALS)))
+DEBUG := true
+endif
 
 DIST := dist
 CEE_FILES=*.c
@@ -37,13 +47,24 @@ $(OUTFILE): Makefile dist $(CEE_FILES)
 	gcc $(CFLAGS) -o $(OUTFILE) $(CEE_FILES)
 	ls -lah $(OUTFILE)
 
+debug:
+	@echo "DEBUG=true"
+
 # Build for debug and run with Valgrind
 valgrind: $(OUTFILE)
+ifneq (,$(findstring debug,$(MAKECMDGOALS)))
 	valgrind $(VALGRIND_FLAGS) $(OUTFILE)
+else
+ @echo "ERROR: Must run 'make debug valgrind'"
+endif
 
 # Build and run the debug binary
-debug: $(OUTFILE)
+gdb: $(OUTFILE)
+ifneq (,$(findstring debug,$(MAKECMDGOALS)))
 	gdb -ex run $(OUTFILE)
+else
+	@echo "ERROR: Must run 'make debug gdb'"
+endif
 
 # Remove generated artifacts
 clean:

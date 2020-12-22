@@ -70,6 +70,10 @@ typedef struct Element {
   struct Attr *attrs;
 } Element;
 
+/**
+ * Container for arbitrary data
+ * values.
+ */
 typedef struct Attr {
   AttrName name;
   unsigned int dataSize;
