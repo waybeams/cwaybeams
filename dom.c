@@ -94,12 +94,15 @@ Attr *height(unsigned int value) {
 }
 
 Element *newBox(unsigned int attrCount, ...) {
-  Attr **attrs = malloc(attrCount * POINTER_SIZE);
+  struct Attr **attrs = malloc(attrCount * POINTER_SIZE);
+  if (attrs == NULL) {
+    return NULL;
+  }
   // Process Attrs
   va_list vargs;
   va_start(vargs, attrCount);
   for (int i = 0; i < attrCount; i++) {
-    Attr *attr = va_arg(vargs, struct Attr *);
+    struct Attr *attr = va_arg(vargs, struct Attr *);
     attrs[i] = attr;
   }
   va_end(vargs);

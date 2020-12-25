@@ -55,6 +55,9 @@ char *testNewBox(void) {
 char *testNewBoxWithName(void) {
   Element *one = newBox(1, name("abcd"));
   muAssert(one->parentId == 0, "Expected empty parentId");
+  Attr *attr = one->attrs[0];
+  char *name = charAttrData(attr);
+  muAssert(strcmp(name, "abcd") == 0, "Expected name attr");
   freeElement(one);
   return NULL;
 }
