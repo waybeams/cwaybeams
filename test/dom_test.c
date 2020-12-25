@@ -90,13 +90,19 @@ char *testIsRoot(void) {
   Element *root = box(
     name("root"),
     children(
-      box(name("child-1"))
+      box(name("child-1")),
+      box(name("child-2")),
+      box(name("child-3")),
+      box(name("child-4"))
     )
   );
 
   muAssert(isRoot(root), "Expected root");
   Element **kids = elementChildren(root);
   muAssert(!isRoot(kids[0]), "Expected child to not be root");
+  muAssert(!isRoot(kids[1]), "Expected child to not be root");
+  muAssert(!isRoot(kids[2]), "Expected child to not be root");
+  muAssert(!isRoot(kids[3]), "Expected child to not be root");
   freeElement(root);
   return NULL;
 }
