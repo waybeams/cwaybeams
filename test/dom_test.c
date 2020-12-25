@@ -45,8 +45,8 @@ char *testNewCharAttr(void) {
   return NULL;
 }
 
-char *testNewElement(void) {
-  Element *one = box(width(20));
+char *testNewBox(void) {
+  Element *one = newBox(0);
   muAssert(one->parentId == 0, "Expected empty parentId");
   freeElement(one);
   return NULL;

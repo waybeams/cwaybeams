@@ -7,4 +7,4 @@ char *testNewName(void);
 char *testNewHeight(void);
 char *testNewWidth(void);
 
-char *testNewElement(void);
+char *testNewBox(void);

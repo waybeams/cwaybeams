@@ -93,7 +93,6 @@ Attr *newUintAttr(AttrName name, unsigned value);
 unsigned int uintAttrData(Attr *attr);
 char *charAttrData(Attr *attr);
 
-
 Element *newBox(unsigned int count, ...);
 
 // Entities
