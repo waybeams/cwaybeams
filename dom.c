@@ -7,15 +7,25 @@
 
 #define DEFAULT_NAME "default-name"
 
+/**
+ * Global id for all instantiated Elements.
+ */
 static ElementId lastId = 1;
 
-
+/**
+ * Simple pointer, used to determine pointer size.
+ */
 static int *ptr;
-// NOTE(lbayes): This reports 8 on my modern laptop,
-// I thought it would be 16, am I doing something dumb here?
+
+/**
+ * Size of a pointer on this compilation target.
+ */
 static uint8_t POINTER_SIZE = sizeof(ptr);
 
-
+/**
+ * Free all malloc'd data from the provided attribute through any references it
+ * may contain, including child Elements.
+ */
 void freeAttr(Attr *attr) {
   if (attr->name == Children) {
     struct Element **kids = childrenAttrData(attr);
@@ -28,6 +38,10 @@ void freeAttr(Attr *attr) {
   free(attr);
 }
 
+/**
+ * Recursively free all malloc'd data from the provided
+ * element to it's leaves.
+ */
 void freeElement(Element *elem) {
   for (int i = 0; i < elem->attrCount; i++) {
     Attr *attr = elem->attrs[i];
@@ -37,6 +51,11 @@ void freeElement(Element *elem) {
   free(elem);
 }
 
+/**
+ * Create and returne a new, empty attribute struct.
+ *
+ * These entities must be sent to 'freeAttr' at some point in the future.
+ */
 Attr *newAttr(void) {
   Attr *attr = malloc(sizeof(struct Attr));
   if (attr == NULL) {
@@ -62,12 +81,15 @@ Attr *newCharAttr(AttrName name, char *value) {
 }
 
 /**
- * Get the data from a Char Attr as char *
+ * Get the data from a Char Attr as (char *).
  */
 char *charAttrData(Attr *attr) {
   return (char *)attr->data;
 }
 
+/**
+ * Create a new Attr with the provided name and unsigned int data.
+ */
 Attr *newUintAttr(AttrName name, unsigned int value) {
   Attr *attr = newAttr();
   if (attr == NULL) {
@@ -81,8 +103,7 @@ Attr *newUintAttr(AttrName name, unsigned int value) {
 }
 
 /**
- * Get the provided Attribute data as an
- * unsigned integer.
+ * Get the provided Attribute data as an unsigned integer.
  */
 unsigned int uintAttrData(Attr *attr) {
   return (unsigned int)*attr->data;
@@ -120,12 +141,15 @@ Attr *newChildren(unsigned int count, ...) {
   return attr;
 }
 
+/**
+ * Get an array of Element pointers as Children data from the provided Attr.
+ */
 struct Element **childrenAttrData(Attr *attr) {
   return (struct Element **)attr->data;
 }
 
 /**
- * Concrete Attr names bound to types.
+ * Concrete Attr names bound to concrete types.
  */
 
 Attr *name(char *value) {
@@ -140,7 +164,7 @@ Attr *height(unsigned int value) {
   return newUintAttr(Height, value);
 }
 
-Element *newBox(unsigned int attrCount, ...) {
+Element *newElement(unsigned int attrCount, ...) {
   struct Attr **attrs = malloc(attrCount * POINTER_SIZE);
   if (attrs == NULL) {
     return NULL;
@@ -167,6 +191,7 @@ void printElement(Element *elem) {
   printf("------------------------\n");
   printf("elem.id: %d\n", elem->id);
   printf("elem.parentId: %d\n", elem->parentId);
+  printf("elem.name: %s\n", elementName(elem));
 }
 
 char *elementName(Element *elem) {

@@ -33,7 +33,7 @@
 /**
  * Wrap variadic macros with expected names.
  */
-#define box(...)     newBox(PP_NARG(__VA_ARGS__), __VA_ARGS__)
+#define box(...)     newElement(PP_NARG(__VA_ARGS__), __VA_ARGS__)
 #define children(...)     newChildren(PP_NARG(__VA_ARGS__), __VA_ARGS__)
 
 
@@ -96,7 +96,7 @@ struct Element **childrenAttrData(Attr *attr);
 
 // NOTE(lbayes): See macros for shortcuts to element
 // creation.
-Element *newBox(unsigned int count, ...);
+Element *newElement(unsigned int count, ...);
 
 void printElement(Element *elem);
 void freeElement(Element *elem);

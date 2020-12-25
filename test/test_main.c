@@ -14,7 +14,7 @@ char *allTests(void) {
   muRunTest(testNewBox);
   muRunTest(testNewBoxWithName);
   muRunTest(testNewChildren);
-  // muRunTest(testElementWithChild);
+  muRunTest(testElementWithChild);
 
   return NULL;
 }
