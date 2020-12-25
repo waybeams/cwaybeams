@@ -11,3 +11,4 @@ char *testNewBox(void);
 char *testNewBoxWithName(void);
 
 char *testNewChildren(void);
+char *testElementWithChild(void);

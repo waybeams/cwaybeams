@@ -66,16 +66,15 @@ char *testNewChildren(void) {
   Element *root = newBox(1, name("root"));
   Attr *attr = newChildren(1, root);
 
-  // printf("========================\n");
-  // Element *kids = childrenAttrData(attr);
-  // Element elem = kids[0];
-  // printf("ID: %d\n", elem->id);
-  // char *name = elementName(elem);
-  // muAssert(strcmp(name, "root") == 0, "Expected name root");
-  printf("----------------------------\n");
+  struct Element **kids = childrenAttrData(attr);
+  char *name = elementName(kids[0]);
+  muAssert(strcmp(name, "root") == 0, "Expected name root");
+
   freeAttr(attr);
   return NULL;
+}
 
+char *testElementWithChild(void) {
   /*
   Element *root = box(
     name("root"),
