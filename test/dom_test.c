@@ -85,3 +85,19 @@ char *testElementWithChild(void) {
   freeElement(root);
   return NULL;
 }
+
+char *testIsRoot(void) {
+  Element *root = box(
+    name("root"),
+    children(
+      box(name("child-1"))
+    )
+  );
+
+  muAssert(isRoot(root), "Expected root");
+  Element **kids = elementChildren(root);
+  muAssert(!isRoot(kids[0]), "Expected child to not be root");
+  freeElement(root);
+  return NULL;
+}
+

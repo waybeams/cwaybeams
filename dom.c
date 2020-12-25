@@ -192,6 +192,10 @@ Element *newElement(unsigned int attrCount, ...) {
     struct Attr *attr = va_arg(vargs, struct Attr *);
     if (attr->name == Children) {
       elem->childCount += (attr->dataSize / POINTER_SIZE);
+      struct Element **kids = childrenAttrData(attr);
+      for (int k = 0; k < elem->childCount; k++) {
+        kids[k]->parentId = elem->id;
+      }
     }
     attrs[i] = attr;
   }
@@ -266,3 +270,6 @@ struct Element **elementChildren(Element *elem) {
   return NULL;
 }
 
+bool isRoot(Element *elem) {
+  return elem->parentId == 0;
+}
