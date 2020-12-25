@@ -32,10 +32,17 @@ Element* uiControl(char *title) {
 
 int main(void) {
   Element *root;
-  for (int i = 0; i < 2; i++) {
+  int lastId = 0;
+  int count = 0;
+  for (int i = 0; i < 1; i++) {
     root = uiControl("root-node");
     printElement(root);
+    lastId = root->id;
     freeElement(root);
+    count++;
   }
+  printf("\n");
+  printf(">> Created tree %d times\n", count);
+  printf(">> lastId: %d\n", lastId);
   return 0;
 }
