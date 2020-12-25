@@ -7,17 +7,22 @@
 
 static ElementId lastId = 1;
 
+static int *ptr;
+// NOTE(lbayes): This reports 8 on my modern laptop,
+// I thought it would be 16, am I doing something dumb here?
+static uint8_t POINTER_SIZE = sizeof(ptr);
+
 void freeAttr(Attr *attr) {
   free(attr->data);
   free(attr);
 }
 
 void freeElement(Element *elem) {
-  debug("FREE ELEM WITH PARENT: %d\n", elem->parentId);
-  // for (int i = 0; i < elem->attrCount; i++) {
-    // Attr *attr = elem->attrs[i];
-    // freeAttr(attr);
-  // }
+  for (int i = 0; i < elem->attrCount; i++) {
+    Attr *attr = elem->attrs[i];
+    freeAttr(attr);
+  }
+  free(elem->attrs);
   free(elem);
 }
 
@@ -89,27 +94,21 @@ Attr *height(unsigned int value) {
 }
 
 Element *newBox(unsigned int attrCount, ...) {
-  // struct Attr **attr;
+  Attr **attrs = malloc(attrCount * POINTER_SIZE);
   // Process Attrs
-  /*
-  // int i;
   va_list vargs;
   va_start(vargs, attrCount);
-  for (i = 0; i < attrCount; i++) {
-    int ptr = va_arg(vargs, Attr);
-    // free(&ptr);
-    // debug("YIIIII %d", i);
-    // debug("YUUUUUU %u", (unsigned char)attr.data);
-    // elem->attrs[i] = &attr;
+  for (int i = 0; i < attrCount; i++) {
+    Attr *attr = va_arg(vargs, struct Attr *);
+    attrs[i] = attr;
   }
   va_end(vargs);
-  */
 
   Element *elem = malloc(sizeof(struct Element));
   elem->id = lastId++;
   elem->parentId = 0;
   elem->attrCount = attrCount;
-  // elem->attrs = malloc(attrCount * sizeof(struct Attr));
+  elem->attrs = attrs;
 
   return elem;
 }

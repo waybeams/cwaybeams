@@ -51,3 +51,10 @@ char *testNewBox(void) {
   freeElement(one);
   return NULL;
 }
+
+char *testNewBoxWithName(void) {
+  Element *one = newBox(1, name("abcd"));
+  muAssert(one->parentId == 0, "Expected empty parentId");
+  freeElement(one);
+  return NULL;
+}
