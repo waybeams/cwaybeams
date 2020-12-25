@@ -61,3 +61,29 @@ char *testNewBoxWithName(void) {
   freeElement(one);
   return NULL;
 }
+
+char *testNewChildren(void) {
+  Element *root = newBox(1, name("root"));
+  Attr *attr = newChildren(1, root);
+
+  // printf("========================\n");
+  // Element *kids = childrenAttrData(attr);
+  // Element elem = kids[0];
+  // printf("ID: %d\n", elem->id);
+  // char *name = elementName(elem);
+  // muAssert(strcmp(name, "root") == 0, "Expected name root");
+  printf("----------------------------\n");
+  freeAttr(attr);
+  return NULL;
+
+  /*
+  Element *root = box(
+    name("root"),
+    children(
+      box(name("child-1"))
+    )
+  );
+
+  freeElement(root);
+  */
+}

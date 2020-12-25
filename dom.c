@@ -5,21 +5,38 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define DEFAULT_NAME "default-name"
+
 static ElementId lastId = 1;
+
 
 static int *ptr;
 // NOTE(lbayes): This reports 8 on my modern laptop,
 // I thought it would be 16, am I doing something dumb here?
 static uint8_t POINTER_SIZE = sizeof(ptr);
 
+
 void freeAttr(Attr *attr) {
+  if (attr->name == Children) {
+    printf("FREE KID size %d\n", attr->dataSize);
+    struct Element *kids = childrenAttrData(attr);
+    int count = attr->dataSize / POINTER_SIZE;
+    printf("count: %d\n", count);
+    for (int i = 0; i < count; i++) {
+      printf("found a child attr\n");
+      freeElement(&kids[i]);
+    }
+  }
   free(attr->data);
   free(attr);
 }
 
 void freeElement(Element *elem) {
+  printf("FREEING ELEM: %d\n", elem->id);
+  // printf("FREEING ELEM: %s\n", elementName(elem));
   for (int i = 0; i < elem->attrCount; i++) {
     Attr *attr = elem->attrs[i];
+    printf("ATTR NAME: %d\n", attr->name);
     freeAttr(attr);
   }
   free(elem->attrs);
@@ -78,6 +95,52 @@ unsigned int uintAttrData(Attr *attr) {
 }
 
 /**
+ * Create a children Attr.
+ */
+Attr *newChildren(unsigned int count, ...) {
+  Attr *attr = newAttr();
+  if (attr == NULL) {
+    return NULL;
+  }
+  attr->name = Children;
+  attr->dataSize = count * POINTER_SIZE;
+
+  struct Element *kids[attr->dataSize];
+  if (kids == NULL) {
+    return NULL;
+  }
+
+  va_list vargs;
+  va_start(vargs, count);
+  for (int i = 0; i < count; i++) {
+    struct Element *kid = va_arg(vargs, struct Element *);
+
+    printf("ASSOC NAME before: %s\n", elementName(kid));
+    kids[i] = kid;
+    printf("ASSOC NAME after: %s\n", elementName(kids[i]));
+  }
+  va_end(vargs);
+
+  attr->data = (unsigned char *)malloc(attr->dataSize);
+  if (attr->data == NULL) {
+    return NULL;
+  }
+  memcpy(attr->data, kids, attr->dataSize);
+
+  // NOTE(lbayes): LEFT OFF HERE, trying to deserialize child Elements, but not quite there yet.
+  struct Element *after = childrenAttrData(attr);
+  printf("ELEM ID AFTER: %d\n", &after[0]->id);
+  printf("ASSOC NAME AFTER: %s\n", elementName(&after[0]));
+
+  return attr;
+}
+
+struct Element *childrenAttrData(Attr *attr) {
+  struct Element **kids[attr->dataSize];
+  kids = (struct Element **)attr->data;
+}
+
+/**
  * Concrete Attr names bound to types.
  */
 
@@ -122,25 +185,12 @@ void printElement(Element *elem) {
   printf("elem.parentId: %d\n", elem->parentId);
 }
 
-Attr *newChildren(unsigned int count, ...) {
-  Attr *s = newAttr();
-  if (s == NULL) {
-    return NULL;
+char *elementName(Element *elem) {
+  for (int i = 0; i < elem->attrCount; i++) {
+    if (elem->attrs[i]->name == Name) {
+      return charAttrData(elem->attrs[i]);
+    }
   }
-  s->name = Children;
-  // s->dataSize = count * sizeof(struct Element);
 
-  va_list vargs;
-  va_start(vargs, count);
-  // s->data = malloc(s->dataSize);
-  // if (s->data == NULL) {
-    // return NULL;
-  // }
-  // for (int i = 0; i < count; i++) {
-    // s->data[i] = (unsigned char *)va_arg(vargs, struct Element*);
-  // }
-  va_end(vargs);
-  return s;
+  return DEFAULT_NAME;
 }
-
-

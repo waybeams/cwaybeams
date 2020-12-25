@@ -7,12 +7,13 @@ char *allTests(void) {
   // Begin the test suite
   muSuiteStart();
 
-  muRunTest(testNewCharAttr);
-  muRunTest(testNewName);
-  muRunTest(testNewHeight);
-  muRunTest(testNewWidth);
-  muRunTest(testNewBox);
-  muRunTest(testNewBoxWithName);
+  // muRunTest(testNewCharAttr);
+  // muRunTest(testNewName);
+  // muRunTest(testNewHeight);
+  // muRunTest(testNewWidth);
+  // muRunTest(testNewBox);
+  // muRunTest(testNewBoxWithName);
+  muRunTest(testNewChildren);
 
   return NULL;
 }

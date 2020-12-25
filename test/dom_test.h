@@ -9,3 +9,5 @@ char *testNewWidth(void);
 
 char *testNewBox(void);
 char *testNewBoxWithName(void);
+
+char *testNewChildren(void);

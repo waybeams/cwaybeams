@@ -92,17 +92,17 @@ Attr *newUintAttr(AttrName name, unsigned value);
 // Attribute value getters
 unsigned int uintAttrData(Attr *attr);
 char *charAttrData(Attr *attr);
+struct Element *childrenAttrData(Attr *attr);
 
+// NOTE(lbayes): See macros for shortcuts to element
+// creation.
 Element *newBox(unsigned int count, ...);
-
-// Entities
-// Element* vbox(...);
-// Element* hbox(...);
-// Element* box(...);
 
 void printElement(Element *elem);
 void freeElement(Element *elem);
 void freeAttr(Attr *attr);
 void freeRoot(Element *elem);
+
+char *elementName(Element *elem);
 
 #endif
