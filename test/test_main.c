@@ -8,9 +8,9 @@ char *allTests(void) {
   muSuiteStart();
 
   muRunTest(testNewCharAttr);
-  // muRunTest(testNewName);
-  // muRunTest(testNewWidth);
-  // muRunTest(testNewHeight);
+  muRunTest(testNewName);
+  muRunTest(testNewHeight);
+  muRunTest(testNewWidth);
   // muRunTest(testNewElement);
 
   return NULL;

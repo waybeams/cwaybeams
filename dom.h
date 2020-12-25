@@ -36,6 +36,7 @@
 #define box(...)     newBox(PP_NARG(__VA_ARGS__), __VA_ARGS__)
 #define children(...)     newChildren(PP_NARG(__VA_ARGS__), __VA_ARGS__)
 
+
 typedef unsigned int ElementId;
 
 typedef enum AttrName {
@@ -86,6 +87,12 @@ Attr *width(unsigned int w);
 Attr *height(unsigned int h);
 Attr *newChildren(unsigned int count, ...);
 Attr *newCharAttr(AttrName name, char *value);
+Attr *newUintAttr(AttrName name, unsigned value);
+
+// Attribute value getters
+unsigned int uintAttrData(Attr *attr);
+char *charAttrData(Attr *attr);
+
 
 Element *newBox(unsigned int count, ...);
 
@@ -98,9 +105,5 @@ void printElement(Element *elem);
 void freeElement(Element *elem);
 void freeAttr(Attr *attr);
 void freeRoot(Element *elem);
-
-// Attribute value getters
-unsigned int uintAttr(Attr *attr);
-char *charAttrData(Attr *attr);
 
 #endif
