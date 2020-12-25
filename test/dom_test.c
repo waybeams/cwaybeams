@@ -2,6 +2,7 @@
 #include <dom.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 char *testNewHeight(void) {
   Attr *one = height(23);
@@ -20,10 +21,18 @@ char *testNewWidth(void) {
 }
 
 char *testNewName(void) {
-  Attr *one = name("kanachan");
-  char *data = charAttr(one);
-  muAssert(data == "kanachan", "Expected chars");
+  Attr *one = name("abcd");
+  char *data = charAttrData(one);
+  muAssert(data == "abcd", "Expected abcd");
   freeAttr(one);
+  return NULL;
+}
+
+char *testNewCharAttr(void) {
+  Attr *attr = newCharAttr(Name, "abcd");
+  char *data = charAttrData(attr);
+  muAssert(strcmp(data, "abcd") == 0, "Expected abcd");
+  freeAttr(attr);
   return NULL;
 }
 

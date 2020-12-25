@@ -7,9 +7,10 @@ char *allTests(void) {
   // Begin the test suite
   muSuiteStart();
 
-  muRunTest(testNewWidth);
-  muRunTest(testNewHeight);
-  muRunTest(testNewName);
+  muRunTest(testNewCharAttr);
+  // muRunTest(testNewName);
+  // muRunTest(testNewWidth);
+  // muRunTest(testNewHeight);
   // muRunTest(testNewElement);
 
   return NULL;

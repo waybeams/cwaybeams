@@ -62,14 +62,6 @@ typedef enum Layout {
   LAYOUT_HORIZONTAL,
 } Layout;
 
-typedef struct Element {
-  ElementId id;
-  ElementId parentId;
-  Layout layout;
-  unsigned int attrCount;
-  struct Attr **attrs;
-} Element;
-
 /**
  * Container for arbitrary data
  * values.
@@ -80,11 +72,20 @@ typedef struct Attr {
   unsigned char *data;
 } Attr;
 
+typedef struct Element {
+  ElementId id;
+  ElementId parentId;
+  Layout layout;
+  unsigned int attrCount;
+  Attr **attrs;
+} Element;
+
 // Attributes
 Attr *name(char*);
 Attr *width(unsigned int w);
 Attr *height(unsigned int h);
 Attr *newChildren(unsigned int count, ...);
+Attr *newCharAttr(AttrName name, char *value);
 
 Element *newBox(unsigned int count, ...);
 
@@ -100,6 +101,6 @@ void freeRoot(Element *elem);
 
 // Attribute value getters
 unsigned int uintAttr(Attr *attr);
-char *charAttr(Attr *attr);
+char *charAttrData(Attr *attr);
 
 #endif

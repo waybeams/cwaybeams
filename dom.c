@@ -31,12 +31,6 @@ Attr *newAttr(void) {
 }
 
 Element *newBox(unsigned int attrCount, ...) {
-  Element *elem = malloc(sizeof(struct Element));
-  elem->id = lastId++;
-  elem->parentId = 0;
-  elem->attrCount = attrCount;
-  // elem->attrs = malloc(attrCount * sizeof(struct Attr));
-
   // struct Attr **attr;
   // Process Attrs
   /*
@@ -53,6 +47,12 @@ Element *newBox(unsigned int attrCount, ...) {
   va_end(vargs);
   */
 
+  Element *elem = malloc(sizeof(struct Element));
+  elem->id = lastId++;
+  elem->parentId = 0;
+  elem->attrCount = attrCount;
+  // elem->attrs = malloc(attrCount * sizeof(struct Attr));
+
   return elem;
 }
 
@@ -63,15 +63,7 @@ void printElement(Element *elem) {
 }
 
 Attr *name(char *n) {
-  Attr *s = newAttr();
-  if (s == NULL) {
-    return NULL;
-  }
-  s->name = Name;
-  s->dataSize = strlen(n) + 1;
-  s->data = (unsigned char *)malloc(s->dataSize);
-  memcpy(s->data, &n, s->dataSize);
-  return s;
+  return newCharAttr(Name, n);
 }
 
 Attr *width(unsigned int w) {
@@ -119,6 +111,23 @@ Attr *newChildren(unsigned int count, ...) {
   return s;
 }
 
+
+/**
+ * Create a new Attr with the provided char value.
+ */
+Attr *newCharAttr(AttrName name, char *value) {
+  Attr *attr = newAttr();
+  if (attr == NULL) {
+    return NULL;
+  }
+  attr->name = name;
+  attr->dataSize = strlen(value) + 1;
+  attr->data = (unsigned char *)malloc(attr->dataSize);
+  memcpy(attr->data, value, attr->dataSize);
+  return attr;
+}
+
+
 /**
  * Get the provided Attribute data as an
  * unsigned integer.
@@ -127,6 +136,6 @@ unsigned int uintAttr(Attr *attr) {
   return (unsigned int)*attr->data;
 }
 
-char *charAttr(Attr *attr) {
+char *charAttrData(Attr *attr) {
   return (char *)attr->data;
 }
