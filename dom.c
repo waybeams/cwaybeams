@@ -203,6 +203,9 @@ Element *newElement(unsigned int attrCount, ...) {
   return elem;
 }
 
+/**
+ * Print each char code in the provided string.
+ */
 void printChars(char *chars) {
   int i = 0;
   while (chars[i++] != '\0') {
