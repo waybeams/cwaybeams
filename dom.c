@@ -203,6 +203,13 @@ Element *newElement(unsigned int attrCount, ...) {
   return elem;
 }
 
+void printChars(char *chars) {
+  int i = 0;
+  while (chars[i++] != '\0') {
+    printf("Char: %d %c\n", chars[i], chars[i]);
+  }
+}
+
 void printElementIndented(Element *elem, char *indent) {
   printf("------------------------\n");
   printf("%selem.id: %d\n", indent, elem->id);
@@ -210,17 +217,12 @@ void printElementIndented(Element *elem, char *indent) {
   printf("%selem.name: %s\n", indent, elementName(elem));
   struct Element **kids = elementChildren(elem);
   if (kids != NULL) {
-    // NOTE(lbayes): THIS IS NOT THE RIGHT WAY...
     char *nextIndent = malloc(strlen(indent) + 2);
-    strcat(nextIndent, indent);
-    strcat(nextIndent, "\t");
-    strcat(nextIndent, "\0");
-
-    printf("%schildCount: %d\n", indent, elem->childCount);
+    nextIndent = strcpy(nextIndent, indent);
+    nextIndent = strcat(nextIndent, "\t");
     for (int i = 0; i < elem->childCount; i++) {
       printElementIndented(kids[i], nextIndent);
     }
-
     free(nextIndent);
   }
 }
@@ -229,7 +231,9 @@ void printElementIndented(Element *elem, char *indent) {
  * Print the provided element and attributes.
  */
 void printElement(Element *elem) {
-  printElementIndented(elem, " ");
+  char *empty = malloc(1);
+  printElementIndented(elem, "");
+  free(empty);
 }
 
 /**
