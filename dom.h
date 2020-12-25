@@ -33,7 +33,7 @@
 /**
  * Wrap variadic macros with expected names.
  */
-#define box(...)     newElement(PP_NARG(__VA_ARGS__), __VA_ARGS__)
+#define box(...)          newElement(PP_NARG(__VA_ARGS__), __VA_ARGS__)
 #define children(...)     newChildren(PP_NARG(__VA_ARGS__), __VA_ARGS__)
 
 
@@ -104,5 +104,6 @@ void freeAttr(Attr *attr);
 void freeRoot(Element *elem);
 
 char *elementName(Element *elem);
+struct Element **elementChildren(Element *elem);
 
 #endif

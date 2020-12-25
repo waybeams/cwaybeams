@@ -152,18 +152,30 @@ struct Element **childrenAttrData(Attr *attr) {
  * Concrete Attr names bound to concrete types.
  */
 
+/**
+ * Create and return a name attribute.
+ */
 Attr *name(char *value) {
   return newCharAttr(Name, value);
 }
 
+/**
+ * Create and return a width attribute.
+ */
 Attr *width(unsigned int value) {
   return newUintAttr(Width, value);
 }
 
+/**
+ * Create and return a height attribute.
+ */
 Attr *height(unsigned int value) {
   return newUintAttr(Height, value);
 }
 
+/**
+ * Create a new Element with the provided attributes.
+ */
 Element *newElement(unsigned int attrCount, ...) {
   struct Attr **attrs = malloc(attrCount * POINTER_SIZE);
   if (attrs == NULL) {
@@ -187,6 +199,9 @@ Element *newElement(unsigned int attrCount, ...) {
   return elem;
 }
 
+/**
+ * Print the provided element and attributes.
+ */
 void printElement(Element *elem) {
   printf("------------------------\n");
   printf("elem.id: %d\n", elem->id);
@@ -194,6 +209,10 @@ void printElement(Element *elem) {
   printf("elem.name: %s\n", elementName(elem));
 }
 
+/**
+ * Get the provided Element name attribute, or DEFAULT_NAME if one was not
+ * provided.
+ */
 char *elementName(Element *elem) {
   for (int i = 0; i < elem->attrCount; i++) {
     if (elem->attrs[i]->name == Name) {
@@ -203,3 +222,17 @@ char *elementName(Element *elem) {
 
   return DEFAULT_NAME;
 }
+
+/**
+ * Get the provided Element children collection.
+ */
+struct Element **elementChildren(Element *elem) {
+  for (int i = 0; i < elem->attrCount; i++) {
+    if (elem->attrs[i]->name == Children) {
+      return childrenAttrData(elem->attrs[i]);
+    }
+  }
+
+  return NULL;
+}
+

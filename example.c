@@ -8,7 +8,22 @@ Element* uiControl(char *title) {
   return box(
     name(title),
     width(800),
-    height(600)
+    height(600),
+    children(
+      box(name("child-1")),
+      box(name("child-2")),
+      box(name("child-3")),
+      box(
+        name("child-4-container"),
+        children(
+          box(name("child-5")),
+          box(name("child-6")),
+          box(name("child-7")),
+          box(name("child-8")),
+          box(name("child-9"))
+        )
+      )
+    )
   );
 }
 
