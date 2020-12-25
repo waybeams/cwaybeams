@@ -1,5 +1,5 @@
 #include "dom.h"
-#include <debug.h>
+#include "debug.h"
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -128,5 +128,5 @@ unsigned int uintAttr(Attr *attr) {
 }
 
 char *charAttr(Attr *attr) {
-  return (char)*attr->data;
+  return (char *)attr->data;
 }
