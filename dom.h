@@ -77,6 +77,7 @@ typedef struct Element {
   ElementId id;
   ElementId parentId;
   Layout layout;
+  unsigned int childCount;
   unsigned int attrCount;
   struct Attr **attrs;
 } Element;

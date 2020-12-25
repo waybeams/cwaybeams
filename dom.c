@@ -181,18 +181,22 @@ Element *newElement(unsigned int attrCount, ...) {
   if (attrs == NULL) {
     return NULL;
   }
+  Element *elem = malloc(sizeof(struct Element));
+  elem->id = lastId++;
+  elem->parentId = 0;
+
   // Process Attrs
   va_list vargs;
   va_start(vargs, attrCount);
   for (int i = 0; i < attrCount; i++) {
     struct Attr *attr = va_arg(vargs, struct Attr *);
+    if (attr->name == Children) {
+      elem->childCount += (attr->dataSize / POINTER_SIZE);
+    }
     attrs[i] = attr;
   }
   va_end(vargs);
 
-  Element *elem = malloc(sizeof(struct Element));
-  elem->id = lastId++;
-  elem->parentId = 0;
   elem->attrCount = attrCount;
   elem->attrs = attrs;
 
@@ -206,18 +210,18 @@ void printElementIndented(Element *elem, char *indent) {
   printf("%selem.name: %s\n", indent, elementName(elem));
   struct Element **kids = elementChildren(elem);
   if (kids != NULL) {
-    int count = sizeof(kids) / 2;
-    char *deeper = malloc(strlen(indent) + 2);
-    // deeper = "\t";
-    strcat(deeper, "\t");
-    strcat(deeper, indent);
+    // NOTE(lbayes): THIS IS NOT THE RIGHT WAY...
+    char *nextIndent = malloc(strlen(indent) + 2);
+    strcat(nextIndent, indent);
+    strcat(nextIndent, "\t");
+    strcat(nextIndent, "\0");
 
-    printf("%sCOUNT: %d\n", indent, count);
-    for (int i = 0; i < count; i++) {
-      printElementIndented(kids[i], deeper);
+    printf("%schildCount: %d\n", indent, elem->childCount);
+    for (int i = 0; i < elem->childCount; i++) {
+      printElementIndented(kids[i], nextIndent);
     }
 
-    free(deeper);
+    free(nextIndent);
   }
 }
 
@@ -225,7 +229,7 @@ void printElementIndented(Element *elem, char *indent) {
  * Print the provided element and attributes.
  */
 void printElement(Element *elem) {
-  printElementIndented(elem, "");
+  printElementIndented(elem, " ");
 }
 
 /**
