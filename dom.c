@@ -19,12 +19,12 @@ static uint8_t POINTER_SIZE = sizeof(ptr);
 void freeAttr(Attr *attr) {
   if (attr->name == Children) {
     printf("FREE KID size %d\n", attr->dataSize);
-    struct Element *kids = childrenAttrData(attr);
+    struct Element **kids = childrenAttrData(attr);
     int count = attr->dataSize / POINTER_SIZE;
     printf("count: %d\n", count);
     for (int i = 0; i < count; i++) {
       printf("found a child attr\n");
-      freeElement(&kids[i]);
+      freeElement(kids[i]);
     }
   }
   free(attr->data);
@@ -128,16 +128,15 @@ Attr *newChildren(unsigned int count, ...) {
   memcpy(attr->data, kids, attr->dataSize);
 
   // NOTE(lbayes): LEFT OFF HERE, trying to deserialize child Elements, but not quite there yet.
-  struct Element *after = childrenAttrData(attr);
-  printf("ELEM ID AFTER: %d\n", &after[0]->id);
-  printf("ASSOC NAME AFTER: %s\n", elementName(&after[0]));
+  struct Element **after = childrenAttrData(attr);
+  printf("ELEM ID AFTER: %d\n", after[0]->id);
+  printf("ASSOC NAME AFTER: %s\n", elementName(after[0]));
 
   return attr;
 }
 
-struct Element *childrenAttrData(Attr *attr) {
-  struct Element **kids[attr->dataSize];
-  kids = (struct Element **)attr->data;
+struct Element **childrenAttrData(Attr *attr) {
+  return (struct Element **)attr->data;
 }
 
 /**

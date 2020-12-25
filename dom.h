@@ -92,7 +92,7 @@ Attr *newUintAttr(AttrName name, unsigned value);
 // Attribute value getters
 unsigned int uintAttrData(Attr *attr);
 char *charAttrData(Attr *attr);
-struct Element *childrenAttrData(Attr *attr);
+struct Element **childrenAttrData(Attr *attr);
 
 // NOTE(lbayes): See macros for shortcuts to element
 // creation.
