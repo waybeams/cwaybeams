@@ -199,14 +199,33 @@ Element *newElement(unsigned int attrCount, ...) {
   return elem;
 }
 
+void printElementIndented(Element *elem, char *indent) {
+  printf("------------------------\n");
+  printf("%selem.id: %d\n", indent, elem->id);
+  printf("%selem.parentId: %d\n", indent, elem->parentId);
+  printf("%selem.name: %s\n", indent, elementName(elem));
+  struct Element **kids = elementChildren(elem);
+  if (kids != NULL) {
+    int count = sizeof(kids) / 2;
+    char *deeper = malloc(strlen(indent) + 2);
+    // deeper = "\t";
+    strcat(deeper, "\t");
+    strcat(deeper, indent);
+
+    printf("%sCOUNT: %d\n", indent, count);
+    for (int i = 0; i < count; i++) {
+      printElementIndented(kids[i], deeper);
+    }
+
+    free(deeper);
+  }
+}
+
 /**
  * Print the provided element and attributes.
  */
 void printElement(Element *elem) {
-  printf("------------------------\n");
-  printf("elem.id: %d\n", elem->id);
-  printf("elem.parentId: %d\n", elem->parentId);
-  printf("elem.name: %s\n", elementName(elem));
+  printElementIndented(elem, "");
 }
 
 /**

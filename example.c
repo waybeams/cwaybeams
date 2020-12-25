@@ -11,8 +11,6 @@ Element* uiControl(char *title) {
     height(600),
     children(
       box(name("child-1")),
-      box(name("child-2")),
-      box(name("child-3")),
       box(
         name("child-4-container"),
         children(
@@ -22,7 +20,10 @@ Element* uiControl(char *title) {
           box(name("child-8")),
           box(name("child-9"))
         )
-      )
+      ),
+      box(name("child-10")),
+      box(name("child-11")),
+      box(name("child-12"))
     )
   );
 }
