@@ -41,11 +41,12 @@ typedef unsigned int ElementId;
 
 typedef enum AttrName {
   None = 0,
-  Children,
+  ChildrenAttr,
   Flex,
   HFlex,
   HPercent,
   Height,
+  LayoutAttr,
   Name,
   VFlex,
   VPercent,
@@ -76,7 +77,6 @@ typedef struct Attr {
 typedef struct Element {
   ElementId id;
   ElementId parentId;
-  Layout layout;
   unsigned int childCount;
   unsigned int attrCount;
   struct Attr **attrs;
@@ -84,8 +84,9 @@ typedef struct Element {
 
 // Attributes
 Attr *name(char*);
-Attr *width(unsigned int w);
-Attr *height(unsigned int h);
+Attr *width(unsigned int value);
+Attr *height(unsigned int value);
+Attr *layout(Layout value);
 Attr *newChildren(unsigned int count, ...);
 Attr *newCharAttr(AttrName name, char *value);
 Attr *newUintAttr(AttrName name, unsigned value);
@@ -94,6 +95,7 @@ Attr *newUintAttr(AttrName name, unsigned value);
 unsigned int uintAttrData(Attr *attr);
 char *charAttrData(Attr *attr);
 struct Element **childrenAttrData(Attr *attr);
+Layout layoutAttrData(Attr *attr);
 
 // NOTE(lbayes): See macros for shortcuts to element
 // creation.

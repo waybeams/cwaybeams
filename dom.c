@@ -27,7 +27,7 @@ static uint8_t POINTER_SIZE = sizeof(ptr);
  * may contain, including child Elements.
  */
 void freeAttr(Attr *attr) {
-  if (attr->name == Children) {
+  if (attr->name == ChildrenAttr) {
     struct Element **kids = childrenAttrData(attr);
     int count = attr->dataSize / POINTER_SIZE;
     for (int i = 0; i < count; i++) {
@@ -117,7 +117,7 @@ Attr *newChildren(unsigned int count, ...) {
   if (attr == NULL) {
     return NULL;
   }
-  attr->name = Children;
+  attr->name = ChildrenAttr;
   attr->dataSize = count * POINTER_SIZE;
 
   struct Element *kids[attr->dataSize];
@@ -149,6 +149,13 @@ struct Element **childrenAttrData(Attr *attr) {
 }
 
 /**
+ * Get the provided Layout value.
+ */
+Layout layoutAttrData(Attr *attr) {
+  return (Layout)attr->data;
+}
+
+/**
  * Concrete Attr names bound to concrete types.
  */
 
@@ -174,6 +181,13 @@ Attr *height(unsigned int value) {
 }
 
 /**
+ * Create and return layout attribute.
+ */
+Attr *layout(Layout value) {
+  return newUintAttr(LayoutAttr, value);
+}
+
+/**
  * Create a new Element with the provided attributes.
  */
 Element *newElement(unsigned int attrCount, ...) {
@@ -190,7 +204,7 @@ Element *newElement(unsigned int attrCount, ...) {
   va_start(vargs, attrCount);
   for (int i = 0; i < attrCount; i++) {
     struct Attr *attr = va_arg(vargs, struct Attr *);
-    if (attr->name == Children) {
+    if (attr->name == ChildrenAttr) {
       elem->childCount += (attr->dataSize / POINTER_SIZE);
       struct Element **kids = childrenAttrData(attr);
       for (int k = 0; k < elem->childCount; k++) {
@@ -262,7 +276,7 @@ char *elementName(Element *elem) {
  */
 struct Element **elementChildren(Element *elem) {
   for (int i = 0; i < elem->attrCount; i++) {
-    if (elem->attrs[i]->name == Children) {
+    if (elem->attrs[i]->name == ChildrenAttr) {
       return childrenAttrData(elem->attrs[i]);
     }
   }
@@ -273,3 +287,4 @@ struct Element **elementChildren(Element *elem) {
 bool isRoot(Element *elem) {
   return elem->parentId == 0;
 }
+
