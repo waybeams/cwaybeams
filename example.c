@@ -5,7 +5,7 @@
 #include <sys/types.h>
 
 Element* uiControl(char *title) {
-  return box(
+  return vbox(
     name(title),
     width(800),
     height(600),
@@ -13,7 +13,7 @@ Element* uiControl(char *title) {
       box(name("child-1")),
       box(name("child-2")),
       box(name("child-3")),
-      box(name("child-4"),
+      hbox(name("child-4"),
         children(
           box(name("child-4-1")),
           box(name("child-4-2")),

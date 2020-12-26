@@ -35,6 +35,8 @@
  * Wrap variadic macros with expected names.
  */
 #define box(...)          newElement(PP_NARG(__VA_ARGS__), __VA_ARGS__)
+#define vbox(...)         newElement(PP_NARG(__VA_ARGS__) + 1, layout(LayoutVertical), __VA_ARGS__)
+#define hbox(...)         newElement(PP_NARG(__VA_ARGS__) + 1, layout(LayoutHorizontal), __VA_ARGS__)
 #define children(...)     newChildren(PP_NARG(__VA_ARGS__), __VA_ARGS__)
 
 typedef unsigned int ElementId;
@@ -58,10 +60,10 @@ typedef enum AttrName {
 } AttrName;
 
 typedef enum Layout {
-  LAYOUT_DEFAULT = 0,
-  LAYOUT_STACK,
-  LAYOUT_VERTICAL,
-  LAYOUT_HORIZONTAL,
+  LayoutDefault = 0,
+  LayoutStack,
+  LayoutVertical,
+  LayoutHorizontal,
 } Layout;
 
 /**
@@ -108,6 +110,7 @@ void freeRoot(Element *elem);
 
 char *elementName(Element *elem);
 struct Element **elementChildren(Element *elem);
+Layout elementLayout(Element *elem);
 
 bool isRoot(Element *elem);
 

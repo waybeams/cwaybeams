@@ -152,7 +152,7 @@ struct Element **childrenAttrData(Attr *attr) {
  * Get the provided Layout value.
  */
 Layout layoutAttrData(Attr *attr) {
-  return (Layout)attr->data;
+  return uintAttrData(attr);
 }
 
 /**
@@ -271,17 +271,35 @@ char *elementName(Element *elem) {
   return DEFAULT_NAME;
 }
 
+
+int elementAttrIndex(Element *elem, AttrName name) {
+  for (int i = 0; i < elem->attrCount; i++) {
+    if (elem->attrs[i]->name == name) {
+      return i;
+    }
+  }
+  return -1;
+}
+
 /**
  * Get the provided Element children collection.
  */
 struct Element **elementChildren(Element *elem) {
-  for (int i = 0; i < elem->attrCount; i++) {
-    if (elem->attrs[i]->name == ChildrenAttr) {
-      return childrenAttrData(elem->attrs[i]);
-    }
+  int index = elementAttrIndex(elem, ChildrenAttr);
+  if (index > -1) {
+    return childrenAttrData(elem->attrs[index]);
   }
 
   return NULL;
+}
+
+Layout elementLayout(Element *elem) {
+  int index = elementAttrIndex(elem, LayoutAttr);
+  if (index > -1) {
+    return layoutAttrData(elem->attrs[index]);
+  }
+
+  return LayoutDefault;
 }
 
 bool isRoot(Element *elem) {

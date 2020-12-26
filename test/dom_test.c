@@ -107,3 +107,13 @@ char *testIsRoot(void) {
   return NULL;
 }
 
+char *testLayout(void) {
+  Element *root = vbox(name("root"));
+  Layout layout = elementLayout(root);
+  printf("LAYOUT: %d\n", layout);
+  muAssert(layout == LayoutVertical, "Expected VBox");
+
+  freeElement(root);
+  return NULL;
+}
+

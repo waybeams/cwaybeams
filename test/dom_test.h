@@ -14,4 +14,5 @@ char *testNewChildren(void);
 char *testElementWithChild(void);
 
 char *testIsRoot(void);
+char *testLayout(void);
 
