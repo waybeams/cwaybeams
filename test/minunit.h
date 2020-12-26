@@ -3,7 +3,7 @@
 #define _minunit_h
 #include <stdio.h>
 #include <stdlib.h>
-#include "debug.h"
+#include <debug.h>
 
 #define muSuiteStart() char *message = NULL
 
