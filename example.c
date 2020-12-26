@@ -31,18 +31,8 @@ Element* uiControl(char *title) {
 }
 
 int main(void) {
-  Element *root;
-  int lastId = 0;
-  int count = 0;
-  for (int i = 0; i < 1; i++) {
-    root = uiControl("root-node");
-    printElement(root);
-    lastId = root->id;
-    freeElement(root);
-    count++;
-  }
-  printf("\n");
-  printf(">> Created tree %d times\n", count);
-  printf(">> lastId: %d\n", lastId);
+  Element *root = uiControl("root-node");
+  printElement(root);
+  freeElement(root);
   return 0;
 }
