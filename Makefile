@@ -22,19 +22,17 @@ TEST_FILES :=test/*.c
 
 TESTBIN		  := $(DIST)/$(PROJNAME)-test
 
-CFLAGS := -Wall
-CFLAGS += -Werror
+CFLAGS 				:= -Wall
+CFLAGS 				+= -Werror
 ifeq ($(DEBUG), true)
-CFLAGS += -ggdb
-CFLAGS += -O0
-OUTFILE := $(DIST)/$(PROJNAME)-dbg
+CFLAGS 				+= -ggdb
+CFLAGS 				+= -O0
+OUTFILE 			:= $(DIST)/$(PROJNAME)-dbg
 else
-CFLAGS += -Werror
-CFLAGS += -Os
-OUTFILE := $(DIST)/$(PROJNAME)
+CFLAGS 				+= -Werror
+CFLAGS 				+= -Os
+OUTFILE 			:= $(DIST)/$(PROJNAME)
 endif
-
-OPT_CFLAGS := -O3
 
 VALGRIND_FLAGS := --leak-check=full
 VALGRIND_FLAGS += --show-leak-kinds=all
