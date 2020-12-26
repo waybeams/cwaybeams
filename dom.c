@@ -198,6 +198,7 @@ Element *newElement(unsigned int attrCount, ...) {
   Element *elem = malloc(sizeof(struct Element));
   elem->id = lastId++;
   elem->parentId = 0;
+  elem->childCount = 0;
 
   // Process Attrs
   va_list vargs;
