@@ -271,7 +271,10 @@ char *elementName(Element *elem) {
   return DEFAULT_NAME;
 }
 
-
+/**
+ * Get the index of the provided attribute for the provided Element, or return
+ * -1 if the AttrName is not found.
+ */
 int elementAttrIndex(Element *elem, AttrName name) {
   for (int i = 0; i < elem->attrCount; i++) {
     if (elem->attrs[i]->name == name) {
@@ -305,6 +308,9 @@ Layout elementLayout(Element *elem) {
   return LayoutDefault;
 }
 
+/**
+ * Return true if the provided Element does not have an assigned parentId.
+ */
 bool isRoot(Element *elem) {
   return elem->parentId == 0;
 }
