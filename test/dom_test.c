@@ -123,13 +123,16 @@ char *testLayout(void) {
   return NULL;
 }
 
+bool fakeHandlerCalled = false;
 void fakeHandler(void) {
-  printf("FAKE HANDLER CALLED!");
+  fakeHandlerCalled = true;
 }
 
 char *testHandler(void) {
+  fakeHandlerCalled = false;
   Element *root = vbox(handler("onclick", fakeHandler));
   emitEvent(root, "onclick");
+  muAssert(fakeHandlerCalled == true, "Expected fakeHandlerCalled");
   freeElement(root);
   return NULL;
 }

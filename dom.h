@@ -98,6 +98,7 @@ Attr *handler(char *gestureName, GestureHandler *handler);
 Attr *newChildren(unsigned int count, ...);
 Attr *newCharAttr(AttrName name, char *value);
 Attr *newUintAttr(AttrName name, unsigned value);
+Attr *newHandlerAttr(AttrName name, GestureHandler *handler);
 
 // Attribute value getters
 unsigned int uintAttrData(Attr *attr);

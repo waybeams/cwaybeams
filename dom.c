@@ -41,7 +41,11 @@ void freeAttr(Attr *attr) {
       freeElement(kids[i]);
     }
   }
-  free(attr->data);
+
+  if (attr->name != GestureHandlerAttr) {
+    free(attr->data);
+  }
+
   free(attr);
 }
 
@@ -116,6 +120,9 @@ unsigned int uintAttrData(Attr *attr) {
   return (unsigned int)*attr->data;
 }
 
+/**
+ * Create a new Gesture handler Attr.
+ */
 Attr *newHandlerAttr(AttrName name, GestureHandler *handler) {
   Attr *attr = newAttr();
   if (attr == NULL) {
@@ -123,8 +130,7 @@ Attr *newHandlerAttr(AttrName name, GestureHandler *handler) {
   }
   attr->name = name;
   attr->dataSize = POINTER_SIZE;
-  attr->data = (unsigned char *)malloc(attr->dataSize);
-  memcpy(attr->data, handler, attr->dataSize);
+  attr->data = (unsigned char *)handler;
   return attr;
 }
 
@@ -136,6 +142,7 @@ Attr *newChildren(unsigned int count, ...) {
   if (attr == NULL) {
     return NULL;
   }
+
   attr->name = ChildrenAttr;
   attr->dataSize = count * POINTER_SIZE;
 
@@ -332,8 +339,10 @@ Layout elementLayout(Element *elem) {
   return LayoutDefault;
 }
 
+/**
+ * Call any handlers found for the provided gesture name.
+ */
 void emitEvent(Element *elem, char *gestureName) {
-  printf(">>>>>>>>>> EMIT EVENT: %s\n", gestureName);
   int index = elementAttrIndex(elem, GestureHandlerAttr);
   if (index > -1) {
     Attr *attr = elem->attrs[index];
