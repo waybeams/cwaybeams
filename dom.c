@@ -293,6 +293,9 @@ struct Element **elementChildren(Element *elem) {
   return NULL;
 }
 
+/**
+ * Get the layout attribute (or default value) from the provided element.
+ */
 Layout elementLayout(Element *elem) {
   int index = elementAttrIndex(elem, LayoutAttr);
   if (index > -1) {
