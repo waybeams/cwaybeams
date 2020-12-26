@@ -41,7 +41,7 @@
     layout(LayoutHorizontal), __VA_ARGS__)
 #define children(...)     newChildren(PP_NARG(__VA_ARGS__), __VA_ARGS__)
 
-typedef unsigned int ElementId;
+typedef unsigned long ElementId;
 
 typedef enum AttrName {
   None = 0,

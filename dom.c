@@ -23,6 +23,13 @@ static int *ptr;
 static uint8_t POINTER_SIZE = sizeof(ptr);
 
 /**
+ * Get the next incremental identifier.
+ */
+static ElementId getNextId() {
+  return lastId++;
+}
+
+/**
  * Free all malloc'd data from the provided attribute through any references it
  * may contain, including child Elements.
  */
@@ -196,7 +203,7 @@ Element *newElement(unsigned int attrCount, ...) {
     return NULL;
   }
   Element *elem = malloc(sizeof(struct Element));
-  elem->id = lastId++;
+  elem->id = getNextId();
   elem->parentId = 0;
   elem->childCount = 0;
 
@@ -234,8 +241,8 @@ void printChars(char *chars) {
 
 void printElementIndented(Element *elem, char *indent) {
   printf("------------------------\n");
-  printf("%selem.id: %d\n", indent, elem->id);
-  printf("%selem.parentId: %d\n", indent, elem->parentId);
+  printf("%selem.id: %ld\n", indent, elem->id);
+  printf("%selem.parentId: %ld\n", indent, elem->parentId);
   printf("%selem.name: %s\n", indent, elementName(elem));
   struct Element **kids = elementChildren(elem);
   if (kids != NULL) {
