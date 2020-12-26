@@ -123,3 +123,14 @@ char *testLayout(void) {
   return NULL;
 }
 
+void fakeHandler(void) {
+  printf("FAKE HANDLER CALLED!");
+}
+
+char *testHandler(void) {
+  Element *root = vbox(handler("onclick", fakeHandler));
+  emitEvent(root, "onclick");
+  freeElement(root);
+  return NULL;
+}
+

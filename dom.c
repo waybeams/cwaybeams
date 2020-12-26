@@ -116,6 +116,18 @@ unsigned int uintAttrData(Attr *attr) {
   return (unsigned int)*attr->data;
 }
 
+Attr *newHandlerAttr(AttrName name, GestureHandler *handler) {
+  Attr *attr = newAttr();
+  if (attr == NULL) {
+    return NULL;
+  }
+  attr->name = name;
+  attr->dataSize = POINTER_SIZE;
+  attr->data = (unsigned char *)malloc(attr->dataSize);
+  memcpy(attr->data, handler, attr->dataSize);
+  return attr;
+}
+
 /**
  * Create a children Attr.
  */
@@ -192,6 +204,10 @@ Attr *height(unsigned int value) {
  */
 Attr *layout(Layout value) {
   return newUintAttr(LayoutAttr, value);
+}
+
+Attr *handler(char *gestureName, GestureHandler *handler) {
+  return newHandlerAttr(GestureHandlerAttr, handler);
 }
 
 /**
@@ -314,6 +330,16 @@ Layout elementLayout(Element *elem) {
   }
 
   return LayoutDefault;
+}
+
+void emitEvent(Element *elem, char *gestureName) {
+  printf(">>>>>>>>>> EMIT EVENT: %s\n", gestureName);
+  int index = elementAttrIndex(elem, GestureHandlerAttr);
+  if (index > -1) {
+    Attr *attr = elem->attrs[index];
+    GestureHandler *handler = (GestureHandler *)attr->data;
+    handler();
+  }
 }
 
 /**

@@ -47,6 +47,7 @@ typedef enum AttrName {
   None = 0,
   ChildrenAttr,
   Flex,
+  GestureHandlerAttr,
   HFlex,
   HPercent,
   Height,
@@ -86,11 +87,14 @@ typedef struct Element {
   struct Attr **attrs;
 } Element;
 
+typedef void (GestureHandler)(void);
+
 // Attributes
 Attr *name(char*);
 Attr *width(unsigned int value);
 Attr *height(unsigned int value);
 Attr *layout(Layout value);
+Attr *handler(char *gestureName, GestureHandler *handler);
 Attr *newChildren(unsigned int count, ...);
 Attr *newCharAttr(AttrName name, char *value);
 Attr *newUintAttr(AttrName name, unsigned value);
@@ -113,6 +117,7 @@ void freeRoot(Element *elem);
 char *elementName(Element *elem);
 struct Element **elementChildren(Element *elem);
 Layout elementLayout(Element *elem);
+void emitEvent(Element *elem, char *gestureName);
 
 bool isRoot(Element *elem);
 

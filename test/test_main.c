@@ -18,6 +18,7 @@ char *allTests(void) {
   muRunTest(testIsRoot);
   muRunTest(testDefaultLayout);
   muRunTest(testLayout);
+  muRunTest(testHandler);
 
   return NULL;
 }
