@@ -14,7 +14,8 @@ endif
 PROJDIR    := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 PROJNAME	  := cwaybeam
 DIST 						:= dist
-CEE_FILES 	:=*.c
+CEE_FILES 	:= src/*.c
+INCDIR					:= include
 TESTDIR 			:= test
 TESTSRCS		 := $(wildcard test/*.c)
 TESTHDRS   := $(wildcard test/*.h)
@@ -52,7 +53,7 @@ dist:
 
 # Build the debug binary
 $(OUTFILE): Makefile dist $(CEE_FILES)
-	gcc $(CFLAGS) -o $(OUTFILE) $(CEE_FILES)
+	gcc $(CFLAGS) -o $(OUTFILE) -I$(INCDIR) $(CEE_FILES)
 	ls -lah $(OUTFILE)
 
 debug:
@@ -78,6 +79,7 @@ endif
 test: $(CEE_FILES) $(TESTSRCS) $(TESTHDRS)
 	gcc -I$(PROJDIR) \
 			-I$(TESTDIR) \
+			-I$(INCDIR) \
 			$(TESTSRCS) \
 			"$<" -DTEST_MODE \
 			-fsanitize=leak \
