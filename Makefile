@@ -20,12 +20,23 @@ INCDIR		:= include
 TESTDIR		:= test
 TESTSRCS	:= $(wildcard test/*.c)
 TESTHDRS	:= $(wildcard test/*.h)
-TEST_FILES	:=test/*.c
+TEST_FILES	:= test/*.c
 
 TESTBIN		:= $(DIST)/$(PROJNAME)-test
 
 CFLAGS		:= -Wall
 CFLAGS		+= -Werror
+
+# GL & GLFW headers
+CFLAGS		+= -lglfw3
+CFLAGS		+= -lGL
+CFLAGS		+= -lXi
+CFLAGS		+= -lX11
+CFLAGS		+= -lpthread
+CFLAGS		+= -lXrandr
+CFLAGS		+= -lXxf86vm
+CFLAGS		+= -ldl
+
 ifeq ($(DEBUG), true)
 CFLAGS		+= -ggdb
 CFLAGS		+= -O0
@@ -54,7 +65,10 @@ dist:
 
 # Build the debug binary
 $(OUTFILE): Makefile dist $(CEE_FILES)
-	gcc $(CFLAGS) -o $(OUTFILE) -I$(INCDIR) $(CEE_FILES)
+	gcc $(CFLAGS) \
+		-o $(OUTFILE) \
+		-I$(INCDIR) \
+		$(CEE_FILES)
 	ls -lah $(OUTFILE)
 
 debug:
