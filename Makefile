@@ -8,45 +8,45 @@ export
 
 # Set DEBUG=true if 'make debug'
 ifneq (,$(findstring debug,$(MAKECMDGOALS)))
-DEBUG := true
+DEBUG		:= true
 endif
 
-PROJDIR    := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
-PROJNAME	  := cwaybeam
-DIST 						:= dist
-CEE_FILES 	:= src/*.c
-CEE_FILES  += examples/*.c
-INCDIR					:= include
-TESTDIR 			:= test
-TESTSRCS		 := $(wildcard test/*.c)
-TESTHDRS   := $(wildcard test/*.h)
-TEST_FILES :=test/*.c
+PROJDIR		:= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+PROJNAME	:= cwaybeam
+DIST		:= dist
+CEE_FILES	:= src/*.c
+CEE_FILES	+= examples/*.c
+INCDIR		:= include
+TESTDIR		:= test
+TESTSRCS	:= $(wildcard test/*.c)
+TESTHDRS	:= $(wildcard test/*.h)
+TEST_FILES	:=test/*.c
 
-TESTBIN		  := $(DIST)/$(PROJNAME)-test
+TESTBIN		:= $(DIST)/$(PROJNAME)-test
 
-CFLAGS 				:= -Wall
-CFLAGS 				+= -Werror
+CFLAGS		:= -Wall
+CFLAGS		+= -Werror
 ifeq ($(DEBUG), true)
-CFLAGS 				+= -ggdb
-CFLAGS 				+= -O0
-OUTFILE 			:= $(DIST)/$(PROJNAME)-dbg
+CFLAGS		+= -ggdb
+CFLAGS		+= -O0
+OUTFILE		:= $(DIST)/$(PROJNAME)-dbg
 else
-CFLAGS 				+= -Werror
-CFLAGS 				+= -Os
-OUTFILE 			:= $(DIST)/$(PROJNAME)
+CFLAGS		+= -Werror
+CFLAGS		+= -Os
+OUTFILE		:= $(DIST)/$(PROJNAME)
 endif
 
-VALGRIND_FLAGS := --leak-check=full
-VALGRIND_FLAGS += --show-leak-kinds=all
-VALGRIND_FLAGS += --tool=memcheck
-VALGRIND_FLAGS += --track-origins=yes
-VALGRIND_FLAGS += --leak-resolution=high
-VALGRIND_FLAGS += --show-mismatched-frees=yes
-VALGRIND_FLAGS += -s
+VALG_FLAGS	:= --leak-check=full
+VALG_FLAGS	+= --show-leak-kinds=all
+VALG_FLAGS	+= --tool=memcheck
+VALG_FLAGS	+= --track-origins=yes
+VALG_FLAGS	+= --leak-resolution=high
+VALG_FLAGS	+= --show-mismatched-frees=yes
+VALG_FLAGS	+= -s
 
 # Build and run optimized binary
 run: $(OUTFILE)
-		./$(OUTFILE)
+	./$(OUTFILE)
 
 # Create the dist directory
 dist:
@@ -63,9 +63,9 @@ debug:
 # Build for debug and run with Valgrind
 valgrind: $(OUTFILE)
 ifneq (,$(findstring debug,$(MAKECMDGOALS)))
-	valgrind $(VALGRIND_FLAGS) $(OUTFILE)
+	valgrind $(VALG_FLAGS) $(OUTFILE)
 else
- @echo "ERROR: Must run 'make debug valgrind'"
+	@echo "ERROR: Must run 'make debug valgrind'"
 endif
 
 # Build and run the debug binary
@@ -79,16 +79,16 @@ endif
 # Built and run tests
 test: $(CEE_FILES) $(TESTSRCS) $(TESTHDRS)
 	gcc -I$(PROJDIR) \
-			-I$(TESTDIR) \
-			-I$(INCDIR) \
-			$(TESTSRCS) \
-			"$<" -DTEST_MODE \
-			-fsanitize=leak \
-			-Wunused \
-			-lm \
-			-ggdb \
-			-o $(TESTBIN)
-	@echo $(TESTBIN)
+		-I$(TESTDIR) \
+		-I$(INCDIR) \
+		$(TESTSRCS) \
+		"$<" -DTEST_MODE \
+		-fsanitize=leak \
+		-Wunused \
+		-lm \
+		-ggdb \
+		-o $(TESTBIN)
+		@echo $(TESTBIN)
 	./$(TESTBIN)
 
 # Remove generated artifacts
