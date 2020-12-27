@@ -15,6 +15,7 @@ PROJDIR    := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 PROJNAME	  := cwaybeam
 DIST 						:= dist
 CEE_FILES 	:= src/*.c
+CEE_FILES  += examples/*.c
 INCDIR					:= include
 TESTDIR 			:= test
 TESTSRCS		 := $(wildcard test/*.c)
