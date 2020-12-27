@@ -18,16 +18,17 @@ GL_SO		:= vendor/gl/libGL.so.1.7.0
 GLFW_SO		:= vendor/glfw/src/libglfw.so
 
 DIST		:= dist
-CEE_FILES	:= src/*.c
-CEE_FILES	+= examples/*.c
+
+CEE_FILES	:= $(wildcard src/*.c)
 CEE_FILES	+= $(GL_SO)
 CEE_FILES	+= $(GLFW_SO)
 
 INCDIR		:= include
-TESTSRCS	:= $(wildcard test/*.c)
-TESTHDRS	:= $(wildcard test/*.h)
-TEST_FILES	:= test/*.c
+EX_MAIN		:= examples/main.c
 
+TEST_INC	:= test
+TEST_FILES  := $(wildcard test/*.c)
+TEST_MAIN	:= test/test_main.c
 TESTBIN		:= $(DIST)/$(PROJNAME)-test
 
 CFLAGS		:= -Wall
@@ -50,6 +51,16 @@ CFLAGS		+= -Ivendor/glfw/include
 # CFLAGS		+= -l:libglfw.so
 # CFLAGS		+= -lglfw
 
+TESTFLAGS	:= $(CFLAGS)
+TESTFLAGS	+= -I$(TEST_INC)
+TESTFLAGS	+= -I$(INCDIR)
+
+TESTFLAGS	+= -DTEST_MODE
+TESTFLAGS	+= -fsanitize=leak
+TESTFLAGS	+= -Wunused
+TESTFLAGS	+= -lm
+TESTFLAGS	+= -ggdb
+
 ifeq ($(DEBUG), true)
 CFLAGS		+= -ggdb
 CFLAGS		+= -O0
@@ -59,10 +70,6 @@ CFLAGS		+= -Werror
 CFLAGS		+= -Os
 OUTFILE		:= $(DIST)/$(PROJNAME)
 endif
-
-TESTFLAGS	:= -Itest
-TESTFLAGS	+= -I$(INCDIR)
-TESTFLAGS	+= $(TESTSRCS)
 
 VALG_FLAGS	:= --leak-check=full
 VALG_FLAGS	+= --show-leak-kinds=all
@@ -84,7 +91,8 @@ dist:
 $(OUTFILE): Makefile dist $(CEE_FILES)
 	gcc $(CFLAGS) \
 		-o $(OUTFILE) \
-		$(CEE_FILES)
+		$(CEE_FILES) \
+		$(EX_MAIN)
 	ls -lah $(OUTFILE)
 
 debug:
@@ -107,14 +115,11 @@ else
 endif
 
 # Built and run tests
-test: $(CEE_FILES) $(TESTSRCS) $(TESTHDRS)
+test: dist $(CEE_FILES) $(TEST_FILES)
 	gcc $(TESTFLAGS) \
-		"$<" -DTEST_MODE \
-		-fsanitize=leak \
-		-Wunused \
-		-lm \
-		-ggdb \
-		-o $(TESTBIN)
+		-o $(TESTBIN) \
+		$(CEE_FILES) \
+		$(TEST_FILES)
 		@echo $(TESTBIN)
 	./$(TESTBIN)
 

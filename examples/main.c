@@ -44,7 +44,6 @@ int main(void)
     double lastTime = glfwGetTime();
     int nbFrames = 0;
 
-
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window)) {
         Element *root = uiControl("root");

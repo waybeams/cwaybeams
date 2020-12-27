@@ -2,11 +2,13 @@
 
 #include <minunit.h>
 #include <dom_test.h>
+#include <layout_test.h>
 
 char *allTests(void) {
   // Begin the test suite
   muSuiteStart();
 
+  // dom_test.h
   muRunTest(testNewCharAttr);
   muRunTest(testNewName);
   muRunTest(testNewHeight);
@@ -19,6 +21,9 @@ char *allTests(void) {
   muRunTest(testDefaultLayout);
   muRunTest(testLayout);
   muRunTest(testHandler);
+
+  // layout_test.h
+  muRunTest(testNewLayout);
 
   return NULL;
 }
