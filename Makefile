@@ -16,8 +16,10 @@ PROJNAME	:= cwaybeam
 DIST		:= dist
 CEE_FILES	:= src/*.c
 CEE_FILES	+= examples/*.c
+CEE_FILES	+= lib/libGL.so.1.7.0
+CEE_FILES	+= lib/libglfw.so.3.4
+
 INCDIR		:= include
-TESTDIR		:= test
 TESTSRCS	:= $(wildcard test/*.c)
 TESTHDRS	:= $(wildcard test/*.h)
 TEST_FILES	:= test/*.c
@@ -25,17 +27,23 @@ TEST_FILES	:= test/*.c
 TESTBIN		:= $(DIST)/$(PROJNAME)-test
 
 CFLAGS		:= -Wall
-CFLAGS		+= -Werror
+CFLAGS		+= -I$(INCDIR)
+CFLAGS		+= -I/usr/include
 
 # GL & GLFW headers
-CFLAGS		+= -lglfw3
-CFLAGS		+= -lGL
-CFLAGS		+= -lXi
-CFLAGS		+= -lX11
-CFLAGS		+= -lpthread
-CFLAGS		+= -lXrandr
-CFLAGS		+= -lXxf86vm
-CFLAGS		+= -ldl
+# -pthread -ldl -lGLU -lGL -lrt -lXrandr -lXxf86vm -lXi -lXinerama -lX11 -lXcursor
+# CFLAGS		+= -lXrandr
+# CFLAGS		+= -lXi
+# CFLAGS		+= -lXinerama
+# CFLAGS		+= -lXcursor
+# CFLAGS		+= -lX11
+# CFLAGS		+= -lXxf86vm
+# CFLAGS		+= -lpthread
+# CFLAGS		+= -IGLU
+# CFLAGS		+= -lGL
+# CFLAGS		+= -l:libGL.so
+# CFLAGS		+= -l:libglfw.so
+# CFLAGS		+= -lglfw
 
 ifeq ($(DEBUG), true)
 CFLAGS		+= -ggdb
@@ -46,6 +54,10 @@ CFLAGS		+= -Werror
 CFLAGS		+= -Os
 OUTFILE		:= $(DIST)/$(PROJNAME)
 endif
+
+TESTFLAGS	:= -Itest
+TESTFLAGS	+= -I$(INCDIR)
+TESTFLAGS	+= $(TESTSRCS)
 
 VALG_FLAGS	:= --leak-check=full
 VALG_FLAGS	+= --show-leak-kinds=all
@@ -67,7 +79,6 @@ dist:
 $(OUTFILE): Makefile dist $(CEE_FILES)
 	gcc $(CFLAGS) \
 		-o $(OUTFILE) \
-		-I$(INCDIR) \
 		$(CEE_FILES)
 	ls -lah $(OUTFILE)
 
@@ -92,10 +103,7 @@ endif
 
 # Built and run tests
 test: $(CEE_FILES) $(TESTSRCS) $(TESTHDRS)
-	gcc -I$(PROJDIR) \
-		-I$(TESTDIR) \
-		-I$(INCDIR) \
-		$(TESTSRCS) \
+	gcc $(TESTFLAGS) \
 		"$<" -DTEST_MODE \
 		-fsanitize=leak \
 		-Wunused \
@@ -112,3 +120,8 @@ clean:
 # Generate ctags (for vim tag completion)
 ctags:
 	ctags -R .
+
+# Print the linker search path to stdout
+ld-path:
+	ld --verbose | grep SEARCH_DIR | tr -s ' ;' \\012
+
