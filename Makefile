@@ -13,11 +13,15 @@ endif
 
 PROJDIR		:= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 PROJNAME	:= cwaybeam
+
+GL_SO		:= vendor/gl/libGL.so.1.7.0
+GLFW_SO		:= vendor/glfw/src/libglfw.so
+
 DIST		:= dist
 CEE_FILES	:= src/*.c
 CEE_FILES	+= examples/*.c
-CEE_FILES	+= lib/libGL.so.1.7.0
-CEE_FILES	+= lib/libglfw.so.3.4
+CEE_FILES	+= $(GL_SO)
+CEE_FILES	+= $(GLFW_SO)
 
 INCDIR		:= include
 TESTSRCS	:= $(wildcard test/*.c)
@@ -28,7 +32,8 @@ TESTBIN		:= $(DIST)/$(PROJNAME)-test
 
 CFLAGS		:= -Wall
 CFLAGS		+= -I$(INCDIR)
-CFLAGS		+= -I/usr/include
+CFLAGS		+= -Ivendor/gl/include
+CFLAGS		+= -Ivendor/glfw/include
 
 # GL & GLFW headers
 # -pthread -ldl -lGLU -lGL -lrt -lXrandr -lXxf86vm -lXi -lXinerama -lX11 -lXcursor
