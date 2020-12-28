@@ -21,6 +21,15 @@ char *testNewWidth(void) {
   return NULL;
 }
 
+char *testNewLargerWidth(void) {
+  Attr *attr = newUintAttr(WidthAttr, 801);
+  unsigned int value = uintAttrData(attr);
+
+  muAssert(value == 801, "Expected matching value");
+  freeAttr(attr);
+  return NULL;
+}
+
 char *testNewName(void) {
   Attr *attr = name("abcd");
   char *data = charAttrData(attr);
@@ -82,6 +91,14 @@ char *testElementWithChild(void) {
     )
   );
 
+  freeElement(root);
+  return NULL;
+}
+
+char *testElementSize(void) {
+  Element *root = box(width(801), height(601));
+  muAssert(root->width == 801, "Expected width assignment");
+  muAssert(root->height == 601, "Expected height assignment");
   freeElement(root);
   return NULL;
 }

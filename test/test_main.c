@@ -13,10 +13,12 @@ char *allTests(void) {
   muRunTest(testNewName);
   muRunTest(testNewHeight);
   muRunTest(testNewWidth);
+  muRunTest(testNewLargerWidth);
   muRunTest(testNewBox);
   muRunTest(testNewBoxWithName);
   muRunTest(testNewChildren);
   muRunTest(testElementWithChild);
+  muRunTest(testElementSize);
   muRunTest(testIsRoot);
   muRunTest(testDefaultLayout);
   muRunTest(testLayout);

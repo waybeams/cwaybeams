@@ -107,7 +107,7 @@ Attr *newUintAttr(AttrName name, unsigned int value) {
   }
   attr->name = name;
   attr->dataSize = sizeof(unsigned int);
-  attr->data = (unsigned char *)malloc(attr->dataSize);
+  attr->data = malloc(attr->dataSize);
   memcpy(attr->data, &value, attr->dataSize);
   return attr;
 }
@@ -116,7 +116,7 @@ Attr *newUintAttr(AttrName name, unsigned int value) {
  * Get the provided Attribute data as an unsigned integer.
  */
 unsigned int uintAttrData(Attr *attr) {
-  return (unsigned int)*attr->data;
+  return *(unsigned int *)attr->data;
 }
 
 /**
@@ -195,14 +195,14 @@ Attr *name(char *value) {
  * Create and return a width attribute.
  */
 Attr *width(unsigned int value) {
-  return newUintAttr(Width, value);
+  return newUintAttr(WidthAttr, value);
 }
 
 /**
  * Create and return a height attribute.
  */
 Attr *height(unsigned int value) {
-  return newUintAttr(Height, value);
+  return newUintAttr(HeightAttr, value);
 }
 
 /**
@@ -234,12 +234,16 @@ Element *newElement(unsigned int attrCount, ...) {
   va_start(vargs, attrCount);
   for (int i = 0; i < attrCount; i++) {
     struct Attr *attr = va_arg(vargs, struct Attr *);
-    if (attr->name == ChildrenAttr) {
-      elem->childCount += (attr->dataSize / POINTER_SIZE);
-      struct Element **kids = childrenAttrData(attr);
-      for (int k = 0; k < elem->childCount; k++) {
-        kids[k]->parentId = elem->id;
-      }
+    if (attr->name == WidthAttr) {
+        elem->width = uintAttrData(attr);
+    } else if (attr->name == HeightAttr) {
+        elem->height = uintAttrData(attr);
+    } else if (attr->name == ChildrenAttr) {
+        elem->childCount += (attr->dataSize / POINTER_SIZE);
+        struct Element **kids = childrenAttrData(attr);
+        for (int k = 0; k < elem->childCount; k++) {
+            kids[k]->parentId = elem->id;
+        }
     }
     attrs[i] = attr;
   }

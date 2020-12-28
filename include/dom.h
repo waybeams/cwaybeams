@@ -50,12 +50,12 @@ typedef enum AttrName {
   GestureHandlerAttr,
   HFlex,
   HPercent,
-  Height,
+  HeightAttr,
   LayoutAttr,
   Name,
   VFlex,
   VPercent,
-  Width,
+  WidthAttr,
   XOffset,
   XPos,
   YOffset,
@@ -82,6 +82,11 @@ typedef struct Attr {
 typedef struct Element {
   ElementId id;
   ElementId parentId;
+  unsigned int width;
+  unsigned int height;
+  unsigned int x;
+  unsigned int y;
+  unsigned int z;
   unsigned int childCount;
   unsigned int attrCount;
   struct Attr **attrs;

@@ -9,12 +9,14 @@ char *testNewUintAttr(void);
 char *testNewName(void);
 char *testNewHeight(void);
 char *testNewWidth(void);
+char *testNewLargerWidth(void);
 
 char *testNewBox(void);
 char *testNewBoxWithName(void);
 
 char *testNewChildren(void);
 char *testElementWithChild(void);
+char *testElementSize(void);
 
 char *testIsRoot(void);
 char *testLayout(void);
