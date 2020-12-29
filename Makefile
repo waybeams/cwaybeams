@@ -20,15 +20,15 @@ GLFW_SO		:= vendor/glfw/src/libglfw.so
 DIST		:= dist
 
 CEE_FILES	:= src/*.c
-CEE_FILES	+= examples/*.c
 CEE_FILES	+= $(GL_SO)
 CEE_FILES	+= $(GLFW_SO)
+
+CEE_MAIN	:= examples/main.c
 
 INCDIR		:= include
 
 TEST_INC	:= test
-TEST_FILES  := $(wildcard test/*.c)
-TEST_MAIN	:= test/test_main.c
+TEST_FILES  := test/*.c
 TESTBIN		:= $(DIST)/$(PROJNAME)-test
 
 CFLAGS		:= -Wall
@@ -91,6 +91,7 @@ dist:
 $(OUTFILE): Makefile dist $(CEE_FILES)
 	gcc $(CFLAGS) \
 		-o $(OUTFILE) \
+		$(CEE_MAIN) \
 		$(CEE_FILES)
 	ls -lah $(OUTFILE)
 
