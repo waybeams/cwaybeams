@@ -1,0 +1,4 @@
+
+#define cwaybeams_VERSION_MAJOR @cwaybeams_VERSION_MAJOR@
+#define cwaybeams_VERSION_MINOR @cwaybeams_VERSION_MINOR@
+

@@ -2,9 +2,9 @@
 #include <stdio.h>
 
 #define GL_COLOR_BUFFER_BIT 0x00004000
-#define GLFW_INCLUDE_NONE
-#include <GL/gl.h>
+#define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
+#include <GL/gl.h>
 
 Element* uiControl(char *title) {
   return vbox(
@@ -73,7 +73,7 @@ int main(void)
 
         /* Render here */
         // Cannot find declaration for...
-        glClear(GL_COLOR_BUFFER_BIT);
+        // glClear(GL_COLOR_BUFFER_BIT);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
