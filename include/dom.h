@@ -112,25 +112,22 @@ unsigned int getHeight(Element *elem);
 unsigned int getX(Element *elem);
 unsigned int getY(Element *elem);
 unsigned int getZ(Element *elem);
+Layout getLayout(Element *elem);
+struct Element **getChildren(Element *elem);
 
-// Attribute type casters
+// Element helpers
 unsigned int getUintAttr(Attr *attr);
 char *getCharAttr(Attr *attr);
 struct Element **getChildrenAttr(Attr *attr);
-
-// NOTE(lbayes): See macros for shortcuts to element
-// creation.
-Element *newElement(unsigned int count, ...);
+bool isRoot(Element *elem);
 
 void printElement(Element *elem);
 void freeElement(Element *elem);
 void freeAttr(Attr *attr);
 void freeRoot(Element *elem);
 
-struct Element **elementChildren(Element *elem);
-Layout elementLayout(Element *elem);
+Element *newElement(unsigned int count, ...);
 void emitEvent(Element *elem, char *gestureName);
 
-bool isRoot(Element *elem);
 
 #endif

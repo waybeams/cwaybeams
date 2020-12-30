@@ -115,7 +115,7 @@ char *testIsRoot(void) {
   );
 
   muAssert(isRoot(root), "Expected root");
-  Element **kids = elementChildren(root);
+  Element **kids = getChildren(root);
   muAssert(!isRoot(kids[0]), "Expected child to not be root");
   muAssert(!isRoot(kids[1]), "Expected child to not be root");
   muAssert(!isRoot(kids[2]), "Expected child to not be root");
@@ -134,7 +134,7 @@ char *testGetName(void) {
 
 char *testDefaultLayout(void) {
   Element *root = box(name("root"));
-  Layout layout = elementLayout(root);
+  Layout layout = getLayout(root);
   muAssert(layout == LayoutDefault, "Expected default layout");
   freeElement(root);
   return NULL;
@@ -142,7 +142,7 @@ char *testDefaultLayout(void) {
 
 char *testLayout(void) {
   Element *root = vbox(name("root"));
-  Layout layout = elementLayout(root);
+  Layout layout = getLayout(root);
   muAssert(layout == LayoutVertical, "Expected VBox");
   freeElement(root);
   return NULL;

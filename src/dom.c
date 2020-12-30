@@ -29,6 +29,19 @@ static ElementId getNextId() {
 }
 
 /**
+ * Get the index of the provided attribute for the provided Element, or return
+ * -1 if the AttrName is not found.
+ */
+static int getAttrIndexByName(Element *elem, AttrName name) {
+  for (int i = 0; i < elem->attrCount; i++) {
+    if (elem->attrs[i]->name == name) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+/**
  * Free all malloc'd data from the provided attribute through any references it
  * may contain, including child Elements.
  */
@@ -134,23 +147,10 @@ Attr *newHandlerAttr(AttrName name, GestureHandler *handler) {
 }
 
 /**
- * Get the index of the provided attribute for the provided Element, or return
- * -1 if the AttrName is not found.
- */
-int elementAttrIndex(Element *elem, AttrName name) {
-  for (int i = 0; i < elem->attrCount; i++) {
-    if (elem->attrs[i]->name == name) {
-      return i;
-    }
-  }
-  return -1;
-}
-
-/**
  * Get the provided Element children collection.
  */
-struct Element **elementChildren(Element *elem) {
-  int index = elementAttrIndex(elem, ChildrenAttr);
+struct Element **getChildren(Element *elem) {
+  int index = getAttrIndexByName(elem, ChildrenAttr);
   if (index > -1) {
     return getChildrenAttr(elem->attrs[index]);
   }
@@ -163,12 +163,24 @@ struct Element **elementChildren(Element *elem) {
  * provided.
  */
 char *getName(Element *elem) {
-  int index = elementAttrIndex(elem, NameAttr);
+  int index = getAttrIndexByName(elem, NameAttr);
   if (index > -1) {
     return getCharAttr(elem->attrs[index]);
   }
 
   return DEFAULT_NAME;
+}
+
+/**
+ * Get the layout attribute (or default value) from the provided element.
+ */
+Layout getLayout(Element *elem) {
+  int index = getAttrIndexByName(elem, LayoutAttr);
+  if (index > -1) {
+    return getUintAttr(elem->attrs[index]);
+  }
+
+  return LayoutDefault;
 }
 
 /**
@@ -301,7 +313,7 @@ void printElementIndented(Element *elem, char *indent) {
   printf("%selem.id: %ld\n", indent, elem->id);
   printf("%selem.parentId: %ld\n", indent, elem->parentId);
   printf("%selem.name: %s\n", indent, getName(elem));
-  struct Element **kids = elementChildren(elem);
+  struct Element **kids = getChildren(elem);
   if (kids != NULL) {
     char *nextIndent = malloc(strlen(indent) + 2);
     nextIndent = strcpy(nextIndent, indent);
@@ -323,22 +335,10 @@ void printElement(Element *elem) {
 }
 
 /**
- * Get the layout attribute (or default value) from the provided element.
- */
-Layout elementLayout(Element *elem) {
-  int index = elementAttrIndex(elem, LayoutAttr);
-  if (index > -1) {
-    return getUintAttr(elem->attrs[index]);
-  }
-
-  return LayoutDefault;
-}
-
-/**
  * Call any handlers found for the provided gesture name.
  */
 void emitEvent(Element *elem, char *gestureName) {
-  int index = elementAttrIndex(elem, GestureHandlerAttr);
+  int index = getAttrIndexByName(elem, GestureHandlerAttr);
   if (index > -1) {
     Attr *attr = elem->attrs[index];
     GestureHandler *handler = (GestureHandler *)attr->data;
