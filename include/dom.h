@@ -52,7 +52,7 @@ typedef enum AttrName {
   HPercent,
   HeightAttr,
   LayoutAttr,
-  Name,
+  NameAttr,
   VFlex,
   VPercent,
   WidthAttr,
@@ -94,7 +94,7 @@ typedef struct Element {
 
 typedef void (GestureHandler)(void);
 
-// Attributes
+// Attribute creators
 Attr *name(char*);
 Attr *width(unsigned int value);
 Attr *height(unsigned int value);
@@ -105,11 +105,18 @@ Attr *newCharAttr(AttrName name, char *value);
 Attr *newUintAttr(AttrName name, unsigned value);
 Attr *newHandlerAttr(AttrName name, GestureHandler *handler);
 
-// Attribute value getters
-unsigned int uintAttrData(Attr *attr);
-char *charAttrData(Attr *attr);
-struct Element **childrenAttrData(Attr *attr);
-Layout layoutAttrData(Attr *attr);
+// Attribute getters
+char *getName(Element *elem);
+unsigned int getWidth(Element *elem);
+unsigned int getHeight(Element *elem);
+unsigned int getX(Element *elem);
+unsigned int getY(Element *elem);
+unsigned int getZ(Element *elem);
+
+// Attribute type casters
+unsigned int getUintAttr(Attr *attr);
+char *getCharAttr(Attr *attr);
+struct Element **getChildrenAttr(Attr *attr);
 
 // NOTE(lbayes): See macros for shortcuts to element
 // creation.
@@ -120,7 +127,6 @@ void freeElement(Element *elem);
 void freeAttr(Attr *attr);
 void freeRoot(Element *elem);
 
-char *elementName(Element *elem);
 struct Element **elementChildren(Element *elem);
 Layout elementLayout(Element *elem);
 void emitEvent(Element *elem, char *gestureName);

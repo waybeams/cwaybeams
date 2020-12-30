@@ -6,7 +6,7 @@
 char *testNewCharAttr(void);
 char *testNewUintAttr(void);
 
-char *testNewName(void);
+char *testNewNameAttr(void);
 char *testNewHeight(void);
 char *testNewWidth(void);
 char *testNewLargerWidth(void);
@@ -18,6 +18,7 @@ char *testNewChildren(void);
 char *testElementWithChild(void);
 char *testElementSize(void);
 
+char *testGetName(void);
 char *testIsRoot(void);
 char *testLayout(void);
 char *testDefaultLayout(void);

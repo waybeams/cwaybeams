@@ -34,7 +34,7 @@ static ElementId getNextId() {
  */
 void freeAttr(Attr *attr) {
   if (attr->name == ChildrenAttr) {
-    struct Element **kids = childrenAttrData(attr);
+    struct Element **kids = getChildrenAttr(attr);
     int count = attr->dataSize / POINTER_SIZE;
     for (int i = 0; i < count; i++) {
       freeElement(kids[i]);
@@ -93,7 +93,7 @@ Attr *newCharAttr(AttrName name, char *value) {
 /**
  * Get the data from a Char Attr as (char *).
  */
-char *charAttrData(Attr *attr) {
+char *getCharAttr(Attr *attr) {
   return (char *)attr->data;
 }
 
@@ -115,7 +115,7 @@ Attr *newUintAttr(AttrName name, unsigned int value) {
 /**
  * Get the provided Attribute data as an unsigned integer.
  */
-unsigned int uintAttrData(Attr *attr) {
+unsigned int getUintAttr(Attr *attr) {
   return *(unsigned int *)attr->data;
 }
 
@@ -131,6 +131,44 @@ Attr *newHandlerAttr(AttrName name, GestureHandler *handler) {
   attr->dataSize = POINTER_SIZE;
   attr->data = (unsigned char *)handler;
   return attr;
+}
+
+/**
+ * Get the index of the provided attribute for the provided Element, or return
+ * -1 if the AttrName is not found.
+ */
+int elementAttrIndex(Element *elem, AttrName name) {
+  for (int i = 0; i < elem->attrCount; i++) {
+    if (elem->attrs[i]->name == name) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+/**
+ * Get the provided Element children collection.
+ */
+struct Element **elementChildren(Element *elem) {
+  int index = elementAttrIndex(elem, ChildrenAttr);
+  if (index > -1) {
+    return getChildrenAttr(elem->attrs[index]);
+  }
+
+  return NULL;
+}
+
+/**
+ * Get the provided Element name attribute, or DEFAULT_NAME if one was not
+ * provided.
+ */
+char *getName(Element *elem) {
+  int index = elementAttrIndex(elem, NameAttr);
+  if (index > -1) {
+    return getCharAttr(elem->attrs[index]);
+  }
+
+  return DEFAULT_NAME;
 }
 
 /**
@@ -169,15 +207,8 @@ Attr *newChildren(unsigned int count, ...) {
 /**
  * Get an array of Element pointers as Children data from the provided Attr.
  */
-struct Element **childrenAttrData(Attr *attr) {
+struct Element **getChildrenAttr(Attr *attr) {
   return (struct Element **)attr->data;
-}
-
-/**
- * Get the provided Layout value.
- */
-Layout layoutAttrData(Attr *attr) {
-  return uintAttrData(attr);
 }
 
 /**
@@ -188,7 +219,7 @@ Layout layoutAttrData(Attr *attr) {
  * Create and return a name attribute.
  */
 Attr *name(char *value) {
-  return newCharAttr(Name, value);
+  return newCharAttr(NameAttr, value);
 }
 
 /**
@@ -235,12 +266,12 @@ Element *newElement(unsigned int attrCount, ...) {
   for (int i = 0; i < attrCount; i++) {
     struct Attr *attr = va_arg(vargs, struct Attr *);
     if (attr->name == WidthAttr) {
-        elem->width = uintAttrData(attr);
+        elem->width = getUintAttr(attr);
     } else if (attr->name == HeightAttr) {
-        elem->height = uintAttrData(attr);
+        elem->height = getUintAttr(attr);
     } else if (attr->name == ChildrenAttr) {
         elem->childCount += (attr->dataSize / POINTER_SIZE);
-        struct Element **kids = childrenAttrData(attr);
+        struct Element **kids = getChildrenAttr(attr);
         for (int k = 0; k < elem->childCount; k++) {
             kids[k]->parentId = elem->id;
         }
@@ -269,7 +300,7 @@ void printElementIndented(Element *elem, char *indent) {
   printf("------------------------\n");
   printf("%selem.id: %ld\n", indent, elem->id);
   printf("%selem.parentId: %ld\n", indent, elem->parentId);
-  printf("%selem.name: %s\n", indent, elementName(elem));
+  printf("%selem.name: %s\n", indent, getName(elem));
   struct Element **kids = elementChildren(elem);
   if (kids != NULL) {
     char *nextIndent = malloc(strlen(indent) + 2);
@@ -292,51 +323,12 @@ void printElement(Element *elem) {
 }
 
 /**
- * Get the provided Element name attribute, or DEFAULT_NAME if one was not
- * provided.
- */
-char *elementName(Element *elem) {
-  for (int i = 0; i < elem->attrCount; i++) {
-    if (elem->attrs[i]->name == Name) {
-      return charAttrData(elem->attrs[i]);
-    }
-  }
-
-  return DEFAULT_NAME;
-}
-
-/**
- * Get the index of the provided attribute for the provided Element, or return
- * -1 if the AttrName is not found.
- */
-int elementAttrIndex(Element *elem, AttrName name) {
-  for (int i = 0; i < elem->attrCount; i++) {
-    if (elem->attrs[i]->name == name) {
-      return i;
-    }
-  }
-  return -1;
-}
-
-/**
- * Get the provided Element children collection.
- */
-struct Element **elementChildren(Element *elem) {
-  int index = elementAttrIndex(elem, ChildrenAttr);
-  if (index > -1) {
-    return childrenAttrData(elem->attrs[index]);
-  }
-
-  return NULL;
-}
-
-/**
  * Get the layout attribute (or default value) from the provided element.
  */
 Layout elementLayout(Element *elem) {
   int index = elementAttrIndex(elem, LayoutAttr);
   if (index > -1) {
-    return layoutAttrData(elem->attrs[index]);
+    return getUintAttr(elem->attrs[index]);
   }
 
   return LayoutDefault;

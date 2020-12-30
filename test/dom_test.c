@@ -7,7 +7,7 @@
 
 char *testNewHeight(void) {
   Attr *one = height(23);
-  unsigned int data = uintAttrData(one);
+  unsigned int data = getUintAttr(one);
   muAssert(data == 23, "Expected data to be 23");
   freeAttr(one);
   return NULL;
@@ -15,7 +15,7 @@ char *testNewHeight(void) {
 
 char *testNewWidth(void) {
   Attr *one = width(20);
-  unsigned int data = uintAttrData(one);
+  unsigned int data = getUintAttr(one);
   muAssert(data == 20, "Expected data to be 20");
   freeAttr(one);
   return NULL;
@@ -23,32 +23,32 @@ char *testNewWidth(void) {
 
 char *testNewLargerWidth(void) {
   Attr *attr = newUintAttr(WidthAttr, 801);
-  unsigned int value = uintAttrData(attr);
+  unsigned int value = getUintAttr(attr);
 
   muAssert(value == 801, "Expected matching value");
   freeAttr(attr);
   return NULL;
 }
 
-char *testNewName(void) {
+char *testNewNameAttr(void) {
   Attr *attr = name("abcd");
-  char *data = charAttrData(attr);
+  char *data = getCharAttr(attr);
   muAssert(strcmp(data, "abcd") == 0, "Expected abcd");
   freeAttr(attr);
   return NULL;
 }
 
 char *testNewUintAttr(void) {
-  Attr *attr = newUintAttr(Name, 1234);
-  unsigned int data = uintAttrData(attr);
+  Attr *attr = newUintAttr(NameAttr, 1234);
+  unsigned int data = getUintAttr(attr);
   muAssert(data == 1234, "Expected 1234");
   freeAttr(attr);
   return NULL;
 }
 
 char *testNewCharAttr(void) {
-  Attr *attr = newCharAttr(Name, "abcd");
-  char *data = charAttrData(attr);
+  Attr *attr = newCharAttr(NameAttr, "abcd");
+  char *data = getCharAttr(attr);
   muAssert(strcmp(data, "abcd") == 0, "Expected abcd");
   freeAttr(attr);
   return NULL;
@@ -65,7 +65,7 @@ char *testNewBoxWithName(void) {
   Element *one = newElement(1, name("abcd"));
   muAssert(one->parentId == 0, "Expected empty parentId");
   Attr *attr = one->attrs[0];
-  char *name = charAttrData(attr);
+  char *name = getCharAttr(attr);
   muAssert(strcmp(name, "abcd") == 0, "Expected name attr");
   freeElement(one);
   return NULL;
@@ -75,8 +75,8 @@ char *testNewChildren(void) {
   Element *root = newElement(1, name("root"));
   Attr *attr = newChildren(1, root);
 
-  struct Element **kids = childrenAttrData(attr);
-  char *name = elementName(kids[0]);
+  struct Element **kids = getChildrenAttr(attr);
+  char *name = getName(kids[0]);
   muAssert(strcmp(name, "root") == 0, "Expected name root");
 
   freeAttr(attr);
@@ -120,6 +120,14 @@ char *testIsRoot(void) {
   muAssert(!isRoot(kids[1]), "Expected child to not be root");
   muAssert(!isRoot(kids[2]), "Expected child to not be root");
   muAssert(!isRoot(kids[3]), "Expected child to not be root");
+  freeElement(root);
+  return NULL;
+}
+
+char *testGetName(void) {
+  Element *root = box(name("root"));
+  char *elemName = getName(root);
+  muAssert(strcmp(elemName, "root") == 0, "Expected name root");
   freeElement(root);
   return NULL;
 }

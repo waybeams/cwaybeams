@@ -10,7 +10,7 @@ char *allTests(void) {
 
   // dom_test.h
   muRunTest(testNewCharAttr);
-  muRunTest(testNewName);
+  muRunTest(testNewNameAttr);
   muRunTest(testNewHeight);
   muRunTest(testNewWidth);
   muRunTest(testNewLargerWidth);
@@ -20,6 +20,7 @@ char *allTests(void) {
   muRunTest(testElementWithChild);
   muRunTest(testElementSize);
   muRunTest(testIsRoot);
+  muRunTest(testGetName);
   muRunTest(testDefaultLayout);
   muRunTest(testLayout);
   muRunTest(testHandler);
