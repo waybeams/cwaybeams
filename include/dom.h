@@ -44,6 +44,13 @@
     layout(LayoutHorizontal), __VA_ARGS__)
 #define children(...)     newChildren(PP_NARG(__VA_ARGS__), __VA_ARGS__)
 
+// Attribute getter macros
+#define getWidth(elem) getUintAttrFromElement(elem, WidthAttr, DEFAULT_ZERO)
+#define getHeight(elem) getUintAttrFromElement(elem, HeightAttr, DEFAULT_ZERO)
+#define getX(elem) getUintAttrFromElement(elem, XAttr, DEFAULT_ZERO)
+#define getY(elem) getUintAttrFromElement(elem, YAttr, DEFAULT_ZERO)
+#define getZ(elem) getUintAttrFromElement(elem, ZAttr, DEFAULT_ZERO)
+
 typedef unsigned long ElementId;
 
 typedef enum AttrName {
@@ -52,17 +59,14 @@ typedef enum AttrName {
   Flex,
   GestureHandlerAttr,
   HFlex,
-  HPercent,
   HeightAttr,
   LayoutAttr,
   NameAttr,
   VFlex,
-  VPercent,
   WidthAttr,
-  XOffset,
-  XPos,
-  YOffset,
-  YPos
+  XAttr,
+  YAttr,
+  ZAttr
 } AttrName;
 
 typedef enum Layout {
@@ -101,6 +105,9 @@ typedef void (GestureHandler)(void);
 Attr *name(char*);
 Attr *width(unsigned int value);
 Attr *height(unsigned int value);
+Attr *x(unsigned int value);
+Attr *y(unsigned int value);
+Attr *z(unsigned int value);
 Attr *layout(Layout value);
 Attr *handler(char *gestureName, GestureHandler *handler);
 Attr *newChildren(unsigned int count, ...);
@@ -119,11 +126,6 @@ char *getCharAttr(Attr *attr);
 Layout getLayout(Element *elem);
 char *getName(Element *elem);
 struct Element **getChildren(Element *elem);
-unsigned int getHeight(Element *elem);
-unsigned int getWidth(Element *elem);
-unsigned int getX(Element *elem);
-unsigned int getY(Element *elem);
-unsigned int getZ(Element *elem);
 
 // Element helpers
 void printElement(Element *elem);
@@ -137,5 +139,8 @@ void freeAttr(Attr *attr);
 Element *newElement(unsigned int count, ...);
 void emitEvent(Element *elem, char *gestureName);
 
+// Used by Macros only
+unsigned int getUintAttrFromElement(Element *elem,
+    AttrName name, unsigned int defaultValue);
 
 #endif

@@ -22,6 +22,8 @@ char *testGetName(void);
 char *testIsRoot(void);
 char *testLayout(void);
 char *testDefaultLayout(void);
+char *testDefaultAttrValues(void);
+char *testConfiguredAttrValues(void);
 char *testHandler(void);
 
 char *testAttrCollection(void);

@@ -132,6 +132,14 @@ char *testGetName(void) {
   return NULL;
 }
 
+char *testLayout(void) {
+  Element *root = vbox(name("root"));
+  Layout layout = getLayout(root);
+  muAssert(layout == LayoutVertical, "Expected VBox");
+  freeElement(root);
+  return NULL;
+}
+
 char *testDefaultLayout(void) {
   Element *root = box(name("root"));
   Layout layout = getLayout(root);
@@ -140,10 +148,46 @@ char *testDefaultLayout(void) {
   return NULL;
 }
 
-char *testLayout(void) {
-  Element *root = vbox(name("root"));
-  Layout layout = getLayout(root);
-  muAssert(layout == LayoutVertical, "Expected VBox");
+char *testDefaultAttrValues(void) {
+  Element *root = box(name("root"));
+  unsigned int w = getWidth(root);
+  unsigned int h = getHeight(root);
+  unsigned int x = getX(root);
+  unsigned int y = getY(root);
+  unsigned int z = getZ(root);
+
+  muAssert(w == 0, "Expected width 0");
+  muAssert(h == 0, "Expected height 0");
+  muAssert(x == 0, "Expected x 0");
+  muAssert(y == 0, "Expected y 0");
+  muAssert(z == 0, "Expected z 0");
+
+  freeElement(root);
+  return NULL;
+}
+
+char *testConfiguredAttrValues(void) {
+  Element *root = box(
+    name("root"),
+    width(1001),
+    height(2002),
+    x(3003),
+    y(4004),
+    z(5005)
+  );
+
+  unsigned int w = getWidth(root);
+  unsigned int h = getHeight(root);
+  unsigned int x = getX(root);
+  unsigned int y = getY(root);
+  unsigned int z = getZ(root);
+
+  muAssert(w == 1001, "Expected width 1001");
+  muAssert(h == 2002, "Expected height 2002");
+  muAssert(x == 3003, "Expected x 3003");
+  muAssert(y == 4004, "Expected y 4004");
+  muAssert(z == 5005, "Expected z 5005");
+
   freeElement(root);
   return NULL;
 }

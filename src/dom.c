@@ -169,22 +169,14 @@ char *getName(Element *elem) {
   return DEFAULT_NAME;
 }
 
-unsigned int getWidth(Element *elem) {
-  int index = getAttrIndexByName(elem, WidthAttr);
+unsigned int getUintAttrFromElement(Element *elem,
+    AttrName name, unsigned int defaultValue) {
+  int index = getAttrIndexByName(elem, name);
   if (index > -1) {
     return getUintAttr(elem->attrs[index]);
   }
 
-  return DEFAULT_ZERO;
-}
-
-unsigned int getHeight(Element *elem) {
-  int index = getAttrIndexByName(elem, HeightAttr);
-  if (index > -1) {
-    return getUintAttr(elem->attrs[index]);
-  }
-
-  return DEFAULT_ZERO;
+  return defaultValue;
 }
 
 /**
@@ -262,6 +254,18 @@ Attr *width(unsigned int value) {
  */
 Attr *height(unsigned int value) {
   return newUintAttr(HeightAttr, value);
+}
+
+Attr *x(unsigned int value) {
+  return newUintAttr(XAttr, value);
+}
+
+Attr *y(unsigned int value) {
+  return newUintAttr(YAttr, value);
+}
+
+Attr *z(unsigned int value) {
+  return newUintAttr(ZAttr, value);
 }
 
 /**
