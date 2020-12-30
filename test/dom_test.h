@@ -24,4 +24,6 @@ char *testLayout(void);
 char *testDefaultLayout(void);
 char *testHandler(void);
 
+char *testAttrCollection(void);
+
 #endif // __dom_test_h__

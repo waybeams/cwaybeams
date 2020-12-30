@@ -4,8 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define DEFAULT_NAME "default-name"
-
 /**
  * Global id for all instantiated Elements.
  */
@@ -47,7 +45,7 @@ static int getAttrIndexByName(Element *elem, AttrName name) {
  */
 void freeAttr(Attr *attr) {
   if (attr->name == ChildrenAttr) {
-    struct Element **kids = getChildrenAttr(attr);
+    struct Element **kids = getElementsAttr(attr);
     int count = attr->dataSize / POINTER_SIZE;
     for (int i = 0; i < count; i++) {
       freeElement(kids[i]);
@@ -152,7 +150,7 @@ Attr *newHandlerAttr(AttrName name, GestureHandler *handler) {
 struct Element **getChildren(Element *elem) {
   int index = getAttrIndexByName(elem, ChildrenAttr);
   if (index > -1) {
-    return getChildrenAttr(elem->attrs[index]);
+    return getElementsAttr(elem->attrs[index]);
   }
 
   return NULL;
@@ -169,6 +167,24 @@ char *getName(Element *elem) {
   }
 
   return DEFAULT_NAME;
+}
+
+unsigned int getWidth(Element *elem) {
+  int index = getAttrIndexByName(elem, WidthAttr);
+  if (index > -1) {
+    return getUintAttr(elem->attrs[index]);
+  }
+
+  return DEFAULT_ZERO;
+}
+
+unsigned int getHeight(Element *elem) {
+  int index = getAttrIndexByName(elem, HeightAttr);
+  if (index > -1) {
+    return getUintAttr(elem->attrs[index]);
+  }
+
+  return DEFAULT_ZERO;
 }
 
 /**
@@ -219,7 +235,7 @@ Attr *newChildren(unsigned int count, ...) {
 /**
  * Get an array of Element pointers as Children data from the provided Attr.
  */
-struct Element **getChildrenAttr(Attr *attr) {
+struct Element **getElementsAttr(Attr *attr) {
   return (struct Element **)attr->data;
 }
 
@@ -283,7 +299,7 @@ Element *newElement(unsigned int attrCount, ...) {
         elem->height = getUintAttr(attr);
     } else if (attr->name == ChildrenAttr) {
         elem->childCount += (attr->dataSize / POINTER_SIZE);
-        struct Element **kids = getChildrenAttr(attr);
+        struct Element **kids = getElementsAttr(attr);
         for (int k = 0; k < elem->childCount; k++) {
             kids[k]->parentId = elem->id;
         }

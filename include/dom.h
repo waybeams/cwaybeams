@@ -6,6 +6,9 @@
 #include <stdbool.h>
 
 #define MAX_ELEMENT_COUNT 65535
+#define DEFAULT_NAME "default-name"
+#define DEFAULT_ZERO 0
+
 
 #define PP_ARG_N( \
           _1,  _2,  _3,  _4,  _5,  _6,  _7,  _8,  _9, _10, \
@@ -101,30 +104,35 @@ Attr *height(unsigned int value);
 Attr *layout(Layout value);
 Attr *handler(char *gestureName, GestureHandler *handler);
 Attr *newChildren(unsigned int count, ...);
+
+// Attribute type creators
 Attr *newCharAttr(AttrName name, char *value);
 Attr *newUintAttr(AttrName name, unsigned value);
 Attr *newHandlerAttr(AttrName name, GestureHandler *handler);
 
-// Attribute getters
+// Attribute type getters
+struct Element **getElementsAttr(Attr *attr);
+unsigned int getUintAttr(Attr *attr);
+char *getCharAttr(Attr *attr);
+
+// Element Attribute getters
+Layout getLayout(Element *elem);
 char *getName(Element *elem);
-unsigned int getWidth(Element *elem);
+struct Element **getChildren(Element *elem);
 unsigned int getHeight(Element *elem);
+unsigned int getWidth(Element *elem);
 unsigned int getX(Element *elem);
 unsigned int getY(Element *elem);
 unsigned int getZ(Element *elem);
-Layout getLayout(Element *elem);
-struct Element **getChildren(Element *elem);
 
 // Element helpers
-unsigned int getUintAttr(Attr *attr);
-char *getCharAttr(Attr *attr);
-struct Element **getChildrenAttr(Attr *attr);
+void printElement(Element *elem);
 bool isRoot(Element *elem);
 
-void printElement(Element *elem);
+
+// Destructors
 void freeElement(Element *elem);
 void freeAttr(Attr *attr);
-void freeRoot(Element *elem);
 
 Element *newElement(unsigned int count, ...);
 void emitEvent(Element *elem, char *gestureName);

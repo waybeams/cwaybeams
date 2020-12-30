@@ -75,7 +75,7 @@ char *testNewChildren(void) {
   Element *root = newElement(1, name("root"));
   Attr *attr = newChildren(1, root);
 
-  struct Element **kids = getChildrenAttr(attr);
+  struct Element **kids = getElementsAttr(attr);
   char *name = getName(kids[0]);
   muAssert(strcmp(name, "root") == 0, "Expected name root");
 
@@ -158,6 +158,19 @@ char *testHandler(void) {
   Element *root = vbox(handler("onclick", fakeHandler));
   emitEvent(root, "onclick");
   muAssert(fakeHandlerCalled == true, "Expected fakeHandlerCalled");
+  freeElement(root);
+  return NULL;
+}
+
+char *testAttrCollection(void) {
+  Element *root = vbox(name("root"), width(3000));
+  char *n = getName(root);
+  muAssert(strcmp(n, "root") == 0, "Expected name");
+  unsigned int w = getWidth(root);
+  muAssert(w == 3000, "Expected width");
+  unsigned int h = getHeight(root);
+  muAssert(h == 0, "Expected default height");
+
   freeElement(root);
   return NULL;
 }

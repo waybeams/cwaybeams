@@ -24,6 +24,7 @@ char *allTests(void) {
   muRunTest(testDefaultLayout);
   muRunTest(testLayout);
   muRunTest(testHandler);
+  muRunTest(testAttrCollection);
 
   // layout_test.h
   muRunTest(testNewLayout);
