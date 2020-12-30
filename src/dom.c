@@ -159,36 +159,28 @@ struct Element **getChildren(Element *elem) {
 /**
  * Get the provided Element name attribute, or DEFAULT_NAME if one was not
  * provided.
- */
 char *getName(Element *elem) {
-  int index = getAttrIndexByName(elem, NameAttr);
+  return getCharAttrFromElement(elem, NameAttr, DEFAULT_NAME);
+}
+ */
+
+char *getCharAttrFromElement(Element *elem, AttrName name, char *defaultValue) {
+  int index = getAttrIndexByName(elem, name);
   if (index > -1) {
     return getCharAttr(elem->attrs[index]);
   }
 
-  return DEFAULT_NAME;
+  return defaultValue;
 }
 
-unsigned int getUintAttrFromElement(Element *elem,
-    AttrName name, unsigned int defaultValue) {
+unsigned int getUintAttrFromElement(Element *elem, AttrName name,
+    unsigned int defaultValue) {
   int index = getAttrIndexByName(elem, name);
   if (index > -1) {
     return getUintAttr(elem->attrs[index]);
   }
 
   return defaultValue;
-}
-
-/**
- * Get the layout attribute (or default value) from the provided element.
- */
-Layout getLayout(Element *elem) {
-  int index = getAttrIndexByName(elem, LayoutAttr);
-  if (index > -1) {
-    return getUintAttr(elem->attrs[index]);
-  }
-
-  return LayoutDefault;
 }
 
 /**
@@ -229,50 +221,6 @@ Attr *newChildren(unsigned int count, ...) {
  */
 struct Element **getElementsAttr(Attr *attr) {
   return (struct Element **)attr->data;
-}
-
-/**
- * Concrete Attr names bound to concrete types.
- */
-
-/**
- * Create and return a name attribute.
- */
-Attr *name(char *value) {
-  return newCharAttr(NameAttr, value);
-}
-
-/**
- * Create and return a width attribute.
- */
-Attr *width(unsigned int value) {
-  return newUintAttr(WidthAttr, value);
-}
-
-/**
- * Create and return a height attribute.
- */
-Attr *height(unsigned int value) {
-  return newUintAttr(HeightAttr, value);
-}
-
-Attr *x(unsigned int value) {
-  return newUintAttr(XAttr, value);
-}
-
-Attr *y(unsigned int value) {
-  return newUintAttr(YAttr, value);
-}
-
-Attr *z(unsigned int value) {
-  return newUintAttr(ZAttr, value);
-}
-
-/**
- * Create and return layout attribute.
- */
-Attr *layout(Layout value) {
-  return newUintAttr(LayoutAttr, value);
 }
 
 Attr *handler(char *gestureName, GestureHandler *handler) {

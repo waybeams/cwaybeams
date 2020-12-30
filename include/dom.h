@@ -6,9 +6,8 @@
 #include <stdbool.h>
 
 #define MAX_ELEMENT_COUNT 65535
-#define DEFAULT_NAME "default-name"
 #define DEFAULT_ZERO 0
-
+#define DEFAULT_CHAR ""
 
 #define PP_ARG_N( \
           _1,  _2,  _3,  _4,  _5,  _6,  _7,  _8,  _9, _10, \
@@ -44,7 +43,18 @@
     layout(LayoutHorizontal), __VA_ARGS__)
 #define children(...)     newChildren(PP_NARG(__VA_ARGS__), __VA_ARGS__)
 
+// Attribute setter macros
+#define name(value) newCharAttr(NameAttr, value)
+#define layout(value) newUintAttr(LayoutAttr, value)
+#define width(value) newUintAttr(WidthAttr, value)
+#define height(value) newUintAttr(HeightAttr, value)
+#define x(value) newUintAttr(XAttr, value)
+#define y(value) newUintAttr(YAttr, value)
+#define z(value) newUintAttr(ZAttr, value)
+
 // Attribute getter macros
+#define getName(elem) getCharAttrFromElement(elem, NameAttr, DEFAULT_CHAR)
+#define getLayout(elem) getUintAttrFromElement(elem, LayoutAttr, LayoutDefault)
 #define getWidth(elem) getUintAttrFromElement(elem, WidthAttr, DEFAULT_ZERO)
 #define getHeight(elem) getUintAttrFromElement(elem, HeightAttr, DEFAULT_ZERO)
 #define getX(elem) getUintAttrFromElement(elem, XAttr, DEFAULT_ZERO)
@@ -101,18 +111,12 @@ typedef struct Element {
 
 typedef void (GestureHandler)(void);
 
-// Attribute creators
-Attr *name(char*);
-Attr *width(unsigned int value);
-Attr *height(unsigned int value);
-Attr *x(unsigned int value);
-Attr *y(unsigned int value);
-Attr *z(unsigned int value);
-Attr *layout(Layout value);
+// Attribute custom factories
+Element *newElement(unsigned int count, ...);
 Attr *handler(char *gestureName, GestureHandler *handler);
 Attr *newChildren(unsigned int count, ...);
 
-// Attribute type creators
+// Attribute type factories
 Attr *newCharAttr(AttrName name, char *value);
 Attr *newUintAttr(AttrName name, unsigned value);
 Attr *newHandlerAttr(AttrName name, GestureHandler *handler);
@@ -123,24 +127,21 @@ unsigned int getUintAttr(Attr *attr);
 char *getCharAttr(Attr *attr);
 
 // Element Attribute getters
-Layout getLayout(Element *elem);
-char *getName(Element *elem);
+// char *getName(Element *elem);
 struct Element **getChildren(Element *elem);
 
 // Element helpers
 void printElement(Element *elem);
 bool isRoot(Element *elem);
-
+void emitEvent(Element *elem, char *gestureName);
 
 // Destructors
 void freeElement(Element *elem);
 void freeAttr(Attr *attr);
 
-Element *newElement(unsigned int count, ...);
-void emitEvent(Element *elem, char *gestureName);
-
 // Used by Macros only
-unsigned int getUintAttrFromElement(Element *elem,
-    AttrName name, unsigned int defaultValue);
+char *getCharAttrFromElement(Element *elem, AttrName name, char *defaultValue);
+unsigned int getUintAttrFromElement(Element *elem, AttrName name,
+    unsigned int defaultValue);
 
 #endif
