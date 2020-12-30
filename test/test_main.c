@@ -18,7 +18,6 @@ char *allTests(void) {
   muRunTest(testNewBoxWithName);
   muRunTest(testNewChildren);
   muRunTest(testElementWithChild);
-  muRunTest(testElementSize);
   muRunTest(testIsRoot);
   muRunTest(testGetName);
   muRunTest(testDefaultLayout);

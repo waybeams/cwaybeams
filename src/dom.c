@@ -29,6 +29,13 @@ static ElementId getNextId() {
 /**
  * Get the index of the provided attribute for the provided Element, or return
  * -1 if the AttrName is not found.
+ *
+ *  NOTE(lbayes): When it becomes clear that this is a performance problem,
+ *  try adding a lookup table to Element where attr Name enum values can
+ *  return the index where the attr is found.
+ *
+ *  I'm deferring this work for the moment, as this does the job and also
+ *  works with duplicate attribute entries without too much extra complexity.
  */
 static int getAttrIndexByName(Element *elem, AttrName name) {
   for (int i = 0; i < elem->attrCount; i++) {
@@ -245,11 +252,7 @@ Element *newElement(unsigned int attrCount, ...) {
   va_start(vargs, attrCount);
   for (int i = 0; i < attrCount; i++) {
     struct Attr *attr = va_arg(vargs, struct Attr *);
-    if (attr->name == WidthAttr) {
-        elem->width = getUintAttr(attr);
-    } else if (attr->name == HeightAttr) {
-        elem->height = getUintAttr(attr);
-    } else if (attr->name == ChildrenAttr) {
+    if (attr->name == ChildrenAttr) {
         elem->childCount += (attr->dataSize / POINTER_SIZE);
         struct Element **kids = getElementsAttr(attr);
         for (int k = 0; k < elem->childCount; k++) {

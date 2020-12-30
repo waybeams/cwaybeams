@@ -95,14 +95,6 @@ char *testElementWithChild(void) {
   return NULL;
 }
 
-char *testElementSize(void) {
-  Element *root = box(width(801), height(601));
-  muAssert(root->width == 801, "Expected width assignment");
-  muAssert(root->height == 601, "Expected height assignment");
-  freeElement(root);
-  return NULL;
-}
-
 char *testIsRoot(void) {
   Element *root = box(
     name("root"),
