@@ -88,7 +88,7 @@ dist:
 	mkdir -p ./dist
 
 # Build the debug binary
-$(OUTFILE): Makefile dist $(CEE_FILES)
+$(OUTFILE): Makefile dist $(CEE_FILES) $(CEE_MAIN)
 	gcc $(CFLAGS) \
 		-o $(OUTFILE) \
 		$(CEE_MAIN) \

@@ -49,6 +49,18 @@ int main(void)
         Element *root = uiControl("root");
         // printElement(root);
 
+        /*
+         * On 12/29/2020, was able to generate (and free) about 25k simple trees
+         * within a 16ms frame budget.
+        int count = 25000;
+        // unsigned int ids[count];
+        for (int i = 0; i < count; i++) {
+          Element *elem = uiControl("abcd");
+          // ids[i] = elem->id;
+          freeElement(elem);
+        }
+        */
+
         // Measure speed
         double currentTime = glfwGetTime();
         nbFrames++;
