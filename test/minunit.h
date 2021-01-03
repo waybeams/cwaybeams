@@ -1,4 +1,3 @@
-#ifdef TEST_MODE
 #ifndef _minunit_h
 #define _minunit_h
 #include <stdio.h>
@@ -28,4 +27,3 @@
 int testsRun;
 
 #endif // _minunit_h
-#endif // TEST_MODE

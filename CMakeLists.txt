@@ -4,15 +4,14 @@ include(GNUInstallDirs)
 message(STATUS "Configuring cwaybeams now")
 cmake_minimum_required(VERSION 3.10)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR})
+set(CMAKE_VERBOSE_MAKEFILE ON)
 project(cwaybeams VERSION 0.1)
-
-# TODO(lbayes): Try configuring our output dirs after getting
-# libraries to work properly
 SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
 SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
+# enable_testing()
 configure_file(include/version.h.in include/version.h)
 
 add_library(cwaybeams SHARED
@@ -34,9 +33,8 @@ target_include_directories(cwaybeams PRIVATE .)
 # PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 # )
 
-# aux_source_directory(src ${PROJECT_SOURCE_DIR})
-# add_libraries(include ${PROJECT_INCLUDE_DIR})
-
+# Add example project executables
+add_subdirectory(test)
 add_subdirectory(examples/glfw)
 add_subdirectory(examples/gtk)
 

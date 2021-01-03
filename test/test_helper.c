@@ -1,5 +1,4 @@
-#ifdef TEST_MODE
-#include "test_helper.h"
+#include <test_helper.h>
 #include <stdio.h>
 #include <debug.h>
 #include <stdlib.h>
@@ -30,6 +29,4 @@ void loadFixtureData(char *path, uint32_t *lines) {
 
   fclose(file);
 }
-
-#endif // TEST_MODE
 

@@ -1,4 +1,3 @@
-#ifdef TEST_MODE
 #ifndef __test_helper_h__
 #define __test_helper_h__
 
@@ -11,4 +10,3 @@
 void loadFixtureData(char *path, uint32_t *lines);
 
 #endif // __test_helper_h__
-#endif // TEST_MODE

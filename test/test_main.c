@@ -1,6 +1,4 @@
-#ifdef TEST_MODE
-
-#include <minunit.h>
+#include "minunit.h"
 #include <dom_test.h>
 #include <layout_test.h>
 
@@ -34,6 +32,4 @@ char *allTests(void) {
 }
 
 RUN_TESTS(allTests);
-
-#endif // TEST_MODE
 
