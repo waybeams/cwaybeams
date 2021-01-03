@@ -12,4 +12,5 @@ mkdir dist && cd dist
 cmake ../
 make
 ls -la
+./bin/cwaybeams-test
 ```
