@@ -38,5 +38,5 @@ target_include_directories(cwaybeams PRIVATE .)
 # add_libraries(include ${PROJECT_INCLUDE_DIR})
 
 add_subdirectory(examples/glfw)
-# add_subdirectory(examples/gtk)
+add_subdirectory(examples/gtk)
 

@@ -1,57 +1,42 @@
 #include <gtk/gtk.h>
 
-static gint delete_callback(GtkWidget* w, GdkEventAny* e, gpointer data);
-static void button_callback(GtkWidget* w ,gpointer data);
-
-int main(int argc, char* argv[])
-{
-  GtkWidget* window;
-  GtkWidget* button;
-  GtkWidget* label;
-
-  gtk_init(&argc, &argv);
-
-  window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-  button = gtk_button_new();
-  label = gtk_label_new("Hello World");
-
-  gtk_container_add(GTK_CONTAINER(button),label);
-  gtk_container_add(GTK_CONTAINER(window), button);
-
-  gtk_window_set_title(GTK_WINDOW(window), " Hello World");
-  gtk_container_set_border_width(GTK_CONTAINER(button),10);
-  gtk_window_set_default_size(GTK_WINDOW(window),400,400);
-
-  gtk_signal_connect(GTK_OBJECT(window),
-      "delete_event",
-      GTK_SIGNAL_FUNC(delete_callback),
-      NULL);
-
-  gtk_signal_connect(GTK_OBJECT(button),
-      "clicked",
-      GTK_SIGNAL_FUNC(button_callback),
-      label);
-
-  gtk_widget_show_all(window);
-  gtk_main();
-
-  return 0;
+// callback function which is called when button is clicked
+static void on_button_clicked(GtkButton *btn, gpointer data) {
+    // change button label when it's clicked
+    gtk_button_set_label(btn, "Hello World");
 }
 
-static gint delete_callback(GtkWidget* w, GdkEventAny* e, gpointer data)
-{
-  gtk_main_quit();
+// callback function which is called when application is first started
+static void on_app_activate(GApplication *app, gpointer data) {
+    // create a new application window for the application
+    // GtkApplication is sub-class of GApplication
+    // downcast GApplication* to GtkApplication* with GTK_APPLICATION() macro
+    GtkWidget *window = gtk_application_window_new(GTK_APPLICATION(app));
+    // a simple push button
+    GtkWidget *btn = gtk_button_new_with_label("Click Me!");
+    // connect the event-handler for "clicked" signal of button
+    g_signal_connect(btn, "clicked", G_CALLBACK(on_button_clicked), NULL);
+    // add the button to the window
+    gtk_container_add(GTK_CONTAINER(window), btn);
+    // display the window
+    gtk_widget_show_all(GTK_WIDGET(window));
 }
 
-static void button_callback(GtkWidget* w ,gpointer data)
-{
-  GtkWidget* label;
-  gchar* text;
-
-  label = GTK_WIDGET(data);
-  gtk_label_get(GTK_LABEL(label), &text);
-
-  printf("%s \n", text);
-
+int main(int argc, char *argv[]) {
+    // create new GtkApplication with an unique application ID
+    GtkApplication *app = gtk_application_new(
+        "org.gtkmm.example.HelloApp",
+        G_APPLICATION_FLAGS_NONE
+    );
+    // connect the event-handler for "activate" signal of GApplication
+    // G_CALLBACK() macro is used to cast the callback function pointer
+    // to generic void pointer
+    g_signal_connect(app, "activate", G_CALLBACK(on_app_activate), NULL);
+    // start the application, terminate by closing the window
+    // GtkApplication* is upcast to GApplication* with G_APPLICATION() macro
+    int status = g_application_run(G_APPLICATION(app), argc, argv);
+    // deallocate the application object
+    g_object_unref(app);
+    return status;
 }
 
