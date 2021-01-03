@@ -1,8 +1,8 @@
 #include <gtk/gtk.h>
 #include <stdbool.h>
 
-static const char *btn_label_one = "Label One";
-static const char *btn_label_two = "Label Two";
+static char *btn_label_one = "Label One";
+static char *btn_label_two = "Label Two";
 static char *btn_label;
 
 // callback function which is called when button is clicked
