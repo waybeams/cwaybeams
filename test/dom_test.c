@@ -57,6 +57,7 @@ char *testNewCharAttr(void) {
 char *testNewBox(void) {
   Element *one = newElement(TypeNone, 0);
   muAssert(one->parentId == 0, "Expected empty parentId");
+  muAssert(one->type == TypeNone, "Expected type");
   freeElement(one);
   return NULL;
 }
@@ -67,6 +68,7 @@ char *testNewBoxWithName(void) {
   Attr *attr = one->attrs[0];
   char *name = getCharAttr(attr);
   muAssert(strcmp(name, "abcd") == 0, "Expected name attr");
+  muAssert(one->type == TypeNone, "Expected type");
   freeElement(one);
   return NULL;
 }
@@ -78,6 +80,7 @@ char *testNewChildren(void) {
   struct Element **kids = getElementsAttr(attr);
   char *name = getName(kids[0]);
   muAssert(strcmp(name, "root") == 0, "Expected name root");
+  muAssert(root->type == TypeNone, "Expected type");
 
   freeAttr(attr);
   return NULL;
