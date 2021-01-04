@@ -61,6 +61,6 @@ add_definitions(${GTK_CFLAGS_OTHER})
 # Prepare test binary and examples
 #########################################
 add_subdirectory(test)
-add_subdirectory(examples/glfw)
 add_subdirectory(examples/gtk)
+# add_subdirectory(examples/glfw)
 
