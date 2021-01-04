@@ -1,6 +1,9 @@
 include(FindPkgConfig)
 include(GNUInstallDirs)
 
+#########################################
+# Prepare primary library project
+#########################################
 message(STATUS "Configuring cwaybeams now")
 cmake_minimum_required(VERSION 3.10)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR})
@@ -33,7 +36,36 @@ target_include_directories(cwaybeams PRIVATE .)
 # PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 # )
 
-# Add example project executables
+
+#########################################
+# Prepare GTK+3 shared library
+#########################################
+find_package(GTK REQUIRED "gtk+-3.0")
+pkg_check_modules(GTK REQUIRED "gtk+-3.0")
+
+add_library(cwaybeams-gtk SHARED
+	src/gtk/app.c
+	)
+set_target_properties(cwaybeams-gtk PROPERTIES VERSION ${PROJECT_VERSION})
+set_target_properties(cwaybeams-gtk PROPERTIES SOVERSION 0)
+target_link_libraries(cwaybeams-gtk
+  cwaybeams
+  ${GTK}
+  ${GTK_LIBRARIES}
+  )
+target_include_directories(cwaybeams-gtk PRIVATE
+  ${GTK_INCLUDE_DIRS}
+  )
+
+add_definitions(${GTK_CFLAGS_OTHER})
+# add_definitions(${GTK3_CFLAGS_OTHER})
+# set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -rdynamic")
+# link_directories(${GTK3_LIBRARY_DIRS})
+
+
+#########################################
+# Prepare test binary and examples
+#########################################
 add_subdirectory(test)
 add_subdirectory(examples/glfw)
 add_subdirectory(examples/gtk)

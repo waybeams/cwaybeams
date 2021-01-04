@@ -36,13 +36,14 @@
 /**
  * Wrap variadic macros with expected names.
  */
+#define app(...)          newElement(PP_NARG(__VA_ARGS__), __VA_ARGS__)
+#define window(...)       newElement(PP_NARG(__VA_ARGS__), __VA_ARGS__)
 #define box(...)          newElement(PP_NARG(__VA_ARGS__), __VA_ARGS__)
 #define vbox(...)         newElement(PP_NARG(__VA_ARGS__) + 1, \
     layout(LayoutVertical), __VA_ARGS__)
 #define hbox(...)         newElement(PP_NARG(__VA_ARGS__) + 1, \
     layout(LayoutHorizontal), __VA_ARGS__)
 #define children(...)     newChildren(PP_NARG(__VA_ARGS__), __VA_ARGS__)
-
 // Attribute setter macros
 #define name(value) newCharAttr(NameAttr, value)
 #define layout(value) newUintAttr(LayoutAttr, value)
