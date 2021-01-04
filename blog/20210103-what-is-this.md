@@ -2,7 +2,7 @@
 
 This is first and foremost an exploration, but it might also be a manifesto (if I'm not careful about it).
 
-I want to find out if there is a way to make native application development (across all of it's form factors), "_Fast, Stable and Delightful"_™.
+I want to find out if there is a way to make native application development (across all of it's form factors), _"Fast, Stable and Delightful"™_.
 
 Something like the accessibility of Arduino, but for GUI applications? Perhaps with less of a performance penalty? Less flailing around?
 
