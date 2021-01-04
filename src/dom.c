@@ -237,7 +237,7 @@ Attr *handler(char *gestureName, GestureHandler *handler) {
 /**
  * Create a new Element with the provided attributes.
  */
-Element *newElement(unsigned int attrCount, ...) {
+Element *newElement(ElementType type, unsigned int attrCount, ...) {
   struct Attr **attrs = malloc(attrCount * POINTER_SIZE);
   if (attrs == NULL) {
     return NULL;
@@ -245,6 +245,7 @@ Element *newElement(unsigned int attrCount, ...) {
   Element *elem = malloc(sizeof(struct Element));
   elem->id = getNextId();
   elem->parentId = 0;
+  elem->type = type;
   elem->childCount = 0;
 
   // Process Attrs

@@ -36,12 +36,12 @@
 /**
  * Wrap variadic macros with expected names.
  */
-#define app(...)          newElement(PP_NARG(__VA_ARGS__), __VA_ARGS__)
-#define window(...)       newElement(PP_NARG(__VA_ARGS__), __VA_ARGS__)
-#define box(...)          newElement(PP_NARG(__VA_ARGS__), __VA_ARGS__)
-#define vbox(...)         newElement(PP_NARG(__VA_ARGS__) + 1, \
+#define app(...)          newElement(TypeApp, PP_NARG(__VA_ARGS__), __VA_ARGS__)
+#define window(...)       newElement(TypeWindow, PP_NARG(__VA_ARGS__), __VA_ARGS__)
+#define box(...)          newElement(TypeBox, PP_NARG(__VA_ARGS__), __VA_ARGS__)
+#define vbox(...)         newElement(TypeVBox, PP_NARG(__VA_ARGS__) + 1, \
     layout(LayoutVertical), __VA_ARGS__)
-#define hbox(...)         newElement(PP_NARG(__VA_ARGS__) + 1, \
+#define hbox(...)         newElement(TypeHBox, PP_NARG(__VA_ARGS__) + 1, \
     layout(LayoutHorizontal), __VA_ARGS__)
 #define children(...)     newChildren(PP_NARG(__VA_ARGS__), __VA_ARGS__)
 // Attribute setter macros
@@ -64,8 +64,22 @@
 
 typedef unsigned long ElementId;
 
+typedef enum ElementType {
+  TypeNone = 0,
+  TypeBox,
+  TypeVBox,
+  TypeHBox,
+  TypeButton,
+  TypeLink,
+  TypeStyle,
+  TypeApp,
+  TypeWindow,
+  TypeHead,
+  TypeBody
+} ElementType;
+
 typedef enum AttrName {
-  None = 0,
+  NoneAttr = 0,
   ChildrenAttr,
   Flex,
   GestureHandlerAttr,
@@ -100,6 +114,7 @@ typedef struct Attr {
 typedef struct Element {
   ElementId id;
   ElementId parentId;
+  ElementType type;
   unsigned int childCount;
   unsigned int attrCount;
   struct Attr **attrs;
@@ -108,7 +123,7 @@ typedef struct Element {
 typedef void (GestureHandler)(void);
 
 // Attribute custom factories
-Element *newElement(unsigned int count, ...);
+Element *newElement(ElementType type, unsigned int count, ...);
 Attr *handler(char *gestureName, GestureHandler *handler);
 Attr *newChildren(unsigned int count, ...);
 

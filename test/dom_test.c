@@ -55,14 +55,14 @@ char *testNewCharAttr(void) {
 }
 
 char *testNewBox(void) {
-  Element *one = newElement(0);
+  Element *one = newElement(TypeNone, 0);
   muAssert(one->parentId == 0, "Expected empty parentId");
   freeElement(one);
   return NULL;
 }
 
 char *testNewBoxWithName(void) {
-  Element *one = newElement(1, name("abcd"));
+  Element *one = newElement(TypeNone, 1, name("abcd"));
   muAssert(one->parentId == 0, "Expected empty parentId");
   Attr *attr = one->attrs[0];
   char *name = getCharAttr(attr);
@@ -72,7 +72,7 @@ char *testNewBoxWithName(void) {
 }
 
 char *testNewChildren(void) {
-  Element *root = newElement(1, name("root"));
+  Element *root = newElement(TypeNone, 1, name("root"));
   Attr *attr = newChildren(1, root);
 
   struct Element **kids = getElementsAttr(attr);
