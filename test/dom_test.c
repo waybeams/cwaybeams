@@ -57,31 +57,27 @@ char *testNewCharAttr(void) {
 char *testNewBox(void) {
   Element *one = newElement(TypeNone, 0);
   muAssert(one->parentId == 0, "Expected empty parentId");
-  muAssert(one->type == TypeNone, "Expected type");
   freeElement(one);
   return NULL;
 }
 
 char *testNewBoxWithName(void) {
-  Element *one = newElement(TypeNone, 1, name("abcd"));
+  Element *one = box(name("abcd"));
   muAssert(one->parentId == 0, "Expected empty parentId");
   Attr *attr = one->attrs[0];
   char *name = getCharAttr(attr);
   muAssert(strcmp(name, "abcd") == 0, "Expected name attr");
-  muAssert(one->type == TypeNone, "Expected type");
   freeElement(one);
   return NULL;
 }
 
 char *testNewChildren(void) {
-  Element *root = newElement(TypeNone, 1, name("root"));
+  Element *root = vbox(name("root"));
   Attr *attr = newChildren(1, root);
 
   struct Element **kids = getElementsAttr(attr);
   char *name = getName(kids[0]);
   muAssert(strcmp(name, "root") == 0, "Expected name root");
-  muAssert(root->type == TypeNone, "Expected type");
-
   freeAttr(attr);
   return NULL;
 }
@@ -120,10 +116,10 @@ char *testIsRoot(void) {
 }
 
 char *testGetName(void) {
-  Element *root = box(name("root"));
-  char *elemName = getName(root);
+  Element *elem = box(name("root"));
+  char *elemName = getName(elem);
   muAssert(strcmp(elemName, "root") == 0, "Expected name root");
-  freeElement(root);
+  freeElement(elem);
   return NULL;
 }
 
@@ -214,3 +210,19 @@ char *testAttrCollection(void) {
   return NULL;
 }
 
+char *testElementTypes(void) {
+  Element *elem;
+
+  elem = box(name("box"));
+  muAssert(elem->type == TypeBox, "Expected Box");
+  freeElement(elem);
+
+  elem = vbox(name("vbox"));
+  muAssert(elem->type == TypeVBox, "Expected VBox");
+  freeElement(elem);
+
+  elem = hbox(name("hbox"));
+  muAssert(elem->type == TypeHBox, "Expected HBox");
+  freeElement(elem);
+  return NULL;
+}
