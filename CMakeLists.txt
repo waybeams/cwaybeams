@@ -1,6 +1,7 @@
 include(FindPkgConfig)
 include(GNUInstallDirs)
 
+
 #########################################
 # Prepare primary library project
 #########################################
@@ -16,14 +17,11 @@ SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # enable_testing()
 configure_file(include/version.h.in include/version.h)
-
 add_library(cwaybeams SHARED
 	src/dom.c
 	src/layout.c
 	)
-
 target_include_directories(cwaybeams PUBLIC include src)
-
 set_target_properties(cwaybeams PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(cwaybeams PROPERTIES SOVERSION 0)
 target_include_directories(cwaybeams PRIVATE .)
@@ -43,18 +41,14 @@ target_include_directories(cwaybeams PRIVATE .)
 find_package(GTK REQUIRED "gtk+-3.0")
 pkg_check_modules(GTK REQUIRED "gtk+-3.0")
 
-add_library(cwaybeams-gtk SHARED
-	src/gtk/app.c
-	)
+add_library(cwaybeams-gtk SHARED src/gtk/app.c)
 set_target_properties(cwaybeams-gtk PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(cwaybeams-gtk PROPERTIES SOVERSION 0)
+target_include_directories(cwaybeams-gtk PRIVATE ${GTK_INCLUDE_DIRS})
 target_link_libraries(cwaybeams-gtk
   cwaybeams
   ${GTK}
   ${GTK_LIBRARIES}
-  )
-target_include_directories(cwaybeams-gtk PRIVATE
-  ${GTK_INCLUDE_DIRS}
   )
 
 add_definitions(${GTK_CFLAGS_OTHER})
