@@ -30,3 +30,6 @@ So I'm going on this journey, and looking forward to where it might take me...
 
 I'll do my best to report along the way.
 
+If any of this seems interesting to you, please don't hesitate to [get in
+touch](https://lukebayes.com).
+
