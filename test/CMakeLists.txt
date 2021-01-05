@@ -3,15 +3,15 @@ message(STATUS "Building tests now")
 
 set(TEST_SRCS
   dom_test.c
-  layout_test.h
+  dom_visitor_test.c
   layout_test.c
-  test_helper.h
   test_helper.c
   )
 
 set(TEST_HDRS
   minunit.h
   dom_test.h
+  dom_visitor_test.h
   layout_test.h
   test_helper.h
   )

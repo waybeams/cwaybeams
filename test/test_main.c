@@ -1,5 +1,6 @@
 #include "minunit.h"
 #include <dom_test.h>
+#include <dom_visitor_test.h>
 #include <layout_test.h>
 
 char *allTests(void) {
@@ -25,6 +26,9 @@ char *allTests(void) {
   muRunTest(testConfiguredAttrValues);
   muRunTest(testAttrCollection);
   muRunTest(testElementTypes);
+
+  // dom_visitor_test.h
+  muRunTest(testDepthFirst);
 
   // layout_test.h
   muRunTest(testNewLayout);

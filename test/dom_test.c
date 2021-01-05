@@ -238,10 +238,10 @@ char *testElementChildren(void) {
   muAssert(root->childCount == 4, "child count");
 
   struct Element **kids = getChildren(root);
-  muAssert(getName(kids[0]) == "one", "one");
-  muAssert(getName(kids[1]) == "two", "two");
-  muAssert(getName(kids[2]) == "three", "three");
-  muAssert(getName(kids[3]) == "four", "four");
+  muAssert(strcmp(getName(kids[0]), "one"), "one");
+  muAssert(strcmp(getName(kids[1]), "two"), "two");
+  muAssert(strcmp(getName(kids[2]), "three"), "three");
+  muAssert(strcmp(getName(kids[3]), "four"), "four");
   freeElement(root);
   return NULL;
 }
