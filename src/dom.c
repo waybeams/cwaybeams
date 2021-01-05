@@ -59,7 +59,8 @@ void freeAttr(Attr *attr) {
     }
   }
 
-  if (attr->name != GestureHandlerAttr) {
+  if (attr->name != GestureHandlerAttr &&
+      attr->name != HandlerAttr) {
     free(attr->data);
   }
 
@@ -230,10 +231,6 @@ struct Element **getElementsAttr(Attr *attr) {
   return (struct Element **)attr->data;
 }
 
-Attr *handler(char *gestureName, GestureHandler *handler) {
-  return newHandlerAttr(GestureHandlerAttr, handler);
-}
-
 /**
  * Create a new Element with the provided attributes.
  */
@@ -313,8 +310,8 @@ void emitEvent(Element *elem, char *gestureName) {
   int index = getAttrIndexByName(elem, GestureHandlerAttr);
   if (index > -1) {
     Attr *attr = elem->attrs[index];
-    GestureHandler *handler = (GestureHandler *)attr->data;
-    handler();
+    GestureHandler gestureHandler = (GestureHandler)attr->data;
+    gestureHandler();
   }
 }
 

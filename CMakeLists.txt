@@ -20,6 +20,7 @@ configure_file(include/version.h.in include/version.h)
 add_library(cwaybeams SHARED
 	src/dom.c
   src/dom_visitor.c
+  src/hfsm.c
 	src/layout.c
 	)
 target_include_directories(cwaybeams PUBLIC include src)

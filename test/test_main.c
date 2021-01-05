@@ -1,6 +1,7 @@
 #include "minunit.h"
 #include <dom_test.h>
 #include <dom_visitor_test.h>
+#include <hfsm_test.h>
 #include <layout_test.h>
 
 char *allTests(void) {
@@ -32,6 +33,9 @@ char *allTests(void) {
 
   // layout_test.h
   muRunTest(testNewLayout);
+
+  // hfsm_test.h
+  muRunTest(test_hfsm_creation);
 
   return NULL;
 }

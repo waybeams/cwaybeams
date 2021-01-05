@@ -9,6 +9,39 @@
 #define DEFAULT_ZERO 0
 #define DEFAULT_CHAR ""
 
+typedef unsigned long ElementId;
+
+typedef enum ElementType {
+  TypeNone = 0,
+  TypeBox,
+  TypeVBox,
+  TypeHBox,
+  TypeButton,
+  TypeLink,
+  TypeStyle,
+  TypeApp,
+  TypeWindow,
+  TypeHead,
+  TypeBody
+} ElementType;
+
+typedef enum AttrName {
+  NoneAttr = 0,
+  ChildrenAttr,
+  Flex,
+  HandlerAttr,
+  GestureHandlerAttr,
+  HFlex,
+  HeightAttr,
+  LayoutAttr,
+  NameAttr,
+  VFlex,
+  WidthAttr,
+  XAttr,
+  YAttr,
+  ZAttr
+} AttrName;
+
 #define PP_ARG_N( \
           _1,  _2,  _3,  _4,  _5,  _6,  _7,  _8,  _9, _10, \
          _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, \
@@ -44,10 +77,12 @@
 #define hbox(...)         newElement(TypeHBox, PP_NARG(__VA_ARGS__) + 1, \
     layout(LayoutHorizontal), __VA_ARGS__)
 #define children(...)     newChildren(PP_NARG(__VA_ARGS__), __VA_ARGS__)
+
 // Attribute setter macros
 #define name(value) newCharAttr(NameAttr, value)
 #define layout(value) newUintAttr(LayoutAttr, value)
 #define width(value) newUintAttr(WidthAttr, value)
+#define handler(value) newHandlerAttr(GestureHandlerAttr, value)
 #define height(value) newUintAttr(HeightAttr, value)
 #define x(value) newUintAttr(XAttr, value)
 #define y(value) newUintAttr(YAttr, value)
@@ -61,38 +96,6 @@
 #define getX(elem) getUintAttrFromElement(elem, XAttr, DEFAULT_ZERO)
 #define getY(elem) getUintAttrFromElement(elem, YAttr, DEFAULT_ZERO)
 #define getZ(elem) getUintAttrFromElement(elem, ZAttr, DEFAULT_ZERO)
-
-typedef unsigned long ElementId;
-
-typedef enum ElementType {
-  TypeNone = 0,
-  TypeBox,
-  TypeVBox,
-  TypeHBox,
-  TypeButton,
-  TypeLink,
-  TypeStyle,
-  TypeApp,
-  TypeWindow,
-  TypeHead,
-  TypeBody
-} ElementType;
-
-typedef enum AttrName {
-  NoneAttr = 0,
-  ChildrenAttr,
-  Flex,
-  GestureHandlerAttr,
-  HFlex,
-  HeightAttr,
-  LayoutAttr,
-  NameAttr,
-  VFlex,
-  WidthAttr,
-  XAttr,
-  YAttr,
-  ZAttr
-} AttrName;
 
 typedef enum Layout {
   LayoutDefault = 0,
@@ -120,11 +123,10 @@ typedef struct Element {
   struct Attr **attrs;
 } Element;
 
-typedef void (GestureHandler)(void);
+typedef void (*GestureHandler)(void);
 
 // Attribute custom factories
 Element *newElement(ElementType type, unsigned int count, ...);
-Attr *handler(char *gestureName, GestureHandler *handler);
 Attr *newChildren(unsigned int count, ...);
 
 // Attribute type factories
