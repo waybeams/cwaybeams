@@ -226,3 +226,22 @@ char *testElementTypes(void) {
   freeElement(elem);
   return NULL;
 }
+
+char *testElementChildren(void) {
+  Element *root = vbox(children(
+    box(name("one")),
+    box(name("two")),
+    box(name("three")),
+    box(name("four"))
+  ));
+
+  muAssert(root->childCount == 4, "child count");
+
+  struct Element **kids = getChildren(root);
+  muAssert(getName(kids[0]) == "one", "one");
+  muAssert(getName(kids[1]) == "two", "two");
+  muAssert(getName(kids[2]) == "three", "three");
+  muAssert(getName(kids[3]) == "four", "four");
+  freeElement(root);
+  return NULL;
+}
