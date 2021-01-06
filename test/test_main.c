@@ -30,6 +30,7 @@ char *allTests(void) {
 
   // dom_visitor_test.h
   muRunTest(testDepthFirst);
+  muRunTest(testBreadthFirst);
 
   // layout_test.h
   muRunTest(testNewLayout);
