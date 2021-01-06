@@ -158,6 +158,6 @@ void free_attr(Attr *attr);
 char *get_char_attr_from_node(Node *node, AttrName name, char *default_value);
 unsigned int get_uint_attr_from_node(Node *node, AttrName name,
     unsigned int default_value);
-unsigned char *getRawAttrFromNode(Node *node, AttrName name);
+unsigned char *get_raw_attr_from_node(Node *node, AttrName name);
 
 #endif
