@@ -118,7 +118,7 @@ typedef int (*SignalHandler)(int signal);
 #define z(value) new_uint_attr(ZAttr, value)
 
 // Attribute getter macros
-#define getName(node) get_char_attr_from_node(node, NameAttr, DEFAULT_CHAR)
+#define get_name(node) get_char_attr_from_node(node, NameAttr, DEFAULT_CHAR)
 #define getLayout(node) get_uint_attr_from_node(node, LayoutAttr, LayoutDefault)
 #define getWidth(node) get_uint_attr_from_node(node, WidthAttr, DEFAULT_ZERO)
 #define getHeight(node) get_uint_attr_from_node(node, HeightAttr, DEFAULT_ZERO)
@@ -143,7 +143,6 @@ unsigned int get_uint_attr_data(Attr *attr);
 char *get_char_attr_data(Attr *attr);
 
 // Node Attribute getters
-// char *getName(Node *node);
 struct Node **get_children(Node *node);
 
 // Node helpers
@@ -156,9 +155,9 @@ void freeNode(Node *node);
 void freeAttr(Attr *attr);
 
 // Used by Macros only
-char *get_char_attr_from_node(Node *node, AttrName name, char *defaultValue);
+char *get_char_attr_from_node(Node *node, AttrName name, char *default_value);
 unsigned int get_uint_attr_from_node(Node *node, AttrName name,
-    unsigned int defaultValue);
+    unsigned int default_value);
 unsigned char *getRawAttrFromNode(Node *node, AttrName name);
 
 #endif

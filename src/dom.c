@@ -175,23 +175,23 @@ struct Node **get_children(Node *node) {
   return NULL;
 }
 
-char *get_char_attr_from_node(Node *node, AttrName name, char *defaultValue) {
+char *get_char_attr_from_node(Node *node, AttrName name, char *default_value) {
   int index = getAttrIndexByName(node, name);
   if (index > -1) {
     return get_char_attr_data(node->attrs[index]);
   }
 
-  return defaultValue;
+  return default_value;
 }
 
 unsigned int get_uint_attr_from_node(Node *node, AttrName name,
-    unsigned int defaultValue) {
+    unsigned int default_value) {
   int index = getAttrIndexByName(node, name);
   if (index > -1) {
     return get_uint_attr_data(node->attrs[index]);
   }
 
-  return defaultValue;
+  return default_value;
 }
 
 unsigned char *getRawAttrFromNode(Node *node, AttrName name) {
@@ -294,7 +294,7 @@ void printElementIndented(Node *node, char *indent) {
   printf("------------------------\n");
   printf("%snode.id: %ld\n", indent, node->id);
   printf("%snode.parent_id: %ld\n", indent, node->parent_id);
-  printf("%snode.name: %s\n", indent, getName(node));
+  printf("%snode.name: %s\n", indent, get_name(node));
   struct Node **kids = get_children(node);
   if (kids != NULL) {
     char *nextIndent = malloc(strlen(indent) + 2);

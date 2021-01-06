@@ -63,19 +63,19 @@ char *testBreadthFirst(void) {
   breadth_first(root, node_handler);
 
   muAssert(visitedIndex == 13, "Expected count");
-  muAssert(strcmp(getName(visited[0]), "root") == 0, "root");
-  muAssert(strcmp(getName(visited[1]), "head") == 0, "head");
-  muAssert(strcmp(getName(visited[2]), "logo") == 0, "logo");
-  muAssert(strcmp(getName(visited[3]), "page-title") == 0, "page-title");
-  muAssert(strcmp(getName(visited[4]), "account") == 0, "account");
-  muAssert(strcmp(getName(visited[5]), "body") == 0, "body");
-  muAssert(strcmp(getName(visited[6]), "title") == 0, "title");
-  muAssert(strcmp(getName(visited[7]), "content") == 0, "content");
-  muAssert(strcmp(getName(visited[8]), "footer") == 0, "footer");
-  muAssert(strcmp(getName(visited[9]), "foot") == 0, "foot");
-  muAssert(strcmp(getName(visited[10]), "contact") == 0, "contact");
-  muAssert(strcmp(getName(visited[11]), "about") == 0, "about");
-  muAssert(strcmp(getName(visited[12]), "press") == 0, "press");
+  muAssert(strcmp(get_name(visited[0]), "root") == 0, "root");
+  muAssert(strcmp(get_name(visited[1]), "head") == 0, "head");
+  muAssert(strcmp(get_name(visited[2]), "logo") == 0, "logo");
+  muAssert(strcmp(get_name(visited[3]), "page-title") == 0, "page-title");
+  muAssert(strcmp(get_name(visited[4]), "account") == 0, "account");
+  muAssert(strcmp(get_name(visited[5]), "body") == 0, "body");
+  muAssert(strcmp(get_name(visited[6]), "title") == 0, "title");
+  muAssert(strcmp(get_name(visited[7]), "content") == 0, "content");
+  muAssert(strcmp(get_name(visited[8]), "footer") == 0, "footer");
+  muAssert(strcmp(get_name(visited[9]), "foot") == 0, "foot");
+  muAssert(strcmp(get_name(visited[10]), "contact") == 0, "contact");
+  muAssert(strcmp(get_name(visited[11]), "about") == 0, "about");
+  muAssert(strcmp(get_name(visited[12]), "press") == 0, "press");
 
   freeNode(root);
   return NULL;
@@ -86,19 +86,19 @@ char *testDepthFirst(void) {
   depth_first(root, node_handler);
 
   muAssert(visitedIndex == 13, "Expected count");
-  muAssert(strcmp(getName(visited[0]), "logo") == 0, "logo");
-  muAssert(strcmp(getName(visited[1]), "page-title") == 0, "page-title");
-  muAssert(strcmp(getName(visited[2]), "account") == 0, "account");
-  muAssert(strcmp(getName(visited[3]), "head") == 0, "head");
-  muAssert(strcmp(getName(visited[4]), "title") == 0, "title");
-  muAssert(strcmp(getName(visited[5]), "content") == 0, "content");
-  muAssert(strcmp(getName(visited[6]), "footer") == 0, "footer");
-  muAssert(strcmp(getName(visited[7]), "body") == 0, "body");
-  muAssert(strcmp(getName(visited[8]), "contact") == 0, "contact");
-  muAssert(strcmp(getName(visited[9]), "about") == 0, "about");
-  muAssert(strcmp(getName(visited[10]), "press") == 0, "press");
-  muAssert(strcmp(getName(visited[11]), "foot") == 0, "foot");
-  muAssert(strcmp(getName(visited[12]), "root") == 0, "root");
+  muAssert(strcmp(get_name(visited[0]), "logo") == 0, "logo");
+  muAssert(strcmp(get_name(visited[1]), "page-title") == 0, "page-title");
+  muAssert(strcmp(get_name(visited[2]), "account") == 0, "account");
+  muAssert(strcmp(get_name(visited[3]), "head") == 0, "head");
+  muAssert(strcmp(get_name(visited[4]), "title") == 0, "title");
+  muAssert(strcmp(get_name(visited[5]), "content") == 0, "content");
+  muAssert(strcmp(get_name(visited[6]), "footer") == 0, "footer");
+  muAssert(strcmp(get_name(visited[7]), "body") == 0, "body");
+  muAssert(strcmp(get_name(visited[8]), "contact") == 0, "contact");
+  muAssert(strcmp(get_name(visited[9]), "about") == 0, "about");
+  muAssert(strcmp(get_name(visited[10]), "press") == 0, "press");
+  muAssert(strcmp(get_name(visited[11]), "foot") == 0, "foot");
+  muAssert(strcmp(get_name(visited[12]), "root") == 0, "root");
 
   freeNode(root);
   return NULL;

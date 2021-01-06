@@ -76,7 +76,7 @@ char *testNewChildren(void) {
   Attr *attr = new_children(1, root);
 
   struct Node **kids = get_nodes_attr(attr);
-  char *name = getName(kids[0]);
+  char *name = get_name(kids[0]);
   muAssert(strcmp(name, "root") == 0, "Expected name root");
   freeAttr(attr);
   return NULL;
@@ -117,7 +117,7 @@ char *testIsRoot(void) {
 
 char *testGetName(void) {
   Node *elem = box(name("root"));
-  char *elemName = getName(elem);
+  char *elemName = get_name(elem);
   muAssert(strcmp(elemName, "root") == 0, "Expected name root");
   freeNode(elem);
   return NULL;
@@ -202,7 +202,7 @@ char *testHandler(void) {
 
 char *testAttrCollection(void) {
   Node *root = vbox(name("root"), width(3000));
-  char *n = getName(root);
+  char *n = get_name(root);
   muAssert(strcmp(n, "root") == 0, "Expected name");
   unsigned int w = getWidth(root);
   muAssert(w == 3000, "Expected width");
@@ -241,10 +241,10 @@ char *testElementChildren(void) {
   muAssert(root->child_count == 4, "child count");
 
   struct Node **kids = get_children(root);
-  muAssert(strcmp(getName(kids[0]), "one"), "one");
-  muAssert(strcmp(getName(kids[1]), "two"), "two");
-  muAssert(strcmp(getName(kids[2]), "three"), "three");
-  muAssert(strcmp(getName(kids[3]), "four"), "four");
+  muAssert(strcmp(get_name(kids[0]), "one"), "one");
+  muAssert(strcmp(get_name(kids[1]), "two"), "two");
+  muAssert(strcmp(get_name(kids[2]), "three"), "three");
+  muAssert(strcmp(get_name(kids[3]), "four"), "four");
   freeNode(root);
   return NULL;
 }
