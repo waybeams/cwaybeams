@@ -53,7 +53,7 @@ static int getAttrIndexByName(Element *elem, AttrName name) {
 void freeAttr(Attr *attr) {
   if (attr->name == ChildrenAttr) {
     struct Element **kids = getElementsAttr(attr);
-    int count = attr->dataSize / POINTER_SIZE;
+    int count = attr->data_size / POINTER_SIZE;
     for (int i = 0; i < count; i++) {
       freeElement(kids[i]);
     }
@@ -90,7 +90,7 @@ Attr *newAttr(void) {
   if (attr == NULL) {
     return NULL;
   }
-  attr->dataSize = 0;
+  attr->data_size = 0;
   return attr;
 }
 
@@ -103,9 +103,9 @@ Attr *newCharAttr(AttrName name, char *value) {
     return NULL;
   }
   attr->name = name;
-  attr->dataSize = strlen(value) + 1;
-  attr->data = (unsigned char *)malloc(attr->dataSize);
-  memcpy(attr->data, value, attr->dataSize);
+  attr->data_size = strlen(value) + 1;
+  attr->data = (unsigned char *)malloc(attr->data_size);
+  memcpy(attr->data, value, attr->data_size);
   return attr;
 }
 
@@ -125,9 +125,9 @@ Attr *newUintAttr(AttrName name, unsigned int value) {
     return NULL;
   }
   attr->name = name;
-  attr->dataSize = sizeof(unsigned int);
-  attr->data = malloc(attr->dataSize);
-  memcpy(attr->data, &value, attr->dataSize);
+  attr->data_size = sizeof(unsigned int);
+  attr->data = malloc(attr->data_size);
+  memcpy(attr->data, &value, attr->data_size);
   return attr;
 }
 
@@ -147,7 +147,7 @@ Attr *newHandlerAttr(AttrName name, GestureHandler handler) {
     return NULL;
   }
   attr->name = name;
-  attr->dataSize = POINTER_SIZE;
+  attr->data_size = POINTER_SIZE;
   attr->data = (unsigned char *)handler;
   return attr;
 }
@@ -158,7 +158,7 @@ Attr *newSignalHandlerAttr(AttrName name, SignalHandler handler) {
     return NULL;
   }
   attr->name = name;
-  attr->dataSize = POINTER_SIZE;
+  attr->data_size = POINTER_SIZE;
   attr->data = (unsigned char *)handler;
   return attr;
 }
@@ -214,9 +214,9 @@ Attr *newChildren(unsigned int count, ...) {
   }
 
   attr->name = ChildrenAttr;
-  attr->dataSize = count * POINTER_SIZE;
+  attr->data_size = count * POINTER_SIZE;
 
-  struct Element *kids[attr->dataSize];
+  struct Element *kids[attr->data_size];
   if (kids == NULL) {
     return NULL;
   }
@@ -229,11 +229,11 @@ Attr *newChildren(unsigned int count, ...) {
   }
   va_end(vargs);
 
-  attr->data = (unsigned char *)malloc(attr->dataSize);
+  attr->data = (unsigned char *)malloc(attr->data_size);
   if (attr->data == NULL) {
     return NULL;
   }
-  memcpy(attr->data, kids, attr->dataSize);
+  memcpy(attr->data, kids, attr->data_size);
   return attr;
 }
 
@@ -264,7 +264,7 @@ Element *newElement(ElementType type, unsigned int attr_count, ...) {
   for (int i = 0; i < attr_count; i++) {
     struct Attr *attr = va_arg(vargs, struct Attr *);
     if (attr->name == ChildrenAttr) {
-        elem->child_count += (attr->dataSize / POINTER_SIZE);
+        elem->child_count += (attr->data_size / POINTER_SIZE);
         struct Element **kids = getElementsAttr(attr);
         for (int k = 0; k < elem->child_count; k++) {
             kids[k]->parent_id = elem->id;

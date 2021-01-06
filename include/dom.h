@@ -43,6 +43,35 @@ typedef enum AttrName {
   ZAttr
 } AttrName;
 
+typedef enum Layout {
+  LayoutDefault = 0,
+  LayoutStack,
+  LayoutVertical,
+  LayoutHorizontal,
+} Layout;
+
+/**
+ * Container for arbitrary data
+ * values.
+ */
+typedef struct Attr {
+  AttrName name;
+  unsigned int data_size;
+  unsigned char *data;
+} Attr;
+
+typedef struct Element {
+  ElementId id;
+  ElementId parent_id;
+  ElementType type;
+  unsigned int child_count;
+  unsigned int attr_count;
+  struct Attr **attrs;
+} Element;
+
+typedef void (*GestureHandler)(void);
+typedef int (*SignalHandler)(int signal);
+
 #define PP_ARG_N( \
           _1,  _2,  _3,  _4,  _5,  _6,  _7,  _8,  _9, _10, \
          _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, \
@@ -98,34 +127,6 @@ typedef enum AttrName {
 #define getY(elem) getUintAttrFromElement(elem, YAttr, DEFAULT_ZERO)
 #define getZ(elem) getUintAttrFromElement(elem, ZAttr, DEFAULT_ZERO)
 
-typedef enum Layout {
-  LayoutDefault = 0,
-  LayoutStack,
-  LayoutVertical,
-  LayoutHorizontal,
-} Layout;
-
-/**
- * Container for arbitrary data
- * values.
- */
-typedef struct Attr {
-  AttrName name;
-  unsigned int dataSize;
-  unsigned char *data;
-} Attr;
-
-typedef struct Element {
-  ElementId id;
-  ElementId parent_id;
-  ElementType type;
-  unsigned int child_count;
-  unsigned int attr_count;
-  struct Attr **attrs;
-} Element;
-
-typedef void (*GestureHandler)(void);
-typedef int (*SignalHandler)(int signal);
 
 // Attribute custom factories
 Element *newElement(ElementType type, unsigned int count, ...);
