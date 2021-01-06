@@ -335,5 +335,3 @@ bool is_root(Node *node) {
   return node->parent_id == 0;
 }
 
-
-
