@@ -152,7 +152,7 @@ Attr *new_handler_attr(AttrName name, GestureHandler handler) {
   return attr;
 }
 
-Attr *newSignalHandlerAttr(AttrName name, SignalHandler handler) {
+Attr *new_signal_attr(AttrName name, SignalHandler handler) {
   Attr *attr = newAttr();
   if (attr == NULL) {
     return NULL;

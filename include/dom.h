@@ -135,7 +135,7 @@ Attr *new_children(unsigned int count, ...);
 Attr *new_char_attr(AttrName name, char *value);
 Attr *new_uint_attr(AttrName name, unsigned value);
 Attr *new_handler_attr(AttrName name, GestureHandler handler);
-Attr *newSignalHandlerAttr(AttrName name, SignalHandler handler);
+Attr *new_signal_attr(AttrName name, SignalHandler handler);
 
 // Attribute type getters
 struct Node **get_nodes_attr(Attr *attr);

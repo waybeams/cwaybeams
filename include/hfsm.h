@@ -15,7 +15,7 @@
 #define hfsm_default_state_name(value) new_char_attr(StateAttr, value)
 #define hfsm_enter_handler(state_name, handler)
 #define hfsm_exit_handler(state_name, handler)
-#define hfsm_signal_handler(value) newSignalHandlerAttr(HandlerAttr, value)
+#define hfsm_signal_handler(value) new_signal_attr(HandlerAttr, value)
 
 // Interactions
 #define hfsm_get_state_name(machine) getCharAttrFromNode(machine, StateAttr, DEFAULT_STATE)
