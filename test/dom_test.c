@@ -125,7 +125,7 @@ char *testGetName(void) {
 
 char *testLayout(void) {
   Node *root = vbox(name("root"));
-  Layout layout = getLayout(root);
+  Layout layout = get_layout(root);
   muAssert(layout == LayoutVertical, "Expected VBox");
   freeNode(root);
   return NULL;
@@ -133,7 +133,7 @@ char *testLayout(void) {
 
 char *testDefaultLayout(void) {
   Node *root = box(name("root"));
-  Layout layout = getLayout(root);
+  Layout layout = get_layout(root);
   muAssert(layout == LayoutDefault, "Expected default layout");
   freeNode(root);
   return NULL;
