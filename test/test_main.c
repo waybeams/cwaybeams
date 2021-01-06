@@ -15,6 +15,7 @@ char *allTests(void) {
   muRunTest(test_new_children);
   muRunTest(test_element_with_child);
   muRunTest(test_is_root);
+  muRunTest(test_pointer_attr);
 
   // dom_test.h
   muRunTest(test_new_name_attr);
@@ -28,7 +29,7 @@ char *allTests(void) {
   muRunTest(test_default_layout);
   muRunTest(test_default_attr_values);
   muRunTest(test_configured_attr_values);
-  muRunTest(test_handler);
+  // muRunTest(test_handler);
   muRunTest(test_attr_collection);
   muRunTest(test_node_types);
   muRunTest(test_element_children);

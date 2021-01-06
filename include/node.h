@@ -14,13 +14,13 @@
 typedef unsigned long NodeId;
 typedef unsigned int AttrType;
 typedef void (*GestureHandler)(void);
-typedef int (*SignalHandler)(int signal);
 
 typedef enum AttrTypes {
   AttrTypeNone = 0,
   AttrTypeChildren,
   AttrTypeHandler,
   AttrTypeName,
+  AttrTypePointer,
 } AttrTypes;
 
 /*
@@ -110,13 +110,14 @@ Attr *new_children(unsigned int count, ...);
 // Attribute type factories
 Attr *new_char_attr(AttrType type, char *value);
 Attr *new_uint_attr(AttrType type, unsigned value);
-Attr *new_handler_attr(AttrType type, GestureHandler handler);
-Attr *new_signal_attr(AttrType type, SignalHandler handler);
+Attr *new_ptr_attr(AttrType type, unsigned char *value);
 
 // Attribute type getters
+unsigned char *get_attr_data(Attr *attr);
 struct Node **get_nodes_attr(Attr *attr);
 unsigned int get_uint_attr_data(Attr *attr);
 char *get_char_attr_data(Attr *attr);
+
 
 // Node Attribute getters
 struct Node **get_children(Node *node);

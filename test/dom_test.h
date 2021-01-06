@@ -15,7 +15,7 @@ char *test_layout(void);
 char *test_default_layout(void);
 char *test_default_attr_values(void);
 char *test_configured_attr_values(void);
-char *test_handler(void);
+// char *test_handler(void);
 char *test_attr_collection(void);
 char *test_node_types(void);
 char *test_element_children(void);

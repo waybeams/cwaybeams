@@ -66,3 +66,8 @@ char *test_is_root(void) {
   return NULL;
 }
 
+char *test_pointer_attr(void) {
+
+  return NULL;
+}
+

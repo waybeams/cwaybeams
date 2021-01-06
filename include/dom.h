@@ -35,7 +35,7 @@ typedef enum Layout {
 #define name(value) new_char_attr(AttrTypeName, value)
 #define layout(value) new_uint_attr(AttrTypeLayout, value)
 #define width(value) new_uint_attr(AttrTypeWidth, value)
-#define handler(value) new_handler_attr(GestureHandlerAttr, value)
+// #define handler(value) new_pointer_attr(GestureHandlerAttr, value)
 #define height(value) new_uint_attr(AttrTypeHeight, value)
 #define x(value) new_uint_attr(AttrTypeX, value)
 #define y(value) new_uint_attr(AttrTypeY, value)

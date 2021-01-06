@@ -20,7 +20,6 @@ typedef enum HfsmAttrTypes {
 #define hfsm_default_state_name(value) new_char_attr(AttrTypeState, value)
 #define hfsm_enter_handler(state_name, handler)
 #define hfsm_exit_handler(state_name, handler)
-#define hfsm_signal_handler(value) new_signal_attr(AttrTypeHandler, value)
 
 // Interactions
 #define hfsm_get_state_name(machine) get_char_attr_from_node(machine, AttrTypeState, DEFAULT_STATE)

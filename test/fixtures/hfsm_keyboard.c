@@ -25,13 +25,16 @@ Node *new_hfsm_keyboard(void) {
     hfsm_children(
       hfsm_container(
         hfsm_name("kb_caps"),
-        hfsm_signal_handler(kb_caps_signal)
+        signal_handler(kb_caps_signal)
       ),
       hfsm_container(
         hfsm_name("kb_no_caps"),
-        hfsm_signal_handler(kb_no_caps_signal)
+        signal_handler(kb_no_caps_signal)
       )
     )
   );
 }
 
+Attr *signal_handler(SignalHandler handler) {
+  return new_ptr_attr(AttrTypeSignal, NULL);
+}

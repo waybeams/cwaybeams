@@ -112,7 +112,11 @@ Attr *new_char_attr(AttrType type, char *value) {
  * Get the data from a Char Attr as (char *).
  */
 char *get_char_attr_data(Attr *attr) {
-  return (char *)attr->data;
+  return (char *)get_attr_data(attr);
+}
+
+inline unsigned char *get_attr_data(Attr *attr) {
+  return attr->data;
 }
 
 /**
@@ -134,31 +138,17 @@ Attr *new_uint_attr(AttrType type, unsigned int value) {
  * Get the provided Attribute data as an unsigned integer.
  */
 unsigned int get_uint_attr_data(Attr *attr) {
-  return *(unsigned int *)attr->data;
+  return *(unsigned int *)get_attr_data(attr);
 }
 
-/**
- * Create a new Gesture handler Attr.
- */
-Attr *new_handler_attr(AttrType type, GestureHandler handler) {
+Attr *new_ptr_attr(AttrType type, unsigned char *value) {
   Attr *attr = newAttr();
   if (attr == NULL) {
     return NULL;
   }
   attr->type = type;
   attr->data_size = POINTER_SIZE;
-  attr->data = (unsigned char *)handler;
-  return attr;
-}
-
-Attr *new_signal_attr(AttrType type, SignalHandler handler) {
-  Attr *attr = newAttr();
-  if (attr == NULL) {
-    return NULL;
-  }
-  attr->type = type;
-  attr->data_size = POINTER_SIZE;
-  attr->data = (unsigned char *)handler;
+  attr->data = (unsigned char *)value;
   return attr;
 }
 
@@ -197,7 +187,7 @@ unsigned char *get_raw_attr_from_node(Node *node, AttrType type) {
   int index = get_attr_index_by_type(node, type);
   if (index > -1) {
     Attr *attr = node->attrs[index];
-    return attr->data;
+    return get_attr_data(attr);
   }
 
   return NULL;
@@ -240,7 +230,7 @@ Attr *new_children(unsigned int count, ...) {
  * Get an array of Node pointers as Children data from the provided Attr.
  */
 struct Node **get_nodes_attr(Attr *attr) {
-  return (struct Node **)attr->data;
+  return (struct Node **)get_attr_data(attr);
 }
 
 /**
@@ -322,7 +312,7 @@ void emit_event(Node *node, char *gesture_name) {
   int index = get_attr_index_by_type(node, AttrTypeHandler);
   if (index > -1) {
     Attr *attr = node->attrs[index];
-    GestureHandler gestureHandler = (GestureHandler)attr->data;
+    GestureHandler gestureHandler = (GestureHandler)get_attr_data(attr);
     gestureHandler();
   }
 }
