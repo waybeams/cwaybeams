@@ -53,7 +53,7 @@ char *testFindElementWithMatchingAttr(void) {
   muAssert(body != NULL, "Expected to find body");
   Element *title = find_element_with_matching_char_attr(root, NameAttr, "title");
   muAssert(title != NULL, "Expected to find title");
-  muAssert(title->parentId == body->id, "Expected child/parent relationship");
+  muAssert(title->parent_id == body->id, "Expected child/parent relationship");
   freeElement(root);
   return NULL;
 }

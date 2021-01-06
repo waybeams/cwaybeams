@@ -117,7 +117,7 @@ typedef struct Attr {
 
 typedef struct Element {
   ElementId id;
-  ElementId parentId;
+  ElementId parent_id;
   ElementType type;
   unsigned int childCount;
   unsigned int attrCount;

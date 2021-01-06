@@ -254,7 +254,7 @@ Element *newElement(ElementType type, unsigned int attrCount, ...) {
   }
   Element *elem = malloc(sizeof(struct Element));
   elem->id = getNextId();
-  elem->parentId = 0;
+  elem->parent_id = 0;
   elem->type = type;
   elem->childCount = 0;
 
@@ -267,7 +267,7 @@ Element *newElement(ElementType type, unsigned int attrCount, ...) {
         elem->childCount += (attr->dataSize / POINTER_SIZE);
         struct Element **kids = getElementsAttr(attr);
         for (int k = 0; k < elem->childCount; k++) {
-            kids[k]->parentId = elem->id;
+            kids[k]->parent_id = elem->id;
         }
     }
     attrs[i] = attr;
@@ -293,7 +293,7 @@ void printChars(char *chars) {
 void printElementIndented(Element *elem, char *indent) {
   printf("------------------------\n");
   printf("%selem.id: %ld\n", indent, elem->id);
-  printf("%selem.parentId: %ld\n", indent, elem->parentId);
+  printf("%selem.parent_id: %ld\n", indent, elem->parent_id);
   printf("%selem.name: %s\n", indent, getName(elem));
   struct Element **kids = getChildren(elem);
   if (kids != NULL) {
@@ -329,9 +329,9 @@ void emitEvent(Element *elem, char *gestureName) {
 }
 
 /**
- * Return true if the provided Element does not have an assigned parentId.
+ * Return true if the provided Element does not have an assigned parent_id.
  */
 bool isRoot(Element *elem) {
-  return elem->parentId == 0;
+  return elem->parent_id == 0;
 }
 

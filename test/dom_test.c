@@ -56,14 +56,14 @@ char *testNewCharAttr(void) {
 
 char *testNewBox(void) {
   Element *one = newElement(TypeNone, 0);
-  muAssert(one->parentId == 0, "Expected empty parentId");
+  muAssert(one->parent_id == 0, "Expected empty parent_id");
   freeElement(one);
   return NULL;
 }
 
 char *testNewBoxWithName(void) {
   Element *one = box(name("abcd"));
-  muAssert(one->parentId == 0, "Expected empty parentId");
+  muAssert(one->parent_id == 0, "Expected empty parent_id");
   Attr *attr = one->attrs[0];
   char *name = getCharAttr(attr);
   muAssert(strcmp(name, "abcd") == 0, "Expected name attr");
