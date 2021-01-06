@@ -1,8 +1,9 @@
 #include "hfsm_keyboard.h"
 #include <hfsm.h>
 #include <stddef.h>
+#include <stdio.h>
 
-static void kb_shift_up_signal(void) {
+void kb_shift_up_signal(void) {
   printf("YOOOOOOOOOOO\n");
 }
 

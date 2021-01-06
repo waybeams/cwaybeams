@@ -69,14 +69,14 @@ typedef enum AttrName {
 /**
  * Wrap variadic macros with expected names.
  */
-#define app(...)          newElement(TypeApp, PP_NARG(__VA_ARGS__), __VA_ARGS__)
-#define window(...)       newElement(TypeWindow, PP_NARG(__VA_ARGS__), __VA_ARGS__)
-#define box(...)          newElement(TypeBox, PP_NARG(__VA_ARGS__), __VA_ARGS__)
-#define vbox(...)         newElement(TypeVBox, PP_NARG(__VA_ARGS__) + 1, \
+#define app(...) newElement(TypeApp, PP_NARG(__VA_ARGS__), __VA_ARGS__)
+#define window(...) newElement(TypeWindow, PP_NARG(__VA_ARGS__), __VA_ARGS__)
+#define box(...) newElement(TypeBox, PP_NARG(__VA_ARGS__), __VA_ARGS__)
+#define vbox(...) newElement(TypeVBox, PP_NARG(__VA_ARGS__) + 1, \
     layout(LayoutVertical), __VA_ARGS__)
-#define hbox(...)         newElement(TypeHBox, PP_NARG(__VA_ARGS__) + 1, \
+#define hbox(...) newElement(TypeHBox, PP_NARG(__VA_ARGS__) + 1, \
     layout(LayoutHorizontal), __VA_ARGS__)
-#define children(...)     newChildren(PP_NARG(__VA_ARGS__), __VA_ARGS__)
+#define children(...) newChildren(PP_NARG(__VA_ARGS__), __VA_ARGS__)
 
 // Attribute setter macros
 #define name(value) newCharAttr(NameAttr, value)
@@ -132,7 +132,7 @@ Attr *newChildren(unsigned int count, ...);
 // Attribute type factories
 Attr *newCharAttr(AttrName name, char *value);
 Attr *newUintAttr(AttrName name, unsigned value);
-Attr *newHandlerAttr(AttrName name, GestureHandler *handler);
+Attr *newHandlerAttr(AttrName name, GestureHandler handler);
 
 // Attribute type getters
 struct Element **getElementsAttr(Attr *attr);
