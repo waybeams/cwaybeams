@@ -52,7 +52,7 @@ static int getAttrIndexByName(Node *node, AttrName name) {
  */
 void freeAttr(Attr *attr) {
   if (attr->name == ChildrenAttr) {
-    struct Node **kids = getElementsAttr(attr);
+    struct Node **kids = get_nodes_attr(attr);
     int count = attr->data_size / POINTER_SIZE;
     for (int i = 0; i < count; i++) {
       freeNode(kids[i]);
@@ -169,7 +169,7 @@ Attr *newSignalHandlerAttr(AttrName name, SignalHandler handler) {
 struct Node **getChildren(Node *node) {
   int index = getAttrIndexByName(node, ChildrenAttr);
   if (index > -1) {
-    return getElementsAttr(node->attrs[index]);
+    return get_nodes_attr(node->attrs[index]);
   }
 
   return NULL;
@@ -240,7 +240,7 @@ Attr *newChildren(unsigned int count, ...) {
 /**
  * Get an array of Node pointers as Children data from the provided Attr.
  */
-struct Node **getElementsAttr(Attr *attr) {
+struct Node **get_nodes_attr(Attr *attr) {
   return (struct Node **)attr->data;
 }
 
@@ -265,7 +265,7 @@ Node *newNode(NodeType type, unsigned int attr_count, ...) {
     struct Attr *attr = va_arg(vargs, struct Attr *);
     if (attr->name == ChildrenAttr) {
         node->child_count += (attr->data_size / POINTER_SIZE);
-        struct Node **kids = getElementsAttr(attr);
+        struct Node **kids = get_nodes_attr(attr);
         for (int k = 0; k < node->child_count; k++) {
             kids[k]->parent_id = node->id;
         }

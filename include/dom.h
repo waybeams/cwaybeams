@@ -5,7 +5,6 @@
 #include <limits.h>
 #include <stdbool.h>
 
-#define MAX_ELEMENT_COUNT 65535
 #define DEFAULT_ZERO 0
 #define DEFAULT_CHAR ""
 
@@ -139,7 +138,7 @@ Attr *newHandlerAttr(AttrName name, GestureHandler handler);
 Attr *newSignalHandlerAttr(AttrName name, SignalHandler handler);
 
 // Attribute type getters
-struct Node **getElementsAttr(Attr *attr);
+struct Node **get_nodes_attr(Attr *attr);
 unsigned int getUintAttr(Attr *attr);
 char *getCharAttr(Attr *attr);
 

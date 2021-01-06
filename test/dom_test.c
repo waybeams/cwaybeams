@@ -75,7 +75,7 @@ char *testNewChildren(void) {
   Node *root = vbox(name("root"));
   Attr *attr = newChildren(1, root);
 
-  struct Node **kids = getElementsAttr(attr);
+  struct Node **kids = get_nodes_attr(attr);
   char *name = getName(kids[0]);
   muAssert(strcmp(name, "root") == 0, "Expected name root");
   freeAttr(attr);
