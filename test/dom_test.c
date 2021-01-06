@@ -7,7 +7,7 @@
 
 char *testNewHeight(void) {
   Attr *one = height(23);
-  unsigned int data = getUintAttr(one);
+  unsigned int data = get_uint_attr_data(one);
   muAssert(data == 23, "Expected data to be 23");
   freeAttr(one);
   return NULL;
@@ -15,7 +15,7 @@ char *testNewHeight(void) {
 
 char *testNewWidth(void) {
   Attr *one = width(20);
-  unsigned int data = getUintAttr(one);
+  unsigned int data = get_uint_attr_data(one);
   muAssert(data == 20, "Expected data to be 20");
   freeAttr(one);
   return NULL;
@@ -23,7 +23,7 @@ char *testNewWidth(void) {
 
 char *testNewLargerWidth(void) {
   Attr *attr = new_uint_attr(WidthAttr, 801);
-  unsigned int value = getUintAttr(attr);
+  unsigned int value = get_uint_attr_data(attr);
 
   muAssert(value == 801, "Expected matching value");
   freeAttr(attr);
@@ -40,7 +40,7 @@ char *testNewNameAttr(void) {
 
 char *testNewUintAttr(void) {
   Attr *attr = new_uint_attr(NameAttr, 1234);
-  unsigned int data = getUintAttr(attr);
+  unsigned int data = get_uint_attr_data(attr);
   muAssert(data == 1234, "Expected 1234");
   freeAttr(attr);
   return NULL;

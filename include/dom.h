@@ -139,7 +139,7 @@ Attr *new_signal_attr(AttrName name, SignalHandler handler);
 
 // Attribute type getters
 struct Node **get_nodes_attr(Attr *attr);
-unsigned int getUintAttr(Attr *attr);
+unsigned int get_uint_attr_data(Attr *attr);
 char *getCharAttr(Attr *attr);
 
 // Node Attribute getters

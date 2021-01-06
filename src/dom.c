@@ -134,7 +134,7 @@ Attr *new_uint_attr(AttrName name, unsigned int value) {
 /**
  * Get the provided Attribute data as an unsigned integer.
  */
-unsigned int getUintAttr(Attr *attr) {
+unsigned int get_uint_attr_data(Attr *attr) {
   return *(unsigned int *)attr->data;
 }
 
@@ -188,7 +188,7 @@ unsigned int getUintAttrFromNode(Node *node, AttrName name,
     unsigned int defaultValue) {
   int index = getAttrIndexByName(node, name);
   if (index > -1) {
-    return getUintAttr(node->attrs[index]);
+    return get_uint_attr_data(node->attrs[index]);
   }
 
   return defaultValue;
