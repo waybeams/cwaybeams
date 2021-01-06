@@ -73,7 +73,7 @@ static AttrName matching_name;
 static Node *matched_node;
 
 static VisitStatus matching_char_visit_handler(Node *node) {
-  char *data = getCharAttrFromNode(node, matching_name, "");
+  char *data = get_char_attr_from_node(node, matching_name, "");
   if (strcmp(data, matching_value) == 0) {
     matched_node = node;
     return VISIT_MATCHED;

@@ -175,7 +175,7 @@ struct Node **get_children(Node *node) {
   return NULL;
 }
 
-char *getCharAttrFromNode(Node *node, AttrName name, char *defaultValue) {
+char *get_char_attr_from_node(Node *node, AttrName name, char *defaultValue) {
   int index = getAttrIndexByName(node, name);
   if (index > -1) {
     return get_char_attr_data(node->attrs[index]);
@@ -319,7 +319,7 @@ void printNode(Node *node) {
 /**
  * Call any handlers found for the provided gesture name.
  */
-void emitEvent(Node *node, char *gestureName) {
+void emitEvent(Node *node, char *gesture_name) {
   int index = getAttrIndexByName(node, GestureHandlerAttr);
   if (index > -1) {
     Attr *attr = node->attrs[index];

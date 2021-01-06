@@ -18,7 +18,7 @@
 #define hfsm_signal_handler(value) new_signal_attr(HandlerAttr, value)
 
 // Interactions
-#define hfsm_get_state_name(machine) getCharAttrFromNode(machine, StateAttr, DEFAULT_STATE)
+#define hfsm_get_state_name(machine) get_char_attr_from_node(machine, StateAttr, DEFAULT_STATE)
 
 int hfsm_signal(Node *machine, int signal);
 int hfsm_set_state(Node *machine, char *state_name);
