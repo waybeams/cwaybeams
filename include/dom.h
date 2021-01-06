@@ -98,12 +98,12 @@ typedef int (*SignalHandler)(int signal);
 /**
  * Wrap variadic macros with expected names.
  */
-#define app(...) newNode(TypeApp, PP_NARG(__VA_ARGS__), __VA_ARGS__)
-#define window(...) newNode(TypeWindow, PP_NARG(__VA_ARGS__), __VA_ARGS__)
-#define box(...) newNode(TypeBox, PP_NARG(__VA_ARGS__), __VA_ARGS__)
-#define vbox(...) newNode(TypeVBox, PP_NARG(__VA_ARGS__) + 1, \
+#define app(...) new_node(TypeApp, PP_NARG(__VA_ARGS__), __VA_ARGS__)
+#define window(...) new_node(TypeWindow, PP_NARG(__VA_ARGS__), __VA_ARGS__)
+#define box(...) new_node(TypeBox, PP_NARG(__VA_ARGS__), __VA_ARGS__)
+#define vbox(...) new_node(TypeVBox, PP_NARG(__VA_ARGS__) + 1, \
     layout(LayoutVertical), __VA_ARGS__)
-#define hbox(...) newNode(TypeHBox, PP_NARG(__VA_ARGS__) + 1, \
+#define hbox(...) new_node(TypeHBox, PP_NARG(__VA_ARGS__) + 1, \
     layout(LayoutHorizontal), __VA_ARGS__)
 #define children(...) newChildren(PP_NARG(__VA_ARGS__), __VA_ARGS__)
 
@@ -128,7 +128,7 @@ typedef int (*SignalHandler)(int signal);
 
 
 // Attribute custom factories
-Node *newNode(NodeType type, unsigned int count, ...);
+Node *new_node(NodeType type, unsigned int count, ...);
 Attr *newChildren(unsigned int count, ...);
 
 // Attribute type factories

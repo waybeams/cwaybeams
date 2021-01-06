@@ -55,7 +55,7 @@ char *testNewCharAttr(void) {
 }
 
 char *testNewBox(void) {
-  Node *one = newNode(TypeNone, 0);
+  Node *one = new_node(TypeNone, 0);
   muAssert(one->parent_id == 0, "Expected empty parent_id");
   freeNode(one);
   return NULL;

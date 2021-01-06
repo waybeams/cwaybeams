@@ -7,7 +7,7 @@
 #define DEFAULT_STATE "default"
 
 // Entities
-#define hfsm_container(...) newNode(TypeNone, PP_NARG(__VA_ARGS__), __VA_ARGS__)
+#define hfsm_container(...) new_node(TypeNone, PP_NARG(__VA_ARGS__), __VA_ARGS__)
 
 // Attributes
 #define hfsm_children(...) newChildren(PP_NARG(__VA_ARGS__), __VA_ARGS__)

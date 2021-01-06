@@ -247,7 +247,7 @@ struct Node **get_nodes_attr(Attr *attr) {
 /**
  * Create a new Node with the provided attributes.
  */
-Node *newNode(NodeType type, unsigned int attr_count, ...) {
+Node *new_node(NodeType type, unsigned int attr_count, ...) {
   struct Attr **attrs = malloc(attr_count * POINTER_SIZE);
   if (attrs == NULL) {
     return NULL;
