@@ -37,9 +37,9 @@ static ElementId getNextId() {
  *  I'm deferring this work for the moment, as this does the job and also
  *  works with duplicate attribute entries without too much extra complexity.
  */
-static int getAttrIndexByName(Node *elem, AttrName name) {
-  for (int i = 0; i < elem->attr_count; i++) {
-    if (elem->attrs[i]->name == name) {
+static int getAttrIndexByName(Node *node, AttrName name) {
+  for (int i = 0; i < node->attr_count; i++) {
+    if (node->attrs[i]->name == name) {
       return i;
     }
   }
@@ -71,13 +71,13 @@ void freeAttr(Attr *attr) {
  * Recursively free all malloc'd data from the provided
  * element to it's leaves.
  */
-void freeNode(Node *elem) {
-  for (int i = 0; i < elem->attr_count; i++) {
-    Attr *attr = elem->attrs[i];
+void freeNode(Node *node) {
+  for (int i = 0; i < node->attr_count; i++) {
+    Attr *attr = node->attrs[i];
     freeAttr(attr);
   }
-  free(elem->attrs);
-  free(elem);
+  free(node->attrs);
+  free(node);
 }
 
 /**
@@ -166,38 +166,38 @@ Attr *newSignalHandlerAttr(AttrName name, SignalHandler handler) {
 /**
  * Get the provided Node children collection.
  */
-struct Node **getChildren(Node *elem) {
-  int index = getAttrIndexByName(elem, ChildrenAttr);
+struct Node **getChildren(Node *node) {
+  int index = getAttrIndexByName(node, ChildrenAttr);
   if (index > -1) {
-    return getElementsAttr(elem->attrs[index]);
+    return getElementsAttr(node->attrs[index]);
   }
 
   return NULL;
 }
 
-char *getCharAttrFromNode(Node *elem, AttrName name, char *defaultValue) {
-  int index = getAttrIndexByName(elem, name);
+char *getCharAttrFromNode(Node *node, AttrName name, char *defaultValue) {
+  int index = getAttrIndexByName(node, name);
   if (index > -1) {
-    return getCharAttr(elem->attrs[index]);
+    return getCharAttr(node->attrs[index]);
   }
 
   return defaultValue;
 }
 
-unsigned int getUintAttrFromNode(Node *elem, AttrName name,
+unsigned int getUintAttrFromNode(Node *node, AttrName name,
     unsigned int defaultValue) {
-  int index = getAttrIndexByName(elem, name);
+  int index = getAttrIndexByName(node, name);
   if (index > -1) {
-    return getUintAttr(elem->attrs[index]);
+    return getUintAttr(node->attrs[index]);
   }
 
   return defaultValue;
 }
 
-unsigned char *getRawAttrFromNode(Node *elem, AttrName name) {
-  int index = getAttrIndexByName(elem, name);
+unsigned char *getRawAttrFromNode(Node *node, AttrName name) {
+  int index = getAttrIndexByName(node, name);
   if (index > -1) {
-    Attr *attr = elem->attrs[index];
+    Attr *attr = node->attrs[index];
     return attr->data;
   }
 
@@ -252,11 +252,11 @@ Node *newNode(NodeType type, unsigned int attr_count, ...) {
   if (attrs == NULL) {
     return NULL;
   }
-  Node *elem = malloc(sizeof(struct Node));
-  elem->id = getNextId();
-  elem->parent_id = 0;
-  elem->type = type;
-  elem->child_count = 0;
+  Node *node = malloc(sizeof(struct Node));
+  node->id = getNextId();
+  node->parent_id = 0;
+  node->type = type;
+  node->child_count = 0;
 
   // Process Attrs
   va_list vargs;
@@ -264,20 +264,20 @@ Node *newNode(NodeType type, unsigned int attr_count, ...) {
   for (int i = 0; i < attr_count; i++) {
     struct Attr *attr = va_arg(vargs, struct Attr *);
     if (attr->name == ChildrenAttr) {
-        elem->child_count += (attr->data_size / POINTER_SIZE);
+        node->child_count += (attr->data_size / POINTER_SIZE);
         struct Node **kids = getElementsAttr(attr);
-        for (int k = 0; k < elem->child_count; k++) {
-            kids[k]->parent_id = elem->id;
+        for (int k = 0; k < node->child_count; k++) {
+            kids[k]->parent_id = node->id;
         }
     }
     attrs[i] = attr;
   }
   va_end(vargs);
 
-  elem->attr_count = attr_count;
-  elem->attrs = attrs;
+  node->attr_count = attr_count;
+  node->attrs = attrs;
 
-  return elem;
+  return node;
 }
 
 /**
@@ -290,17 +290,17 @@ void printChars(char *chars) {
   }
 }
 
-void printElementIndented(Node *elem, char *indent) {
+void printElementIndented(Node *node, char *indent) {
   printf("------------------------\n");
-  printf("%selem.id: %ld\n", indent, elem->id);
-  printf("%selem.parent_id: %ld\n", indent, elem->parent_id);
-  printf("%selem.name: %s\n", indent, getName(elem));
-  struct Node **kids = getChildren(elem);
+  printf("%snode.id: %ld\n", indent, node->id);
+  printf("%snode.parent_id: %ld\n", indent, node->parent_id);
+  printf("%snode.name: %s\n", indent, getName(node));
+  struct Node **kids = getChildren(node);
   if (kids != NULL) {
     char *nextIndent = malloc(strlen(indent) + 2);
     nextIndent = strcpy(nextIndent, indent);
     nextIndent = strcat(nextIndent, "\t");
-    for (int i = 0; i < elem->child_count; i++) {
+    for (int i = 0; i < node->child_count; i++) {
       printElementIndented(kids[i], nextIndent);
     }
     free(nextIndent);
@@ -308,21 +308,21 @@ void printElementIndented(Node *elem, char *indent) {
 }
 
 /**
- * Print the provided element and attributes.
+ * Print the provided node and attributes.
  */
-void printNode(Node *elem) {
+void printNode(Node *node) {
   char *empty = malloc(1);
-  printElementIndented(elem, "");
+  printElementIndented(node, "");
   free(empty);
 }
 
 /**
  * Call any handlers found for the provided gesture name.
  */
-void emitEvent(Node *elem, char *gestureName) {
-  int index = getAttrIndexByName(elem, GestureHandlerAttr);
+void emitEvent(Node *node, char *gestureName) {
+  int index = getAttrIndexByName(node, GestureHandlerAttr);
   if (index > -1) {
-    Attr *attr = elem->attrs[index];
+    Attr *attr = node->attrs[index];
     GestureHandler gestureHandler = (GestureHandler)attr->data;
     gestureHandler();
   }
@@ -331,7 +331,7 @@ void emitEvent(Node *elem, char *gestureName) {
 /**
  * Return true if the provided Node does not have an assigned parent_id.
  */
-bool isRoot(Node *elem) {
-  return elem->parent_id == 0;
+bool isRoot(Node *node) {
+  return node->parent_id == 0;
 }
 

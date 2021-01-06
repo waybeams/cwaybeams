@@ -7,7 +7,7 @@ typedef enum LayoutStatus {
     LayoutSuccess = 0,
 } LayoutStatus;
 
-LayoutStatus layoutNode(Node *elem);
+LayoutStatus layoutNode(Node *node);
 
 #endif // __layout_h__
 

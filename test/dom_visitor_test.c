@@ -5,8 +5,8 @@
 Node *visited[13];
 int visitedIndex = 0;
 
-VisitStatus element_handler(Node *elem) {
-  visited[visitedIndex++] = elem;
+VisitStatus node_handler(Node *node) {
+  visited[visitedIndex++] = node;
   return VISIT_SUCCESS;
 }
 
@@ -60,7 +60,7 @@ char *testFindElementWithMatchingAttr(void) {
 
 char *testBreadthFirst(void) {
   Node *root = create_tree();
-  breadth_first(root, element_handler);
+  breadth_first(root, node_handler);
 
   muAssert(visitedIndex == 13, "Expected count");
   muAssert(strcmp(getName(visited[0]), "root") == 0, "root");
@@ -83,7 +83,7 @@ char *testBreadthFirst(void) {
 
 char *testDepthFirst(void) {
   Node *root = create_tree();
-  depth_first(root, element_handler);
+  depth_first(root, node_handler);
 
   muAssert(visitedIndex == 13, "Expected count");
   muAssert(strcmp(getName(visited[0]), "logo") == 0, "logo");

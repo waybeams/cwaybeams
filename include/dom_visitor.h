@@ -10,13 +10,13 @@ typedef enum VisitStatus {
 	VISIT_MATCHED,
 } VisitStatus;
 
-typedef VisitStatus (*VisitHandler)(Node *elem);
+typedef VisitStatus (*VisitHandler)(Node *node);
 
-VisitStatus each_child(Node *elem, VisitHandler handler);
-VisitStatus depth_first(Node *elem, VisitHandler handler);
-VisitStatus breadth_first(Node *elem, VisitHandler handler);
+VisitStatus each_child(Node *node, VisitHandler handler);
+VisitStatus depth_first(Node *node, VisitHandler handler);
+VisitStatus breadth_first(Node *node, VisitHandler handler);
 
-Node *find_element_with_matching_char_attr(Node *elem, AttrName name,
+Node *find_element_with_matching_char_attr(Node *node, AttrName name,
 		char *value);
 
 #endif // __dom_visitor_h__

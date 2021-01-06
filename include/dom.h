@@ -119,13 +119,13 @@ typedef int (*SignalHandler)(int signal);
 #define z(value) newUintAttr(ZAttr, value)
 
 // Attribute getter macros
-#define getName(elem) getCharAttrFromNode(elem, NameAttr, DEFAULT_CHAR)
-#define getLayout(elem) getUintAttrFromNode(elem, LayoutAttr, LayoutDefault)
-#define getWidth(elem) getUintAttrFromNode(elem, WidthAttr, DEFAULT_ZERO)
-#define getHeight(elem) getUintAttrFromNode(elem, HeightAttr, DEFAULT_ZERO)
-#define getX(elem) getUintAttrFromNode(elem, XAttr, DEFAULT_ZERO)
-#define getY(elem) getUintAttrFromNode(elem, YAttr, DEFAULT_ZERO)
-#define getZ(elem) getUintAttrFromNode(elem, ZAttr, DEFAULT_ZERO)
+#define getName(node) getCharAttrFromNode(node, NameAttr, DEFAULT_CHAR)
+#define getLayout(node) getUintAttrFromNode(node, LayoutAttr, LayoutDefault)
+#define getWidth(node) getUintAttrFromNode(node, WidthAttr, DEFAULT_ZERO)
+#define getHeight(node) getUintAttrFromNode(node, HeightAttr, DEFAULT_ZERO)
+#define getX(node) getUintAttrFromNode(node, XAttr, DEFAULT_ZERO)
+#define getY(node) getUintAttrFromNode(node, YAttr, DEFAULT_ZERO)
+#define getZ(node) getUintAttrFromNode(node, ZAttr, DEFAULT_ZERO)
 
 
 // Attribute custom factories
@@ -144,22 +144,22 @@ unsigned int getUintAttr(Attr *attr);
 char *getCharAttr(Attr *attr);
 
 // Node Attribute getters
-// char *getName(Node *elem);
-struct Node **getChildren(Node *elem);
+// char *getName(Node *node);
+struct Node **getChildren(Node *node);
 
 // Node helpers
-void printNode(Node *elem);
-bool isRoot(Node *elem);
-void emitEvent(Node *elem, char *gestureName);
+void printNode(Node *node);
+bool isRoot(Node *node);
+void emitEvent(Node *node, char *gestureName);
 
 // Destructors
-void freeNode(Node *elem);
+void freeNode(Node *node);
 void freeAttr(Attr *attr);
 
 // Used by Macros only
-char *getCharAttrFromNode(Node *elem, AttrName name, char *defaultValue);
-unsigned int getUintAttrFromNode(Node *elem, AttrName name,
+char *getCharAttrFromNode(Node *node, AttrName name, char *defaultValue);
+unsigned int getUintAttrFromNode(Node *node, AttrName name,
     unsigned int defaultValue);
-unsigned char *getRawAttrFromNode(Node *elem, AttrName name);
+unsigned char *getRawAttrFromNode(Node *node, AttrName name);
 
 #endif

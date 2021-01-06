@@ -55,9 +55,9 @@ int main(void)
         int count = 25000;
         // unsigned int ids[count];
         for (int i = 0; i < count; i++) {
-          Node *elem = uiControl("abcd");
-          // ids[i] = elem->id;
-          freeNode(elem);
+          Node *node = uiControl("abcd");
+          // ids[i] = node->id;
+          freeNode(node);
         }
         */
 

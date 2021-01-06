@@ -5,12 +5,12 @@ GtkWidget *getWidget(Rendered *r) {
   return (GtkWidget *)r->widget;
 }
 
-Rendered newRendered(Node *elem) {
+Rendered newRendered(Node *node) {
 }
 
-GtkWidget *newWidget(Node *elem) {
+GtkWidget *newWidget(Node *node) {
   GtkWidget *widget;
-  switch(elem->type) {
+  switch(node->type) {
     case TypeNone:
       break;
     case TypeBox:

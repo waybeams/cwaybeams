@@ -1,7 +1,7 @@
 #include <dom.h>
 #include <layout.h>
 
-LayoutStatus layoutNode(Node *elem) {
+LayoutStatus layoutNode(Node *node) {
     return LayoutSuccess;
 }
 
