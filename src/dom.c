@@ -38,7 +38,7 @@ static ElementId getNextId() {
  *  works with duplicate attribute entries without too much extra complexity.
  */
 static int getAttrIndexByName(Element *elem, AttrName name) {
-  for (int i = 0; i < elem->attrCount; i++) {
+  for (int i = 0; i < elem->attr_count; i++) {
     if (elem->attrs[i]->name == name) {
       return i;
     }
@@ -72,7 +72,7 @@ void freeAttr(Attr *attr) {
  * element to it's leaves.
  */
 void freeElement(Element *elem) {
-  for (int i = 0; i < elem->attrCount; i++) {
+  for (int i = 0; i < elem->attr_count; i++) {
     Attr *attr = elem->attrs[i];
     freeAttr(attr);
   }
@@ -247,8 +247,8 @@ struct Element **getElementsAttr(Attr *attr) {
 /**
  * Create a new Element with the provided attributes.
  */
-Element *newElement(ElementType type, unsigned int attrCount, ...) {
-  struct Attr **attrs = malloc(attrCount * POINTER_SIZE);
+Element *newElement(ElementType type, unsigned int attr_count, ...) {
+  struct Attr **attrs = malloc(attr_count * POINTER_SIZE);
   if (attrs == NULL) {
     return NULL;
   }
@@ -260,8 +260,8 @@ Element *newElement(ElementType type, unsigned int attrCount, ...) {
 
   // Process Attrs
   va_list vargs;
-  va_start(vargs, attrCount);
-  for (int i = 0; i < attrCount; i++) {
+  va_start(vargs, attr_count);
+  for (int i = 0; i < attr_count; i++) {
     struct Attr *attr = va_arg(vargs, struct Attr *);
     if (attr->name == ChildrenAttr) {
         elem->child_count += (attr->dataSize / POINTER_SIZE);
@@ -274,7 +274,7 @@ Element *newElement(ElementType type, unsigned int attrCount, ...) {
   }
   va_end(vargs);
 
-  elem->attrCount = attrCount;
+  elem->attr_count = attr_count;
   elem->attrs = attrs;
 
   return elem;
