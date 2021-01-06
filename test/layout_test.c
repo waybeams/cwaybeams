@@ -7,7 +7,7 @@ char *testNewLayout(void) {
   Node *root = box(name("root"));
   LayoutStatus s = layoutNode(root);
   muAssert(s == LayoutSuccess, "Expected layout success");
-  freeNode(root);
+  free_node(root);
   return NULL;
 }
 

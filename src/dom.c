@@ -55,7 +55,7 @@ void freeAttr(Attr *attr) {
     struct Node **kids = get_nodes_attr(attr);
     int count = attr->data_size / POINTER_SIZE;
     for (int i = 0; i < count; i++) {
-      freeNode(kids[i]);
+      free_node(kids[i]);
     }
   }
 
@@ -71,7 +71,7 @@ void freeAttr(Attr *attr) {
  * Recursively free all malloc'd data from the provided
  * element to it's leaves.
  */
-void freeNode(Node *node) {
+void free_node(Node *node) {
   for (int i = 0; i < node->attr_count; i++) {
     Attr *attr = node->attrs[i];
     freeAttr(attr);
@@ -310,7 +310,7 @@ void printElementIndented(Node *node, char *indent) {
 /**
  * Print the provided node and attributes.
  */
-void printNode(Node *node) {
+void print_node(Node *node) {
   char *empty = malloc(1);
   printElementIndented(node, "");
   free(empty);
@@ -319,7 +319,7 @@ void printNode(Node *node) {
 /**
  * Call any handlers found for the provided gesture name.
  */
-void emitEvent(Node *node, char *gesture_name) {
+void emit_event(Node *node, char *gesture_name) {
   int index = getAttrIndexByName(node, GestureHandlerAttr);
   if (index > -1) {
     Attr *attr = node->attrs[index];
@@ -331,7 +331,7 @@ void emitEvent(Node *node, char *gesture_name) {
 /**
  * Return true if the provided Node does not have an assigned parent_id.
  */
-bool isRoot(Node *node) {
+bool is_root(Node *node) {
   return node->parent_id == 0;
 }
 

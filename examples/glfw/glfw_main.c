@@ -47,7 +47,7 @@ int main(void)
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window)) {
         Node *root = uiControl("root");
-        // printNode(root);
+        // print_node(root);
 
         /*
          * On 12/29/2020, was able to generate (and free) about 25k simple trees
@@ -57,7 +57,7 @@ int main(void)
         for (int i = 0; i < count; i++) {
           Node *node = uiControl("abcd");
           // ids[i] = node->id;
-          freeNode(node);
+          free_node(node);
         }
         */
 
@@ -80,7 +80,7 @@ int main(void)
 
         /* Poll for and process events */
         glfwPollEvents();
-        freeNode(root);
+        free_node(root);
     }
 
     glfwTerminate();

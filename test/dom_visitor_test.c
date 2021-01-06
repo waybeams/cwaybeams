@@ -54,7 +54,7 @@ char *testFindElementWithMatchingAttr(void) {
   Node *title = find_element_with_matching_char_attr(root, NameAttr, "title");
   muAssert(title != NULL, "Expected to find title");
   muAssert(title->parent_id == body->id, "Expected child/parent relationship");
-  freeNode(root);
+  free_node(root);
   return NULL;
 }
 
@@ -77,7 +77,7 @@ char *testBreadthFirst(void) {
   muAssert(strcmp(get_name(visited[11]), "about") == 0, "about");
   muAssert(strcmp(get_name(visited[12]), "press") == 0, "press");
 
-  freeNode(root);
+  free_node(root);
   return NULL;
 }
 
@@ -100,7 +100,7 @@ char *testDepthFirst(void) {
   muAssert(strcmp(get_name(visited[11]), "foot") == 0, "foot");
   muAssert(strcmp(get_name(visited[12]), "root") == 0, "root");
 
-  freeNode(root);
+  free_node(root);
   return NULL;
 }
 

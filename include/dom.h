@@ -146,12 +146,12 @@ char *get_char_attr_data(Attr *attr);
 struct Node **get_children(Node *node);
 
 // Node helpers
-void printNode(Node *node);
-bool isRoot(Node *node);
-void emitEvent(Node *node, char *getsture_name);
+void print_node(Node *node);
+bool is_root(Node *node);
+void emit_event(Node *node, char *getsture_name);
 
 // Destructors
-void freeNode(Node *node);
+void free_node(Node *node);
 void freeAttr(Attr *attr);
 
 // Used by Macros only
