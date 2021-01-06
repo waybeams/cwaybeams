@@ -11,8 +11,8 @@
 
 // Attributes
 #define hfsm_children(...) new_children(PP_NARG(__VA_ARGS__), __VA_ARGS__)
-#define hfsm_name(value) newCharAttr(NameAttr, value)
-#define hfsm_default_state_name(value) newCharAttr(StateAttr, value)
+#define hfsm_name(value) new_char_attr(NameAttr, value)
+#define hfsm_default_state_name(value) new_char_attr(StateAttr, value)
 #define hfsm_enter_handler(state_name, handler)
 #define hfsm_exit_handler(state_name, handler)
 #define hfsm_signal_handler(value) newSignalHandlerAttr(HandlerAttr, value)

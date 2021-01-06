@@ -108,7 +108,7 @@ typedef int (*SignalHandler)(int signal);
 #define children(...) new_children(PP_NARG(__VA_ARGS__), __VA_ARGS__)
 
 // Attribute setter macros
-#define name(value) newCharAttr(NameAttr, value)
+#define name(value) new_char_attr(NameAttr, value)
 #define layout(value) newUintAttr(LayoutAttr, value)
 #define width(value) newUintAttr(WidthAttr, value)
 #define handler(value) newHandlerAttr(GestureHandlerAttr, value)
@@ -132,7 +132,7 @@ Node *new_node(NodeType type, unsigned int count, ...);
 Attr *new_children(unsigned int count, ...);
 
 // Attribute type factories
-Attr *newCharAttr(AttrName name, char *value);
+Attr *new_char_attr(AttrName name, char *value);
 Attr *newUintAttr(AttrName name, unsigned value);
 Attr *newHandlerAttr(AttrName name, GestureHandler handler);
 Attr *newSignalHandlerAttr(AttrName name, SignalHandler handler);

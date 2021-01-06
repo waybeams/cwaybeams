@@ -47,7 +47,7 @@ char *testNewUintAttr(void) {
 }
 
 char *testNewCharAttr(void) {
-  Attr *attr = newCharAttr(NameAttr, "abcd");
+  Attr *attr = new_char_attr(NameAttr, "abcd");
   char *data = getCharAttr(attr);
   muAssert(strcmp(data, "abcd") == 0, "Expected abcd");
   freeAttr(attr);

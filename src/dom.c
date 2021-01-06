@@ -97,7 +97,7 @@ Attr *newAttr(void) {
 /**
  * Create a new Attr with the provided char value.
  */
-Attr *newCharAttr(AttrName name, char *value) {
+Attr *new_char_attr(AttrName name, char *value) {
   Attr *attr = newAttr();
   if (attr == NULL) {
     return NULL;
