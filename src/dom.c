@@ -112,7 +112,7 @@ Attr *new_char_attr(AttrName name, char *value) {
 /**
  * Get the data from a Char Attr as (char *).
  */
-char *getCharAttr(Attr *attr) {
+char *get_char_attr_data(Attr *attr) {
   return (char *)attr->data;
 }
 
@@ -178,7 +178,7 @@ struct Node **getChildren(Node *node) {
 char *getCharAttrFromNode(Node *node, AttrName name, char *defaultValue) {
   int index = getAttrIndexByName(node, name);
   if (index > -1) {
-    return getCharAttr(node->attrs[index]);
+    return get_char_attr_data(node->attrs[index]);
   }
 
   return defaultValue;

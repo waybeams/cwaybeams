@@ -32,7 +32,7 @@ char *testNewLargerWidth(void) {
 
 char *testNewNameAttr(void) {
   Attr *attr = name("abcd");
-  char *data = getCharAttr(attr);
+  char *data = get_char_attr_data(attr);
   muAssert(strcmp(data, "abcd") == 0, "Expected abcd");
   freeAttr(attr);
   return NULL;
@@ -48,7 +48,7 @@ char *testNewUintAttr(void) {
 
 char *testNewCharAttr(void) {
   Attr *attr = new_char_attr(NameAttr, "abcd");
-  char *data = getCharAttr(attr);
+  char *data = get_char_attr_data(attr);
   muAssert(strcmp(data, "abcd") == 0, "Expected abcd");
   freeAttr(attr);
   return NULL;
@@ -65,7 +65,7 @@ char *testNewBoxWithName(void) {
   Node *one = box(name("abcd"));
   muAssert(one->parent_id == 0, "Expected empty parent_id");
   Attr *attr = one->attrs[0];
-  char *name = getCharAttr(attr);
+  char *name = get_char_attr_data(attr);
   muAssert(strcmp(name, "abcd") == 0, "Expected name attr");
   freeNode(one);
   return NULL;
