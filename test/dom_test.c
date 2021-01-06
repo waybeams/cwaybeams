@@ -73,7 +73,7 @@ char *testNewBoxWithName(void) {
 
 char *testNewChildren(void) {
   Node *root = vbox(name("root"));
-  Attr *attr = newChildren(1, root);
+  Attr *attr = new_children(1, root);
 
   struct Node **kids = get_nodes_attr(attr);
   char *name = getName(kids[0]);

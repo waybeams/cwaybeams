@@ -10,7 +10,7 @@
 #define hfsm_container(...) new_node(TypeNone, PP_NARG(__VA_ARGS__), __VA_ARGS__)
 
 // Attributes
-#define hfsm_children(...) newChildren(PP_NARG(__VA_ARGS__), __VA_ARGS__)
+#define hfsm_children(...) new_children(PP_NARG(__VA_ARGS__), __VA_ARGS__)
 #define hfsm_name(value) newCharAttr(NameAttr, value)
 #define hfsm_default_state_name(value) newCharAttr(StateAttr, value)
 #define hfsm_enter_handler(state_name, handler)

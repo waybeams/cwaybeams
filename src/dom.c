@@ -207,7 +207,7 @@ unsigned char *getRawAttrFromNode(Node *node, AttrName name) {
 /**
  * Create a children Attr.
  */
-Attr *newChildren(unsigned int count, ...) {
+Attr *new_children(unsigned int count, ...) {
   Attr *attr = newAttr();
   if (attr == NULL) {
     return NULL;

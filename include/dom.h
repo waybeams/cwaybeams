@@ -105,7 +105,7 @@ typedef int (*SignalHandler)(int signal);
     layout(LayoutVertical), __VA_ARGS__)
 #define hbox(...) new_node(TypeHBox, PP_NARG(__VA_ARGS__) + 1, \
     layout(LayoutHorizontal), __VA_ARGS__)
-#define children(...) newChildren(PP_NARG(__VA_ARGS__), __VA_ARGS__)
+#define children(...) new_children(PP_NARG(__VA_ARGS__), __VA_ARGS__)
 
 // Attribute setter macros
 #define name(value) newCharAttr(NameAttr, value)
@@ -129,7 +129,7 @@ typedef int (*SignalHandler)(int signal);
 
 // Attribute custom factories
 Node *new_node(NodeType type, unsigned int count, ...);
-Attr *newChildren(unsigned int count, ...);
+Attr *new_children(unsigned int count, ...);
 
 // Attribute type factories
 Attr *newCharAttr(AttrName name, char *value);
