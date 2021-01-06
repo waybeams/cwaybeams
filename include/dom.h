@@ -3,6 +3,16 @@
 
 #include "node.h"
 
+typedef enum DomAttrTypes {
+  DomAttrTypesNone = 100,
+  AttrTypeHeight,
+  AttrTypeLayout,
+  AttrTypeWidth,
+  AttrTypeX,
+  AttrTypeY,
+  AttrTypeZ,
+} DomAttrTypes;
+
 typedef enum Layout {
   LayoutDefault = 0,
   LayoutStack,
@@ -22,22 +32,22 @@ typedef enum Layout {
     layout(LayoutHorizontal), __VA_ARGS__)
 
 // Attribute setter macros
-#define name(value) new_char_attr(NameAttr, value)
-#define layout(value) new_uint_attr(LayoutAttr, value)
-#define width(value) new_uint_attr(WidthAttr, value)
+#define name(value) new_char_attr(AttrTypeName, value)
+#define layout(value) new_uint_attr(AttrTypeLayout, value)
+#define width(value) new_uint_attr(AttrTypeWidth, value)
 #define handler(value) new_handler_attr(GestureHandlerAttr, value)
-#define height(value) new_uint_attr(HeightAttr, value)
-#define x(value) new_uint_attr(XAttr, value)
-#define y(value) new_uint_attr(YAttr, value)
-#define z(value) new_uint_attr(ZAttr, value)
+#define height(value) new_uint_attr(AttrTypeHeight, value)
+#define x(value) new_uint_attr(AttrTypeX, value)
+#define y(value) new_uint_attr(AttrTypeY, value)
+#define z(value) new_uint_attr(AttrTypeZ, value)
 
 // Attribute getter macros
-#define get_name(node) get_char_attr_from_node(node, NameAttr, DEFAULT_CHAR)
-#define get_layout(node) get_uint_attr_from_node(node, LayoutAttr, LayoutDefault)
-#define get_width(node) get_uint_attr_from_node(node, WidthAttr, DEFAULT_ZERO)
-#define get_height(node) get_uint_attr_from_node(node, HeightAttr, DEFAULT_ZERO)
-#define get_x(node) get_uint_attr_from_node(node, XAttr, DEFAULT_ZERO)
-#define get_y(node) get_uint_attr_from_node(node, YAttr, DEFAULT_ZERO)
-#define get_z(node) get_uint_attr_from_node(node, ZAttr, DEFAULT_ZERO)
+#define get_name(node) get_char_attr_from_node(node, AttrTypeName, DEFAULT_CHAR)
+#define get_layout(node) get_uint_attr_from_node(node, AttrTypeLayout, LayoutDefault)
+#define get_width(node) get_uint_attr_from_node(node, AttrTypeWidth, DEFAULT_ZERO)
+#define get_height(node) get_uint_attr_from_node(node, AttrTypeHeight, DEFAULT_ZERO)
+#define get_x(node) get_uint_attr_from_node(node, AttrTypeX, DEFAULT_ZERO)
+#define get_y(node) get_uint_attr_from_node(node, AttrTypeY, DEFAULT_ZERO)
+#define get_z(node) get_uint_attr_from_node(node, AttrTypeZ, DEFAULT_ZERO)
 
 #endif // __dom_h__

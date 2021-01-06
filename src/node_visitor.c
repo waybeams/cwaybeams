@@ -69,11 +69,11 @@ VisitStatus breadth_first(Node *node, VisitHandler visitHandler) {
 
 // TODO(lbayes): NOT thread safe, need to rework this feature to avoid global values.
 static char *matching_value;
-static AttrName matching_name;
+static AttrType matching_type;
 static Node *matched_node;
 
 static VisitStatus matching_char_visit_handler(Node *node) {
-  char *data = get_char_attr_from_node(node, matching_name, "");
+  char *data = get_char_attr_from_node(node, matching_type, "");
   if (strcmp(data, matching_value) == 0) {
     matched_node = node;
     return VISIT_MATCHED;
@@ -82,10 +82,10 @@ static VisitStatus matching_char_visit_handler(Node *node) {
   return VISIT_SUCCESS;
 }
 
-Node *find_element_with_matching_char_attr(Node *node, AttrName name,
+Node *find_element_with_matching_char_attr(Node *node, AttrType type,
     char *value) {
   matched_node = NULL;
-  matching_name = name;
+  matching_type = type;
   matching_value = value;
   VisitStatus status = breadth_first(node, matching_char_visit_handler);
 

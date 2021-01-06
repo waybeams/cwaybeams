@@ -8,7 +8,39 @@
 #define DEFAULT_ZERO 0
 #define DEFAULT_CHAR ""
 
+#define NODE_ATTR_CHILDREN 1
+#define NODE_ATTR_HANDLER 2
+
 typedef unsigned long NodeId;
+typedef unsigned int AttrType;
+typedef void (*GestureHandler)(void);
+typedef int (*SignalHandler)(int signal);
+
+typedef enum AttrTypes {
+  AttrTypeNone = 0,
+  AttrTypeChildren,
+  AttrTypeHandler,
+  AttrTypeName,
+} AttrTypes;
+
+/*
+typedef enum AttrType {
+  NoneAttr = 0,
+  Flex,
+  HandlerAttr,
+  GestureHandlerAttr,
+  HFlex,
+  HeightAttr,
+  LayoutAttr,
+  StateAttr,
+  VFlex,
+  WidthAttr,
+  XAttr,
+  YAttr,
+  ZAttr
+} AttrType;
+*/
+
 
 typedef enum NodeType {
   TypeNone = 0,
@@ -24,30 +56,13 @@ typedef enum NodeType {
   TypeBody
 } NodeType;
 
-typedef enum AttrName {
-  NoneAttr = 0,
-  ChildrenAttr,
-  Flex,
-  HandlerAttr,
-  GestureHandlerAttr,
-  HFlex,
-  HeightAttr,
-  LayoutAttr,
-  NameAttr,
-  StateAttr,
-  VFlex,
-  WidthAttr,
-  XAttr,
-  YAttr,
-  ZAttr
-} AttrName;
 
 /**
  * Container for arbitrary data
  * values.
  */
 typedef struct Attr {
-  AttrName name;
+  AttrType type;
   unsigned int data_size;
   unsigned char *data;
 } Attr;
@@ -61,8 +76,6 @@ typedef struct Node {
   struct Attr **attrs;
 } Node;
 
-typedef void (*GestureHandler)(void);
-typedef int (*SignalHandler)(int signal);
 
 #define PP_ARG_N( \
           _1,  _2,  _3,  _4,  _5,  _6,  _7,  _8,  _9, _10, \
@@ -95,10 +108,10 @@ Node *new_node(NodeType type, unsigned int count, ...);
 Attr *new_children(unsigned int count, ...);
 
 // Attribute type factories
-Attr *new_char_attr(AttrName name, char *value);
-Attr *new_uint_attr(AttrName name, unsigned value);
-Attr *new_handler_attr(AttrName name, GestureHandler handler);
-Attr *new_signal_attr(AttrName name, SignalHandler handler);
+Attr *new_char_attr(AttrType type, char *value);
+Attr *new_uint_attr(AttrType type, unsigned value);
+Attr *new_handler_attr(AttrType type, GestureHandler handler);
+Attr *new_signal_attr(AttrType type, SignalHandler handler);
 
 // Attribute type getters
 struct Node **get_nodes_attr(Attr *attr);
@@ -118,9 +131,9 @@ void free_node(Node *node);
 void free_attr(Attr *attr);
 
 // Used by Macros only
-char *get_char_attr_from_node(Node *node, AttrName name, char *default_value);
-unsigned int get_uint_attr_from_node(Node *node, AttrName name,
+char *get_char_attr_from_node(Node *node, AttrType type, char *default_value);
+unsigned int get_uint_attr_from_node(Node *node, AttrType type,
     unsigned int default_value);
-unsigned char *get_raw_attr_from_node(Node *node, AttrName name);
+unsigned char *get_raw_attr_from_node(Node *node, AttrType type);
 
 #endif // __node_h__
