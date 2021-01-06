@@ -106,7 +106,7 @@ char *testIsRoot(void) {
   );
 
   muAssert(isRoot(root), "Expected root");
-  Node **kids = getChildren(root);
+  Node **kids = get_children(root);
   muAssert(!isRoot(kids[0]), "Expected child to not be root");
   muAssert(!isRoot(kids[1]), "Expected child to not be root");
   muAssert(!isRoot(kids[2]), "Expected child to not be root");
@@ -240,7 +240,7 @@ char *testElementChildren(void) {
 
   muAssert(root->child_count == 4, "child count");
 
-  struct Node **kids = getChildren(root);
+  struct Node **kids = get_children(root);
   muAssert(strcmp(getName(kids[0]), "one"), "one");
   muAssert(strcmp(getName(kids[1]), "two"), "two");
   muAssert(strcmp(getName(kids[2]), "three"), "three");

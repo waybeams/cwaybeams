@@ -166,7 +166,7 @@ Attr *new_signal_attr(AttrName name, SignalHandler handler) {
 /**
  * Get the provided Node children collection.
  */
-struct Node **getChildren(Node *node) {
+struct Node **get_children(Node *node) {
   int index = getAttrIndexByName(node, ChildrenAttr);
   if (index > -1) {
     return get_nodes_attr(node->attrs[index]);
@@ -295,7 +295,7 @@ void printElementIndented(Node *node, char *indent) {
   printf("%snode.id: %ld\n", indent, node->id);
   printf("%snode.parent_id: %ld\n", indent, node->parent_id);
   printf("%snode.name: %s\n", indent, getName(node));
-  struct Node **kids = getChildren(node);
+  struct Node **kids = get_children(node);
   if (kids != NULL) {
     char *nextIndent = malloc(strlen(indent) + 2);
     nextIndent = strcpy(nextIndent, indent);

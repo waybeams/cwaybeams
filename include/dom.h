@@ -144,7 +144,7 @@ char *get_char_attr_data(Attr *attr);
 
 // Node Attribute getters
 // char *getName(Node *node);
-struct Node **getChildren(Node *node);
+struct Node **get_children(Node *node);
 
 // Node helpers
 void printNode(Node *node);

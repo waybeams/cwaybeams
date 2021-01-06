@@ -9,7 +9,7 @@
  * Does not recurse into child elements.
  */
 VisitStatus each_child(Node *node, VisitHandler visitHandler) {
-  struct Node **kids = getChildren(node);
+  struct Node **kids = get_children(node);
   for (int i = 0; i < node->child_count; i++) {
     VisitStatus status = visitHandler(kids[i]);
     if (status != VISIT_SUCCESS) {
@@ -28,7 +28,7 @@ VisitStatus each_child(Node *node, VisitHandler visitHandler) {
  */
 VisitStatus depth_first(Node *node, VisitHandler visitHandler) {
   VisitStatus status;
-  struct Node **kids = getChildren(node);
+  struct Node **kids = get_children(node);
   for (int i = 0; i < node->child_count; i++) {
     status = depth_first(kids[i], visitHandler);
     if (status != VISIT_SUCCESS) {
@@ -56,7 +56,7 @@ VisitStatus breadth_first(Node *node, VisitHandler visitHandler) {
     return status;
   }
 
-  struct Node **kids = getChildren(node);
+  struct Node **kids = get_children(node);
   for (int i = 0; i < node->child_count; i++) {
     status = breadth_first(kids[i], visitHandler);
     if (status != VISIT_SUCCESS) {
