@@ -22,7 +22,7 @@ char *testNewWidth(void) {
 }
 
 char *testNewLargerWidth(void) {
-  Attr *attr = newUintAttr(WidthAttr, 801);
+  Attr *attr = new_uint_attr(WidthAttr, 801);
   unsigned int value = getUintAttr(attr);
 
   muAssert(value == 801, "Expected matching value");
@@ -39,7 +39,7 @@ char *testNewNameAttr(void) {
 }
 
 char *testNewUintAttr(void) {
-  Attr *attr = newUintAttr(NameAttr, 1234);
+  Attr *attr = new_uint_attr(NameAttr, 1234);
   unsigned int data = getUintAttr(attr);
   muAssert(data == 1234, "Expected 1234");
   freeAttr(attr);

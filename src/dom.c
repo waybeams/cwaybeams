@@ -119,7 +119,7 @@ char *getCharAttr(Attr *attr) {
 /**
  * Create a new Attr with the provided name and unsigned int data.
  */
-Attr *newUintAttr(AttrName name, unsigned int value) {
+Attr *new_uint_attr(AttrName name, unsigned int value) {
   Attr *attr = newAttr();
   if (attr == NULL) {
     return NULL;

@@ -109,13 +109,13 @@ typedef int (*SignalHandler)(int signal);
 
 // Attribute setter macros
 #define name(value) new_char_attr(NameAttr, value)
-#define layout(value) newUintAttr(LayoutAttr, value)
-#define width(value) newUintAttr(WidthAttr, value)
+#define layout(value) new_uint_attr(LayoutAttr, value)
+#define width(value) new_uint_attr(WidthAttr, value)
 #define handler(value) newHandlerAttr(GestureHandlerAttr, value)
-#define height(value) newUintAttr(HeightAttr, value)
-#define x(value) newUintAttr(XAttr, value)
-#define y(value) newUintAttr(YAttr, value)
-#define z(value) newUintAttr(ZAttr, value)
+#define height(value) new_uint_attr(HeightAttr, value)
+#define x(value) new_uint_attr(XAttr, value)
+#define y(value) new_uint_attr(YAttr, value)
+#define z(value) new_uint_attr(ZAttr, value)
 
 // Attribute getter macros
 #define getName(node) getCharAttrFromNode(node, NameAttr, DEFAULT_CHAR)
@@ -133,7 +133,7 @@ Attr *new_children(unsigned int count, ...);
 
 // Attribute type factories
 Attr *new_char_attr(AttrName name, char *value);
-Attr *newUintAttr(AttrName name, unsigned value);
+Attr *new_uint_attr(AttrName name, unsigned value);
 Attr *newHandlerAttr(AttrName name, GestureHandler handler);
 Attr *newSignalHandlerAttr(AttrName name, SignalHandler handler);
 
