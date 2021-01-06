@@ -1,32 +1,23 @@
 #ifndef __dom_test_h__
 #define __dom_test_h__
 
-#include <dom.h>
+#include "node.h"
+#include "dom.h"
 
-char *testNewCharAttr(void);
-char *testNewUintAttr(void);
-
-char *testNewNameAttr(void);
-char *testNewHeight(void);
-char *testNewWidth(void);
-char *testNewLargerWidth(void);
-
-char *testNewBox(void);
-char *testNewBoxWithName(void);
-
-char *testNewChildren(void);
-char *testElementWithChild(void);
-
-char *testGetName(void);
-char *testIsRoot(void);
-char *testLayout(void);
-char *testDefaultLayout(void);
-char *testDefaultAttrValues(void);
-char *testConfiguredAttrValues(void);
-char *testHandler(void);
-
-char *testAttrCollection(void);
-char *testNodeTypes(void);
-char *testElementChildren(void);
+char *test_new_name_attr(void);
+char *test_new_height(void);
+char *test_new_width(void);
+char *test_new_larger_width(void);
+char *test_new_box(void);
+char *test_new_box_with_name(void);
+char *test_get_name(void);
+char *test_layout(void);
+char *test_default_layout(void);
+char *test_default_attr_values(void);
+char *test_configured_attr_values(void);
+char *test_handler(void);
+char *test_attr_collection(void);
+char *test_node_types(void);
+char *test_element_children(void);
 
 #endif // __dom_test_h__

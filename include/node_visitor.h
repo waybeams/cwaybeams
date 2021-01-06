@@ -1,7 +1,7 @@
-#ifndef __dom_visitor_h__
-#define __dom_visitor_h__
+#ifndef __node_visitor_h__
+#define __node_visitor_h__
 
-#include <dom.h>
+#include "node.h"
 
 typedef enum VisitStatus {
   VISIT_SUCCESS = 0,
@@ -19,5 +19,5 @@ VisitStatus breadth_first(Node *node, VisitHandler handler);
 Node *find_element_with_matching_char_attr(Node *node, AttrName name,
 		char *value);
 
-#endif // __dom_visitor_h__
+#endif // __node_visitor_h__
 

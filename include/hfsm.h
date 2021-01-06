@@ -2,7 +2,7 @@
 #define __hfsm_h__
 
 #include <stdint.h>
-#include "dom.h"
+#include "node.h"
 
 #define DEFAULT_STATE "default"
 

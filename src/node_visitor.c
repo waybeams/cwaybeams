@@ -1,4 +1,4 @@
-#include "dom_visitor.h"
+#include "node_visitor.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>

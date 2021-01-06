@@ -1,6 +1,8 @@
-#include "dom_visitor_test.h"
+#include "node_visitor_test.h"
 #include "minunit.h"
-#include <dom_visitor.h>
+#include <node_visitor.h>
+#include "node.h"
+#include "dom.h"
 
 Node *visited[13];
 int visitedIndex = 0;

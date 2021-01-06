@@ -1,7 +1,8 @@
-#include "hfsm_test.h"
 #include "fixtures/hfsm_keyboard.h"
-#include <hfsm.h>
-#include <minunit.h>
+#include "hfsm.h"
+#include "hfsm_test.h"
+#include "minunit.h"
+#include "node.h"
 #include <stdbool.h>
 
 char *test_hfsm_creation(void) {

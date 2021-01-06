@@ -1,7 +1,7 @@
 #ifndef __hfsm_keyboard_h__
 #define __hfsm_keyboard_h__
 
-#include "dom.h"
+#include "node.h"
 
 Node *new_hfsm_keyboard(void);
 

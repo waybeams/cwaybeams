@@ -1,6 +1,6 @@
 #include "hfsm.h"
+#include "node_visitor.h"
 #include <stddef.h>
-#include <dom_visitor.h>
 
 int hfsm_signal(Node *machine, int signal) {
   return 0;

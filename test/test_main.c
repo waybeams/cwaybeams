@@ -1,6 +1,7 @@
 #include "minunit.h"
 #include <dom_test.h>
-#include <dom_visitor_test.h>
+#include <node_test.h>
+#include <node_visitor_test.h>
 #include <hfsm_test.h>
 #include <layout_test.h>
 
@@ -8,27 +9,31 @@ char *allTests(void) {
   // Begin the test suite
   muSuiteStart();
 
-  // dom_test.h
-  muRunTest(testNewCharAttr);
-  muRunTest(testNewNameAttr);
-  muRunTest(testNewHeight);
-  muRunTest(testNewWidth);
-  muRunTest(testNewLargerWidth);
-  muRunTest(testNewBox);
-  muRunTest(testNewBoxWithName);
-  muRunTest(testNewChildren);
-  muRunTest(testElementWithChild);
-  muRunTest(testIsRoot);
-  muRunTest(testGetName);
-  muRunTest(testDefaultLayout);
-  muRunTest(testLayout);
-  muRunTest(testHandler);
-  muRunTest(testDefaultAttrValues);
-  muRunTest(testConfiguredAttrValues);
-  muRunTest(testAttrCollection);
-  muRunTest(testNodeTypes);
+  // node_test.h
+  muRunTest(test_new_char_attr);
+  muRunTest(test_new_uint_attr);
+  muRunTest(test_new_children);
+  muRunTest(test_element_with_child);
+  muRunTest(test_is_root);
 
-  // dom_visitor_test.h
+  // dom_test.h
+  muRunTest(test_new_name_attr);
+  muRunTest(test_new_height);
+  muRunTest(test_new_width);
+  muRunTest(test_new_larger_width);
+  muRunTest(test_new_box);
+  muRunTest(test_new_box_with_name);
+  muRunTest(test_get_name);
+  muRunTest(test_layout);
+  muRunTest(test_default_layout);
+  muRunTest(test_default_attr_values);
+  muRunTest(test_configured_attr_values);
+  muRunTest(test_handler);
+  muRunTest(test_attr_collection);
+  muRunTest(test_node_types);
+  muRunTest(test_element_children);
+
+  // node_visitor_test.h
   muRunTest(testDepthFirst);
   muRunTest(testBreadthFirst);
   muRunTest(testFindElementWithMatchingAttr);
