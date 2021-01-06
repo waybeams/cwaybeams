@@ -18,29 +18,12 @@ typedef void (*GestureHandler)(void);
 typedef enum AttrTypes {
   AttrTypeNone = 0,
   AttrTypeChildren,
-  AttrTypeHandler,
   AttrTypeName,
   AttrTypePointer,
+  // ALL Attr function pointers MUST have a value >= 500
+  // NOTE(lbayes): This is gross, find a better way!
+  AttrTypeFunction = 500,
 } AttrTypes;
-
-/*
-typedef enum AttrType {
-  NoneAttr = 0,
-  Flex,
-  HandlerAttr,
-  GestureHandlerAttr,
-  HFlex,
-  HeightAttr,
-  LayoutAttr,
-  StateAttr,
-  VFlex,
-  WidthAttr,
-  XAttr,
-  YAttr,
-  ZAttr
-} AttrType;
-*/
-
 
 typedef enum NodeType {
   TypeNone = 0,

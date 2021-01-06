@@ -1,10 +1,12 @@
 #include "minunit.h"
+#include "node_test.h"
 #include "node.h"
 #include "dom.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <inttypes.h>
 
 char *test_new_char_attr(void) {
   Attr *attr = new_char_attr(AttrTypeName, "abcd");
@@ -66,8 +68,23 @@ char *test_is_root(void) {
   return NULL;
 }
 
-char *test_pointer_attr(void) {
+/**
+ * Function that is being used to test the pointer_attr creation
+ * and retrieval.
+ */
+int add_func(int a, int b) {
+  return a + b;
+}
 
+char *test_pointer_attr(void) {
+  Attr *attr = new_ptr_attr(AttrTypeFunction, (unsigned char *)add_func);
+  FakeAddFunc *f = (FakeAddFunc *)get_attr_data(attr);
+  // #include <inttypes.h>
+  // printf("0x%" PRIXPTR "\n", (uintptr_t)f);
+  int result = f(2, 3);
+  muAssert(result == 5, "Expected function to work");
+
+  free_attr(attr);
   return NULL;
 }
 

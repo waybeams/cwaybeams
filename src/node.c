@@ -59,7 +59,7 @@ void free_attr(Attr *attr) {
     }
   }
 
-  if (attr->type != AttrTypeHandler) {
+  if (attr->type < AttrTypeFunction) {
     free(attr->data);
   }
 
@@ -148,7 +148,9 @@ Attr *new_ptr_attr(AttrType type, unsigned char *value) {
   }
   attr->type = type;
   attr->data_size = POINTER_SIZE;
-  attr->data = (unsigned char *)value;
+  attr->data = value;
+  // attr->data = malloc(attr->data_size);
+  // memcpy(attr->data, &value, attr->data_size);
   return attr;
 }
 
@@ -309,7 +311,7 @@ void print_node(Node *node) {
  * Call any handlers found for the provided gesture type.
  */
 void emit_event(Node *node, char *gesture_name) {
-  int index = get_attr_index_by_type(node, AttrTypeHandler);
+  int index = get_attr_index_by_type(node, AttrTypeFunction);
   if (index > -1) {
     Attr *attr = node->attrs[index];
     GestureHandler gestureHandler = (GestureHandler)get_attr_data(attr);

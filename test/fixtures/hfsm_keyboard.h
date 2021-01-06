@@ -3,10 +3,14 @@
 
 #include "node.h"
 
-typedef int (*SignalHandler)(int signal);
+typedef int (SignalHandler)(int signal);
 
 typedef enum KeyboardAttrTypes {
   KeyboardAttrTypeNone = 100,
+
+  // Set the function handler enum value for all subsequent function handlers.
+  // NOTE(lbayes): This is gross, find a better way!
+  KeyboardAttrTypeFunction = AttrTypeFunction,
   AttrTypeSignal,
 } KeyboardAttrTypes;
 

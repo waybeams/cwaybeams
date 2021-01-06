@@ -29,7 +29,6 @@ char *allTests(void) {
   muRunTest(test_default_layout);
   muRunTest(test_default_attr_values);
   muRunTest(test_configured_attr_values);
-  // muRunTest(test_handler);
   muRunTest(test_attr_collection);
   muRunTest(test_node_types);
   muRunTest(test_element_children);

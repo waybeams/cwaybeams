@@ -1,5 +1,5 @@
 #include "hfsm_keyboard.h"
-#include <hfsm.h>
+#include "hfsm.h"
 #include <stddef.h>
 #include <stdio.h>
 
@@ -25,7 +25,7 @@ Node *new_hfsm_keyboard(void) {
     hfsm_children(
       hfsm_container(
         hfsm_name("kb_caps"),
-        signal_handler(kb_caps_signal)
+        signal_handler(&kb_caps_signal)
       ),
       hfsm_container(
         hfsm_name("kb_no_caps"),
@@ -36,5 +36,6 @@ Node *new_hfsm_keyboard(void) {
 }
 
 Attr *signal_handler(SignalHandler handler) {
-  return new_ptr_attr(AttrTypeSignal, NULL);
+  return new_ptr_attr(AttrTypeSignal, (unsigned char *)handler);
 }
+

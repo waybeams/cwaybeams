@@ -124,23 +124,6 @@ char *test_configured_attr_values(void) {
   return NULL;
 }
 
-/*
-bool fake_handler_called = false;
-void fake_handler(void) {
-  fake_handler_called = true;
-}
-
-char *test_handler(void) {
-   * TODO(lbayes): Figure out event handlers vs signals.
-  fake_handler_called = false;
-  Node *root = vbox(eventHandler("onclick", fake_handler));
-  emit_event(root, "onclick");
-  muAssert(fake_handler_called == true, "Expected fake_handler_called");
-  free_node(root);
-  return NULL;
-}
-*/
-
 char *test_attr_collection(void) {
   Node *root = vbox(name("root"), width(3000));
   char *n = get_name(root);
