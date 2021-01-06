@@ -7,7 +7,7 @@
 /**
  * Global id for all instantiated Nodes.
  */
-static ElementId lastId = 1;
+static NodeId lastId = 1;
 
 /**
  * Simple pointer, used to determine pointer size.
@@ -22,7 +22,7 @@ static uint8_t POINTER_SIZE = sizeof(ptr);
 /**
  * Get the next incremental identifier.
  */
-static ElementId getNextId() {
+static NodeId getNextId() {
   return lastId++;
 }
 

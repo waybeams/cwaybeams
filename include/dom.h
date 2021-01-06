@@ -9,7 +9,7 @@
 #define DEFAULT_ZERO 0
 #define DEFAULT_CHAR ""
 
-typedef unsigned long ElementId;
+typedef unsigned long NodeId;
 
 typedef enum NodeType {
   TypeNone = 0,
@@ -61,8 +61,8 @@ typedef struct Attr {
 } Attr;
 
 typedef struct Node {
-  ElementId id;
-  ElementId parent_id;
+  NodeId id;
+  NodeId parent_id;
   NodeType type;
   unsigned int child_count;
   unsigned int attr_count;
