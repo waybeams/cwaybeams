@@ -119,12 +119,12 @@ typedef int (*SignalHandler)(int signal);
 
 // Attribute getter macros
 #define getName(node) get_char_attr_from_node(node, NameAttr, DEFAULT_CHAR)
-#define getLayout(node) getUintAttrFromNode(node, LayoutAttr, LayoutDefault)
-#define getWidth(node) getUintAttrFromNode(node, WidthAttr, DEFAULT_ZERO)
-#define getHeight(node) getUintAttrFromNode(node, HeightAttr, DEFAULT_ZERO)
-#define getX(node) getUintAttrFromNode(node, XAttr, DEFAULT_ZERO)
-#define getY(node) getUintAttrFromNode(node, YAttr, DEFAULT_ZERO)
-#define getZ(node) getUintAttrFromNode(node, ZAttr, DEFAULT_ZERO)
+#define getLayout(node) get_uint_attr_from_node(node, LayoutAttr, LayoutDefault)
+#define getWidth(node) get_uint_attr_from_node(node, WidthAttr, DEFAULT_ZERO)
+#define getHeight(node) get_uint_attr_from_node(node, HeightAttr, DEFAULT_ZERO)
+#define getX(node) get_uint_attr_from_node(node, XAttr, DEFAULT_ZERO)
+#define getY(node) get_uint_attr_from_node(node, YAttr, DEFAULT_ZERO)
+#define getZ(node) get_uint_attr_from_node(node, ZAttr, DEFAULT_ZERO)
 
 
 // Attribute custom factories
@@ -157,7 +157,7 @@ void freeAttr(Attr *attr);
 
 // Used by Macros only
 char *get_char_attr_from_node(Node *node, AttrName name, char *defaultValue);
-unsigned int getUintAttrFromNode(Node *node, AttrName name,
+unsigned int get_uint_attr_from_node(Node *node, AttrName name,
     unsigned int defaultValue);
 unsigned char *getRawAttrFromNode(Node *node, AttrName name);
 

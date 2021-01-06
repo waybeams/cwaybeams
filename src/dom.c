@@ -184,7 +184,7 @@ char *get_char_attr_from_node(Node *node, AttrName name, char *defaultValue) {
   return defaultValue;
 }
 
-unsigned int getUintAttrFromNode(Node *node, AttrName name,
+unsigned int get_uint_attr_from_node(Node *node, AttrName name,
     unsigned int defaultValue) {
   int index = getAttrIndexByName(node, name);
   if (index > -1) {
