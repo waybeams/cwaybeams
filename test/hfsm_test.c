@@ -6,8 +6,8 @@
 
 char *test_hfsm_creation(void) {
   Element *machine = new_hfsm_keyboard();
-  char *state = hfsm_get_state(machine);
-  muAssert(strcmp(state, "kb_no_caps") == 0, "Expected default state");
+  char *name = hfsm_get_state_name(machine);
+  muAssert(strcmp(name, "kb_no_caps") == 0, "Expected default state");
   freeElement(machine);
   return NULL;
 }

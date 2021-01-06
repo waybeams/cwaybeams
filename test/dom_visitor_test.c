@@ -5,13 +5,13 @@
 Element *visited[12];
 int visitedCount = 0;
 
-VisitStatus visitor(Element *elem) {
+VisitStatus element_handler(Element *elem) {
   visited[visitedCount++] = elem;
   return VISIT_SUCCESS;
 }
 
-char *testDepthFirst(void) {
-  Element *root = vbox(
+static Element *create_tree(void) {
+  return vbox(
     name("root"),
     children(
       hbox(
@@ -40,8 +40,11 @@ char *testDepthFirst(void) {
       )
     )
   );
+}
 
-  depth_first(root, visitor);
+char *testDepthFirst(void) {
+  Element *root = create_tree();
+  depth_first(root, element_handler);
 
   muAssert(strcmp(getName(visited[0]), "logo") == 0, "logo");
   muAssert(strcmp(getName(visited[1]), "title") == 0, "title");

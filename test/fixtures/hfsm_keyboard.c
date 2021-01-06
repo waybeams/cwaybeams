@@ -21,7 +21,7 @@ int kb_no_caps_signal(int signal) {
 Element *new_hfsm_keyboard(void) {
   return hfsm_container(
     hfsm_name("kb_root"),
-    hfsm_state("kb_no_caps"),
+    hfsm_default_state_name("kb_no_caps"),
     hfsm_children(
       hfsm_container(
         hfsm_name("kb_caps"),

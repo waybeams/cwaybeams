@@ -22,5 +22,6 @@ VisitStatus depth_first(Element *elem, VisitHandler visitHandler) {
     }
   }
   return VISIT_SUCCESS;
-  return VISIT_SUCCESS;
 }
+
+
