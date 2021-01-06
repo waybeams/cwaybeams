@@ -141,7 +141,7 @@ unsigned int getUintAttr(Attr *attr) {
 /**
  * Create a new Gesture handler Attr.
  */
-Attr *newHandlerAttr(AttrName name, GestureHandler handler) {
+Attr *new_handler_attr(AttrName name, GestureHandler handler) {
   Attr *attr = newAttr();
   if (attr == NULL) {
     return NULL;

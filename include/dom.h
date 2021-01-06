@@ -111,7 +111,7 @@ typedef int (*SignalHandler)(int signal);
 #define name(value) new_char_attr(NameAttr, value)
 #define layout(value) new_uint_attr(LayoutAttr, value)
 #define width(value) new_uint_attr(WidthAttr, value)
-#define handler(value) newHandlerAttr(GestureHandlerAttr, value)
+#define handler(value) new_handler_attr(GestureHandlerAttr, value)
 #define height(value) new_uint_attr(HeightAttr, value)
 #define x(value) new_uint_attr(XAttr, value)
 #define y(value) new_uint_attr(YAttr, value)
@@ -134,7 +134,7 @@ Attr *new_children(unsigned int count, ...);
 // Attribute type factories
 Attr *new_char_attr(AttrName name, char *value);
 Attr *new_uint_attr(AttrName name, unsigned value);
-Attr *newHandlerAttr(AttrName name, GestureHandler handler);
+Attr *new_handler_attr(AttrName name, GestureHandler handler);
 Attr *newSignalHandlerAttr(AttrName name, SignalHandler handler);
 
 // Attribute type getters
