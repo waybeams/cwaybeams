@@ -26,7 +26,7 @@ char *testConfiguredAttrValues(void);
 char *testHandler(void);
 
 char *testAttrCollection(void);
-char *testElementTypes(void);
+char *testNodeTypes(void);
 char *testElementChildren(void);
 
 #endif // __dom_test_h__

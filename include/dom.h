@@ -11,7 +11,7 @@
 
 typedef unsigned long ElementId;
 
-typedef enum ElementType {
+typedef enum NodeType {
   TypeNone = 0,
   TypeBox,
   TypeVBox,
@@ -23,7 +23,7 @@ typedef enum ElementType {
   TypeWindow,
   TypeHead,
   TypeBody
-} ElementType;
+} NodeType;
 
 typedef enum AttrName {
   NoneAttr = 0,
@@ -63,7 +63,7 @@ typedef struct Attr {
 typedef struct Node {
   ElementId id;
   ElementId parent_id;
-  ElementType type;
+  NodeType type;
   unsigned int child_count;
   unsigned int attr_count;
   struct Attr **attrs;
@@ -129,7 +129,7 @@ typedef int (*SignalHandler)(int signal);
 
 
 // Attribute custom factories
-Node *newNode(ElementType type, unsigned int count, ...);
+Node *newNode(NodeType type, unsigned int count, ...);
 Attr *newChildren(unsigned int count, ...);
 
 // Attribute type factories

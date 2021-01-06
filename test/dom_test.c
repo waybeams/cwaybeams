@@ -213,7 +213,7 @@ char *testAttrCollection(void) {
   return NULL;
 }
 
-char *testElementTypes(void) {
+char *testNodeTypes(void) {
   Node *elem;
 
   elem = box(name("box"));

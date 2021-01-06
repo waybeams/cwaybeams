@@ -26,7 +26,7 @@ char *allTests(void) {
   muRunTest(testDefaultAttrValues);
   muRunTest(testConfiguredAttrValues);
   muRunTest(testAttrCollection);
-  muRunTest(testElementTypes);
+  muRunTest(testNodeTypes);
 
   // dom_visitor_test.h
   muRunTest(testDepthFirst);
