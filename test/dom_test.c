@@ -141,11 +141,11 @@ char *testDefaultLayout(void) {
 
 char *testDefaultAttrValues(void) {
   Node *root = box(name("root"));
-  unsigned int w = getWidth(root);
-  unsigned int h = getHeight(root);
-  unsigned int x = getX(root);
-  unsigned int y = getY(root);
-  unsigned int z = getZ(root);
+  unsigned int w = get_width(root);
+  unsigned int h = get_height(root);
+  unsigned int x = get_x(root);
+  unsigned int y = get_y(root);
+  unsigned int z = get_z(root);
 
   muAssert(w == 0, "Expected width 0");
   muAssert(h == 0, "Expected height 0");
@@ -167,11 +167,11 @@ char *testConfiguredAttrValues(void) {
     z(5005)
   );
 
-  unsigned int w = getWidth(root);
-  unsigned int h = getHeight(root);
-  unsigned int x = getX(root);
-  unsigned int y = getY(root);
-  unsigned int z = getZ(root);
+  unsigned int w = get_width(root);
+  unsigned int h = get_height(root);
+  unsigned int x = get_x(root);
+  unsigned int y = get_y(root);
+  unsigned int z = get_z(root);
 
   muAssert(w == 1001, "Expected width 1001");
   muAssert(h == 2002, "Expected height 2002");
@@ -204,9 +204,9 @@ char *testAttrCollection(void) {
   Node *root = vbox(name("root"), width(3000));
   char *n = get_name(root);
   muAssert(strcmp(n, "root") == 0, "Expected name");
-  unsigned int w = getWidth(root);
+  unsigned int w = get_width(root);
   muAssert(w == 3000, "Expected width");
-  unsigned int h = getHeight(root);
+  unsigned int h = get_height(root);
   muAssert(h == 0, "Expected default height");
 
   freeNode(root);

@@ -120,11 +120,11 @@ typedef int (*SignalHandler)(int signal);
 // Attribute getter macros
 #define get_name(node) get_char_attr_from_node(node, NameAttr, DEFAULT_CHAR)
 #define get_layout(node) get_uint_attr_from_node(node, LayoutAttr, LayoutDefault)
-#define getWidth(node) get_uint_attr_from_node(node, WidthAttr, DEFAULT_ZERO)
-#define getHeight(node) get_uint_attr_from_node(node, HeightAttr, DEFAULT_ZERO)
-#define getX(node) get_uint_attr_from_node(node, XAttr, DEFAULT_ZERO)
-#define getY(node) get_uint_attr_from_node(node, YAttr, DEFAULT_ZERO)
-#define getZ(node) get_uint_attr_from_node(node, ZAttr, DEFAULT_ZERO)
+#define get_width(node) get_uint_attr_from_node(node, WidthAttr, DEFAULT_ZERO)
+#define get_height(node) get_uint_attr_from_node(node, HeightAttr, DEFAULT_ZERO)
+#define get_x(node) get_uint_attr_from_node(node, XAttr, DEFAULT_ZERO)
+#define get_y(node) get_uint_attr_from_node(node, YAttr, DEFAULT_ZERO)
+#define get_z(node) get_uint_attr_from_node(node, ZAttr, DEFAULT_ZERO)
 
 
 // Attribute custom factories
