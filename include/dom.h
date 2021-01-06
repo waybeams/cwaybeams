@@ -35,6 +35,7 @@ typedef enum AttrName {
   HeightAttr,
   LayoutAttr,
   NameAttr,
+  StateAttr,
   VFlex,
   WidthAttr,
   XAttr,
@@ -124,6 +125,7 @@ typedef struct Element {
 } Element;
 
 typedef void (*GestureHandler)(void);
+typedef int (*SignalHandler)(int signal);
 
 // Attribute custom factories
 Element *newElement(ElementType type, unsigned int count, ...);
@@ -133,6 +135,7 @@ Attr *newChildren(unsigned int count, ...);
 Attr *newCharAttr(AttrName name, char *value);
 Attr *newUintAttr(AttrName name, unsigned value);
 Attr *newHandlerAttr(AttrName name, GestureHandler handler);
+Attr *newSignalHandlerAttr(AttrName name, SignalHandler handler);
 
 // Attribute type getters
 struct Element **getElementsAttr(Attr *attr);

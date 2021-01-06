@@ -152,6 +152,17 @@ Attr *newHandlerAttr(AttrName name, GestureHandler handler) {
   return attr;
 }
 
+Attr *newSignalHandlerAttr(AttrName name, SignalHandler handler) {
+  Attr *attr = newAttr();
+  if (attr == NULL) {
+    return NULL;
+  }
+  attr->name = name;
+  attr->dataSize = POINTER_SIZE;
+  attr->data = (unsigned char *)handler;
+  return attr;
+}
+
 /**
  * Get the provided Element children collection.
  */
