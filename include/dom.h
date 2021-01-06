@@ -152,7 +152,7 @@ void emit_event(Node *node, char *getsture_name);
 
 // Destructors
 void free_node(Node *node);
-void freeAttr(Attr *attr);
+void free_attr(Attr *attr);
 
 // Used by Macros only
 char *get_char_attr_from_node(Node *node, AttrName name, char *default_value);

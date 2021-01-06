@@ -50,7 +50,7 @@ static int getAttrIndexByName(Node *node, AttrName name) {
  * Free all malloc'd data from the provided attribute through any references it
  * may contain, including child Nodes.
  */
-void freeAttr(Attr *attr) {
+void free_attr(Attr *attr) {
   if (attr->name == ChildrenAttr) {
     struct Node **kids = get_nodes_attr(attr);
     int count = attr->data_size / POINTER_SIZE;
@@ -74,7 +74,7 @@ void freeAttr(Attr *attr) {
 void free_node(Node *node) {
   for (int i = 0; i < node->attr_count; i++) {
     Attr *attr = node->attrs[i];
-    freeAttr(attr);
+    free_attr(attr);
   }
   free(node->attrs);
   free(node);
@@ -83,7 +83,7 @@ void free_node(Node *node) {
 /**
  * Create and returne a new, empty attribute struct.
  *
- * These entities must be sent to 'freeAttr' at some point in the future.
+ * These entities must be sent to 'free_attr' at some point in the future.
  */
 Attr *newAttr(void) {
   Attr *attr = malloc(sizeof(struct Attr));

@@ -9,7 +9,7 @@ char *testNewHeight(void) {
   Attr *one = height(23);
   unsigned int data = get_uint_attr_data(one);
   muAssert(data == 23, "Expected data to be 23");
-  freeAttr(one);
+  free_attr(one);
   return NULL;
 }
 
@@ -17,7 +17,7 @@ char *testNewWidth(void) {
   Attr *one = width(20);
   unsigned int data = get_uint_attr_data(one);
   muAssert(data == 20, "Expected data to be 20");
-  freeAttr(one);
+  free_attr(one);
   return NULL;
 }
 
@@ -26,7 +26,7 @@ char *testNewLargerWidth(void) {
   unsigned int value = get_uint_attr_data(attr);
 
   muAssert(value == 801, "Expected matching value");
-  freeAttr(attr);
+  free_attr(attr);
   return NULL;
 }
 
@@ -34,7 +34,7 @@ char *testNewNameAttr(void) {
   Attr *attr = name("abcd");
   char *data = get_char_attr_data(attr);
   muAssert(strcmp(data, "abcd") == 0, "Expected abcd");
-  freeAttr(attr);
+  free_attr(attr);
   return NULL;
 }
 
@@ -42,7 +42,7 @@ char *testNewUintAttr(void) {
   Attr *attr = new_uint_attr(NameAttr, 1234);
   unsigned int data = get_uint_attr_data(attr);
   muAssert(data == 1234, "Expected 1234");
-  freeAttr(attr);
+  free_attr(attr);
   return NULL;
 }
 
@@ -50,7 +50,7 @@ char *testNewCharAttr(void) {
   Attr *attr = new_char_attr(NameAttr, "abcd");
   char *data = get_char_attr_data(attr);
   muAssert(strcmp(data, "abcd") == 0, "Expected abcd");
-  freeAttr(attr);
+  free_attr(attr);
   return NULL;
 }
 
@@ -78,7 +78,7 @@ char *testNewChildren(void) {
   struct Node **kids = get_nodes_attr(attr);
   char *name = get_name(kids[0]);
   muAssert(strcmp(name, "root") == 0, "Expected name root");
-  freeAttr(attr);
+  free_attr(attr);
   return NULL;
 }
 
