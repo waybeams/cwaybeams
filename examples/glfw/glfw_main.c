@@ -6,7 +6,7 @@
 #include <GLFW/glfw3.h>
 #include <GL/gl.h>
 
-Element* uiControl(char *title) {
+Node* uiControl(char *title) {
   return vbox(
     name(title),
     width(800),
@@ -46,8 +46,8 @@ int main(void)
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window)) {
-        Element *root = uiControl("root");
-        // printElement(root);
+        Node *root = uiControl("root");
+        // printNode(root);
 
         /*
          * On 12/29/2020, was able to generate (and free) about 25k simple trees
@@ -55,9 +55,9 @@ int main(void)
         int count = 25000;
         // unsigned int ids[count];
         for (int i = 0; i < count; i++) {
-          Element *elem = uiControl("abcd");
+          Node *elem = uiControl("abcd");
           // ids[i] = elem->id;
-          freeElement(elem);
+          freeNode(elem);
         }
         */
 
@@ -80,7 +80,7 @@ int main(void)
 
         /* Poll for and process events */
         glfwPollEvents();
-        freeElement(root);
+        freeNode(root);
     }
 
     glfwTerminate();

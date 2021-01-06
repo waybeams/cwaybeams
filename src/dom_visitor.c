@@ -8,8 +8,8 @@
  *
  * Does not recurse into child elements.
  */
-VisitStatus each_child(Element *elem, VisitHandler visitHandler) {
-  struct Element **kids = getChildren(elem);
+VisitStatus each_child(Node *elem, VisitHandler visitHandler) {
+  struct Node **kids = getChildren(elem);
   for (int i = 0; i < elem->child_count; i++) {
     VisitStatus status = visitHandler(kids[i]);
     if (status != VISIT_SUCCESS) {
@@ -20,15 +20,15 @@ VisitStatus each_child(Element *elem, VisitHandler visitHandler) {
 }
 
 /**
- * Call visitHandler for every node that is underneath the provided Element in
+ * Call visitHandler for every node that is underneath the provided Node in
  * a depth first traversal.
  *
  * This is generally useful when searching for values that are known to exist on
  * leaf nodes.
  */
-VisitStatus depth_first(Element *elem, VisitHandler visitHandler) {
+VisitStatus depth_first(Node *elem, VisitHandler visitHandler) {
   VisitStatus status;
-  struct Element **kids = getChildren(elem);
+  struct Node **kids = getChildren(elem);
   for (int i = 0; i < elem->child_count; i++) {
     status = depth_first(kids[i], visitHandler);
     if (status != VISIT_SUCCESS) {
@@ -44,19 +44,19 @@ VisitStatus depth_first(Element *elem, VisitHandler visitHandler) {
 }
 
 /**
- * Call visitHandler for every node that is underneath the provided Element in
+ * Call visitHandler for every node that is underneath the provided Node in
  * a breadth first traversal.
  *
  * This is generally what people expect when searching the tree for elements
  * with a given attribute value.
  */
-VisitStatus breadth_first(Element *elem, VisitHandler visitHandler) {
+VisitStatus breadth_first(Node *elem, VisitHandler visitHandler) {
   VisitStatus status = visitHandler(elem);
   if (status != VISIT_SUCCESS) {
     return status;
   }
 
-  struct Element **kids = getChildren(elem);
+  struct Node **kids = getChildren(elem);
   for (int i = 0; i < elem->child_count; i++) {
     status = breadth_first(kids[i], visitHandler);
     if (status != VISIT_SUCCESS) {
@@ -70,10 +70,10 @@ VisitStatus breadth_first(Element *elem, VisitHandler visitHandler) {
 // TODO(lbayes): NOT thread safe, need to rework this feature to avoid global values.
 static char *matching_value;
 static AttrName matching_name;
-static Element *matched_elem;
+static Node *matched_elem;
 
-static VisitStatus matching_char_visit_handler(Element *elem) {
-  char *data = getCharAttrFromElement(elem, matching_name, "");
+static VisitStatus matching_char_visit_handler(Node *elem) {
+  char *data = getCharAttrFromNode(elem, matching_name, "");
   if (strcmp(data, matching_value) == 0) {
     matched_elem = elem;
     return VISIT_MATCHED;
@@ -82,7 +82,7 @@ static VisitStatus matching_char_visit_handler(Element *elem) {
   return VISIT_SUCCESS;
 }
 
-Element *find_element_with_matching_char_attr(Element *elem, AttrName name,
+Node *find_element_with_matching_char_attr(Node *elem, AttrName name,
     char *value) {
   matched_elem = NULL;
   matching_name = name;

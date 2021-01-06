@@ -2,10 +2,10 @@
 #define __render_h__
 
 typedef struct Rendered {
-  Element *element;
+  Node *element;
   unsigned char *widget;
 }Rendered;
 
-Rendered *render(Element *elem);
+Rendered *render(Node *elem);
 
 #endif // __render_h__

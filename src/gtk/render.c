@@ -5,10 +5,10 @@ GtkWidget *getWidget(Rendered *r) {
   return (GtkWidget *)r->widget;
 }
 
-Rendered newRendered(Element *elem) {
+Rendered newRendered(Node *elem) {
 }
 
-GtkWidget *newWidget(Element *elem) {
+GtkWidget *newWidget(Node *elem) {
   GtkWidget *widget;
   switch(elem->type) {
     case TypeNone:

@@ -7,7 +7,7 @@
 #define DEFAULT_STATE "default"
 
 // Entities
-#define hfsm_container(...) newElement(TypeNone, PP_NARG(__VA_ARGS__), __VA_ARGS__)
+#define hfsm_container(...) newNode(TypeNone, PP_NARG(__VA_ARGS__), __VA_ARGS__)
 
 // Attributes
 #define hfsm_children(...) newChildren(PP_NARG(__VA_ARGS__), __VA_ARGS__)
@@ -18,11 +18,11 @@
 #define hfsm_signal_handler(value) newSignalHandlerAttr(HandlerAttr, value)
 
 // Interactions
-#define hfsm_get_state_name(machine) getCharAttrFromElement(machine, StateAttr, DEFAULT_STATE)
+#define hfsm_get_state_name(machine) getCharAttrFromNode(machine, StateAttr, DEFAULT_STATE)
 
-int hfsm_signal(Element *machine, int signal);
-int hfsm_set_state(Element *machine, char *state_name);
+int hfsm_signal(Node *machine, int signal);
+int hfsm_set_state(Node *machine, char *state_name);
 
-Element *hfsm_get_state(Element *machine);
+Node *hfsm_get_state(Node *machine);
 
 #endif // __hfsm_h__

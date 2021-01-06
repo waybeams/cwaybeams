@@ -4,10 +4,10 @@
 #include <stddef.h>
 
 char *testNewLayout(void) {
-  Element *root = box(name("root"));
-  LayoutStatus s = layoutElement(root);
+  Node *root = box(name("root"));
+  LayoutStatus s = layoutNode(root);
   muAssert(s == LayoutSuccess, "Expected layout success");
-  freeElement(root);
+  freeNode(root);
   return NULL;
 }
 

@@ -60,14 +60,14 @@ typedef struct Attr {
   unsigned char *data;
 } Attr;
 
-typedef struct Element {
+typedef struct Node {
   ElementId id;
   ElementId parent_id;
   ElementType type;
   unsigned int child_count;
   unsigned int attr_count;
   struct Attr **attrs;
-} Element;
+} Node;
 
 typedef void (*GestureHandler)(void);
 typedef int (*SignalHandler)(int signal);
@@ -99,12 +99,12 @@ typedef int (*SignalHandler)(int signal);
 /**
  * Wrap variadic macros with expected names.
  */
-#define app(...) newElement(TypeApp, PP_NARG(__VA_ARGS__), __VA_ARGS__)
-#define window(...) newElement(TypeWindow, PP_NARG(__VA_ARGS__), __VA_ARGS__)
-#define box(...) newElement(TypeBox, PP_NARG(__VA_ARGS__), __VA_ARGS__)
-#define vbox(...) newElement(TypeVBox, PP_NARG(__VA_ARGS__) + 1, \
+#define app(...) newNode(TypeApp, PP_NARG(__VA_ARGS__), __VA_ARGS__)
+#define window(...) newNode(TypeWindow, PP_NARG(__VA_ARGS__), __VA_ARGS__)
+#define box(...) newNode(TypeBox, PP_NARG(__VA_ARGS__), __VA_ARGS__)
+#define vbox(...) newNode(TypeVBox, PP_NARG(__VA_ARGS__) + 1, \
     layout(LayoutVertical), __VA_ARGS__)
-#define hbox(...) newElement(TypeHBox, PP_NARG(__VA_ARGS__) + 1, \
+#define hbox(...) newNode(TypeHBox, PP_NARG(__VA_ARGS__) + 1, \
     layout(LayoutHorizontal), __VA_ARGS__)
 #define children(...) newChildren(PP_NARG(__VA_ARGS__), __VA_ARGS__)
 
@@ -119,17 +119,17 @@ typedef int (*SignalHandler)(int signal);
 #define z(value) newUintAttr(ZAttr, value)
 
 // Attribute getter macros
-#define getName(elem) getCharAttrFromElement(elem, NameAttr, DEFAULT_CHAR)
-#define getLayout(elem) getUintAttrFromElement(elem, LayoutAttr, LayoutDefault)
-#define getWidth(elem) getUintAttrFromElement(elem, WidthAttr, DEFAULT_ZERO)
-#define getHeight(elem) getUintAttrFromElement(elem, HeightAttr, DEFAULT_ZERO)
-#define getX(elem) getUintAttrFromElement(elem, XAttr, DEFAULT_ZERO)
-#define getY(elem) getUintAttrFromElement(elem, YAttr, DEFAULT_ZERO)
-#define getZ(elem) getUintAttrFromElement(elem, ZAttr, DEFAULT_ZERO)
+#define getName(elem) getCharAttrFromNode(elem, NameAttr, DEFAULT_CHAR)
+#define getLayout(elem) getUintAttrFromNode(elem, LayoutAttr, LayoutDefault)
+#define getWidth(elem) getUintAttrFromNode(elem, WidthAttr, DEFAULT_ZERO)
+#define getHeight(elem) getUintAttrFromNode(elem, HeightAttr, DEFAULT_ZERO)
+#define getX(elem) getUintAttrFromNode(elem, XAttr, DEFAULT_ZERO)
+#define getY(elem) getUintAttrFromNode(elem, YAttr, DEFAULT_ZERO)
+#define getZ(elem) getUintAttrFromNode(elem, ZAttr, DEFAULT_ZERO)
 
 
 // Attribute custom factories
-Element *newElement(ElementType type, unsigned int count, ...);
+Node *newNode(ElementType type, unsigned int count, ...);
 Attr *newChildren(unsigned int count, ...);
 
 // Attribute type factories
@@ -139,27 +139,27 @@ Attr *newHandlerAttr(AttrName name, GestureHandler handler);
 Attr *newSignalHandlerAttr(AttrName name, SignalHandler handler);
 
 // Attribute type getters
-struct Element **getElementsAttr(Attr *attr);
+struct Node **getElementsAttr(Attr *attr);
 unsigned int getUintAttr(Attr *attr);
 char *getCharAttr(Attr *attr);
 
-// Element Attribute getters
-// char *getName(Element *elem);
-struct Element **getChildren(Element *elem);
+// Node Attribute getters
+// char *getName(Node *elem);
+struct Node **getChildren(Node *elem);
 
-// Element helpers
-void printElement(Element *elem);
-bool isRoot(Element *elem);
-void emitEvent(Element *elem, char *gestureName);
+// Node helpers
+void printNode(Node *elem);
+bool isRoot(Node *elem);
+void emitEvent(Node *elem, char *gestureName);
 
 // Destructors
-void freeElement(Element *elem);
+void freeNode(Node *elem);
 void freeAttr(Attr *attr);
 
 // Used by Macros only
-char *getCharAttrFromElement(Element *elem, AttrName name, char *defaultValue);
-unsigned int getUintAttrFromElement(Element *elem, AttrName name,
+char *getCharAttrFromNode(Node *elem, AttrName name, char *defaultValue);
+unsigned int getUintAttrFromNode(Node *elem, AttrName name,
     unsigned int defaultValue);
-unsigned char *getRawAttrFromElement(Element *elem, AttrName name);
+unsigned char *getRawAttrFromNode(Node *elem, AttrName name);
 
 #endif

@@ -2,15 +2,15 @@
 #include <stddef.h>
 #include <dom_visitor.h>
 
-int hfsm_signal(Element *machine, int signal) {
+int hfsm_signal(Node *machine, int signal) {
   return 0;
 }
 
-int hfsm_set_state(Element *machine, char *state_name) {
+int hfsm_set_state(Node *machine, char *state_name) {
   return 0;
 }
 
-Element *hfsm_get_state(Element *machine) {
+Node *hfsm_get_state(Node *machine) {
   char *name = hfsm_get_state_name(machine);
 
   return NULL;

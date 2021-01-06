@@ -55,27 +55,27 @@ char *testNewCharAttr(void) {
 }
 
 char *testNewBox(void) {
-  Element *one = newElement(TypeNone, 0);
+  Node *one = newNode(TypeNone, 0);
   muAssert(one->parent_id == 0, "Expected empty parent_id");
-  freeElement(one);
+  freeNode(one);
   return NULL;
 }
 
 char *testNewBoxWithName(void) {
-  Element *one = box(name("abcd"));
+  Node *one = box(name("abcd"));
   muAssert(one->parent_id == 0, "Expected empty parent_id");
   Attr *attr = one->attrs[0];
   char *name = getCharAttr(attr);
   muAssert(strcmp(name, "abcd") == 0, "Expected name attr");
-  freeElement(one);
+  freeNode(one);
   return NULL;
 }
 
 char *testNewChildren(void) {
-  Element *root = vbox(name("root"));
+  Node *root = vbox(name("root"));
   Attr *attr = newChildren(1, root);
 
-  struct Element **kids = getElementsAttr(attr);
+  struct Node **kids = getElementsAttr(attr);
   char *name = getName(kids[0]);
   muAssert(strcmp(name, "root") == 0, "Expected name root");
   freeAttr(attr);
@@ -83,19 +83,19 @@ char *testNewChildren(void) {
 }
 
 char *testElementWithChild(void) {
-  Element *root = box(
+  Node *root = box(
     name("root"),
     children(
       box(name("child-1"))
     )
   );
 
-  freeElement(root);
+  freeNode(root);
   return NULL;
 }
 
 char *testIsRoot(void) {
-  Element *root = box(
+  Node *root = box(
     name("root"),
     children(
       box(name("child-1")),
@@ -106,41 +106,41 @@ char *testIsRoot(void) {
   );
 
   muAssert(isRoot(root), "Expected root");
-  Element **kids = getChildren(root);
+  Node **kids = getChildren(root);
   muAssert(!isRoot(kids[0]), "Expected child to not be root");
   muAssert(!isRoot(kids[1]), "Expected child to not be root");
   muAssert(!isRoot(kids[2]), "Expected child to not be root");
   muAssert(!isRoot(kids[3]), "Expected child to not be root");
-  freeElement(root);
+  freeNode(root);
   return NULL;
 }
 
 char *testGetName(void) {
-  Element *elem = box(name("root"));
+  Node *elem = box(name("root"));
   char *elemName = getName(elem);
   muAssert(strcmp(elemName, "root") == 0, "Expected name root");
-  freeElement(elem);
+  freeNode(elem);
   return NULL;
 }
 
 char *testLayout(void) {
-  Element *root = vbox(name("root"));
+  Node *root = vbox(name("root"));
   Layout layout = getLayout(root);
   muAssert(layout == LayoutVertical, "Expected VBox");
-  freeElement(root);
+  freeNode(root);
   return NULL;
 }
 
 char *testDefaultLayout(void) {
-  Element *root = box(name("root"));
+  Node *root = box(name("root"));
   Layout layout = getLayout(root);
   muAssert(layout == LayoutDefault, "Expected default layout");
-  freeElement(root);
+  freeNode(root);
   return NULL;
 }
 
 char *testDefaultAttrValues(void) {
-  Element *root = box(name("root"));
+  Node *root = box(name("root"));
   unsigned int w = getWidth(root);
   unsigned int h = getHeight(root);
   unsigned int x = getX(root);
@@ -153,12 +153,12 @@ char *testDefaultAttrValues(void) {
   muAssert(y == 0, "Expected y 0");
   muAssert(z == 0, "Expected z 0");
 
-  freeElement(root);
+  freeNode(root);
   return NULL;
 }
 
 char *testConfiguredAttrValues(void) {
-  Element *root = box(
+  Node *root = box(
     name("root"),
     width(1001),
     height(2002),
@@ -179,7 +179,7 @@ char *testConfiguredAttrValues(void) {
   muAssert(y == 4004, "Expected y 4004");
   muAssert(z == 5005, "Expected z 5005");
 
-  freeElement(root);
+  freeNode(root);
   return NULL;
 }
 
@@ -192,16 +192,16 @@ char *testHandler(void) {
   /*
    * TODO(lbayes): Figure out event handlers vs signals.
   fakeHandlerCalled = false;
-  Element *root = vbox(eventHandler("onclick", fakeHandler));
+  Node *root = vbox(eventHandler("onclick", fakeHandler));
   emitEvent(root, "onclick");
   muAssert(fakeHandlerCalled == true, "Expected fakeHandlerCalled");
-  freeElement(root);
+  freeNode(root);
   */
   return NULL;
 }
 
 char *testAttrCollection(void) {
-  Element *root = vbox(name("root"), width(3000));
+  Node *root = vbox(name("root"), width(3000));
   char *n = getName(root);
   muAssert(strcmp(n, "root") == 0, "Expected name");
   unsigned int w = getWidth(root);
@@ -209,29 +209,29 @@ char *testAttrCollection(void) {
   unsigned int h = getHeight(root);
   muAssert(h == 0, "Expected default height");
 
-  freeElement(root);
+  freeNode(root);
   return NULL;
 }
 
 char *testElementTypes(void) {
-  Element *elem;
+  Node *elem;
 
   elem = box(name("box"));
   muAssert(elem->type == TypeBox, "Expected Box");
-  freeElement(elem);
+  freeNode(elem);
 
   elem = vbox(name("vbox"));
   muAssert(elem->type == TypeVBox, "Expected VBox");
-  freeElement(elem);
+  freeNode(elem);
 
   elem = hbox(name("hbox"));
   muAssert(elem->type == TypeHBox, "Expected HBox");
-  freeElement(elem);
+  freeNode(elem);
   return NULL;
 }
 
 char *testElementChildren(void) {
-  Element *root = vbox(children(
+  Node *root = vbox(children(
     box(name("one")),
     box(name("two")),
     box(name("three")),
@@ -240,11 +240,11 @@ char *testElementChildren(void) {
 
   muAssert(root->child_count == 4, "child count");
 
-  struct Element **kids = getChildren(root);
+  struct Node **kids = getChildren(root);
   muAssert(strcmp(getName(kids[0]), "one"), "one");
   muAssert(strcmp(getName(kids[1]), "two"), "two");
   muAssert(strcmp(getName(kids[2]), "three"), "three");
   muAssert(strcmp(getName(kids[3]), "four"), "four");
-  freeElement(root);
+  freeNode(root);
   return NULL;
 }

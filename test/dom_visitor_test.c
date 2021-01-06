@@ -2,15 +2,15 @@
 #include "minunit.h"
 #include <dom_visitor.h>
 
-Element *visited[13];
+Node *visited[13];
 int visitedIndex = 0;
 
-VisitStatus element_handler(Element *elem) {
+VisitStatus element_handler(Node *elem) {
   visited[visitedIndex++] = elem;
   return VISIT_SUCCESS;
 }
 
-static Element *create_tree(void) {
+static Node *create_tree(void) {
   visitedIndex = 0;
 
   return vbox(
@@ -45,21 +45,21 @@ static Element *create_tree(void) {
 }
 
 char *testFindElementWithMatchingAttr(void) {
-  Element *root = create_tree();
-  Element *missing = find_element_with_matching_char_attr(root, NameAttr,
+  Node *root = create_tree();
+  Node *missing = find_element_with_matching_char_attr(root, NameAttr,
       "not-in-tree");
   muAssert(missing == NULL, "Expected not found");
-  Element *body = find_element_with_matching_char_attr(root, NameAttr, "body");
+  Node *body = find_element_with_matching_char_attr(root, NameAttr, "body");
   muAssert(body != NULL, "Expected to find body");
-  Element *title = find_element_with_matching_char_attr(root, NameAttr, "title");
+  Node *title = find_element_with_matching_char_attr(root, NameAttr, "title");
   muAssert(title != NULL, "Expected to find title");
   muAssert(title->parent_id == body->id, "Expected child/parent relationship");
-  freeElement(root);
+  freeNode(root);
   return NULL;
 }
 
 char *testBreadthFirst(void) {
-  Element *root = create_tree();
+  Node *root = create_tree();
   breadth_first(root, element_handler);
 
   muAssert(visitedIndex == 13, "Expected count");
@@ -77,12 +77,12 @@ char *testBreadthFirst(void) {
   muAssert(strcmp(getName(visited[11]), "about") == 0, "about");
   muAssert(strcmp(getName(visited[12]), "press") == 0, "press");
 
-  freeElement(root);
+  freeNode(root);
   return NULL;
 }
 
 char *testDepthFirst(void) {
-  Element *root = create_tree();
+  Node *root = create_tree();
   depth_first(root, element_handler);
 
   muAssert(visitedIndex == 13, "Expected count");
@@ -100,7 +100,7 @@ char *testDepthFirst(void) {
   muAssert(strcmp(getName(visited[11]), "foot") == 0, "foot");
   muAssert(strcmp(getName(visited[12]), "root") == 0, "root");
 
-  freeElement(root);
+  freeNode(root);
   return NULL;
 }
 

@@ -18,7 +18,7 @@ int kb_no_caps_signal(int signal) {
   return 0;
 }
 
-Element *new_hfsm_keyboard(void) {
+Node *new_hfsm_keyboard(void) {
   return hfsm_container(
     hfsm_name("kb_root"),
     hfsm_default_state_name("kb_no_caps"),
