@@ -1,5 +1,7 @@
 #include "dom_visitor.h"
-#include "dom.h"
+#include <stddef.h>
+#include <stdio.h>
+#include <string.h>
 
 /**
  * Call visitHandler for each child in the provided element.
@@ -65,3 +67,30 @@ VisitStatus breadth_first(Element *elem, VisitHandler visitHandler) {
   return VISIT_SUCCESS;
 }
 
+// TODO(lbayes): NOT thread safe, need to rework this feature to avoid global values.
+static char *matching_value;
+static AttrName matching_name;
+static Element *matched_elem;
+
+static VisitStatus matching_char_visit_handler(Element *elem) {
+  char *data = getCharAttrFromElement(elem, matching_name, "");
+  if (strcmp(data, matching_value) == 0) {
+    matched_elem = elem;
+    return VISIT_MATCHED;
+  }
+
+  return VISIT_SUCCESS;
+}
+
+Element *find_element_with_matching_char_attr(Element *elem, AttrName name,
+    char *value) {
+  matched_elem = NULL;
+  matching_name = name;
+  matching_value = value;
+  VisitStatus status = breadth_first(elem, matching_char_visit_handler);
+
+  if (status == VISIT_MATCHED) {
+    return matched_elem;
+  }
+  return NULL;
+}

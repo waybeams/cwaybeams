@@ -159,5 +159,6 @@ void freeAttr(Attr *attr);
 char *getCharAttrFromElement(Element *elem, AttrName name, char *defaultValue);
 unsigned int getUintAttrFromElement(Element *elem, AttrName name,
     unsigned int defaultValue);
+unsigned char *getRawAttrFromElement(Element *elem, AttrName name);
 
 #endif

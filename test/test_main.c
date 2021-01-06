@@ -31,6 +31,7 @@ char *allTests(void) {
   // dom_visitor_test.h
   muRunTest(testDepthFirst);
   muRunTest(testBreadthFirst);
+  muRunTest(testFindElementWithMatchingAttr);
 
   // layout_test.h
   muRunTest(testNewLayout);

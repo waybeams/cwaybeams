@@ -175,14 +175,6 @@ struct Element **getChildren(Element *elem) {
   return NULL;
 }
 
-/**
- * Get the provided Element name attribute, or DEFAULT_NAME if one was not
- * provided.
-char *getName(Element *elem) {
-  return getCharAttrFromElement(elem, NameAttr, DEFAULT_NAME);
-}
- */
-
 char *getCharAttrFromElement(Element *elem, AttrName name, char *defaultValue) {
   int index = getAttrIndexByName(elem, name);
   if (index > -1) {
@@ -200,6 +192,16 @@ unsigned int getUintAttrFromElement(Element *elem, AttrName name,
   }
 
   return defaultValue;
+}
+
+unsigned char *getRawAttrFromElement(Element *elem, AttrName name) {
+  int index = getAttrIndexByName(elem, name);
+  if (index > -1) {
+    Attr *attr = elem->attrs[index];
+    return attr->data;
+  }
+
+  return NULL;
 }
 
 /**

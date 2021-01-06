@@ -20,7 +20,7 @@ static Element *create_tree(void) {
         name("head"),
         children(
           box(name("logo")),
-          box(name("title")),
+          box(name("page-title")),
           box(name("account"))
         )
       ),
@@ -44,6 +44,20 @@ static Element *create_tree(void) {
   );
 }
 
+char *testFindElementWithMatchingAttr(void) {
+  Element *root = create_tree();
+  Element *missing = find_element_with_matching_char_attr(root, NameAttr,
+      "not-in-tree");
+  muAssert(missing == NULL, "Expected not found");
+  Element *body = find_element_with_matching_char_attr(root, NameAttr, "body");
+  muAssert(body != NULL, "Expected to find body");
+  Element *title = find_element_with_matching_char_attr(root, NameAttr, "title");
+  muAssert(title != NULL, "Expected to find title");
+  muAssert(title->parentId == body->id, "Expected child/parent relationship");
+  freeElement(root);
+  return NULL;
+}
+
 char *testBreadthFirst(void) {
   Element *root = create_tree();
   breadth_first(root, element_handler);
@@ -52,7 +66,7 @@ char *testBreadthFirst(void) {
   muAssert(strcmp(getName(visited[0]), "root") == 0, "root");
   muAssert(strcmp(getName(visited[1]), "head") == 0, "head");
   muAssert(strcmp(getName(visited[2]), "logo") == 0, "logo");
-  muAssert(strcmp(getName(visited[3]), "title") == 0, "title");
+  muAssert(strcmp(getName(visited[3]), "page-title") == 0, "page-title");
   muAssert(strcmp(getName(visited[4]), "account") == 0, "account");
   muAssert(strcmp(getName(visited[5]), "body") == 0, "body");
   muAssert(strcmp(getName(visited[6]), "title") == 0, "title");
@@ -73,7 +87,7 @@ char *testDepthFirst(void) {
 
   muAssert(visitedIndex == 13, "Expected count");
   muAssert(strcmp(getName(visited[0]), "logo") == 0, "logo");
-  muAssert(strcmp(getName(visited[1]), "title") == 0, "title");
+  muAssert(strcmp(getName(visited[1]), "page-title") == 0, "page-title");
   muAssert(strcmp(getName(visited[2]), "account") == 0, "account");
   muAssert(strcmp(getName(visited[3]), "head") == 0, "head");
   muAssert(strcmp(getName(visited[4]), "title") == 0, "title");
