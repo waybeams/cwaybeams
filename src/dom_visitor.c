@@ -10,7 +10,7 @@
  */
 VisitStatus each_child(Element *elem, VisitHandler visitHandler) {
   struct Element **kids = getChildren(elem);
-  for (int i = 0; i < elem->childCount; i++) {
+  for (int i = 0; i < elem->child_count; i++) {
     VisitStatus status = visitHandler(kids[i]);
     if (status != VISIT_SUCCESS) {
       return status;
@@ -29,7 +29,7 @@ VisitStatus each_child(Element *elem, VisitHandler visitHandler) {
 VisitStatus depth_first(Element *elem, VisitHandler visitHandler) {
   VisitStatus status;
   struct Element **kids = getChildren(elem);
-  for (int i = 0; i < elem->childCount; i++) {
+  for (int i = 0; i < elem->child_count; i++) {
     status = depth_first(kids[i], visitHandler);
     if (status != VISIT_SUCCESS) {
       return status;
@@ -57,7 +57,7 @@ VisitStatus breadth_first(Element *elem, VisitHandler visitHandler) {
   }
 
   struct Element **kids = getChildren(elem);
-  for (int i = 0; i < elem->childCount; i++) {
+  for (int i = 0; i < elem->child_count; i++) {
     status = breadth_first(kids[i], visitHandler);
     if (status != VISIT_SUCCESS) {
       return status;

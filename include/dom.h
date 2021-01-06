@@ -119,7 +119,7 @@ typedef struct Element {
   ElementId id;
   ElementId parent_id;
   ElementType type;
-  unsigned int childCount;
+  unsigned int child_count;
   unsigned int attrCount;
   struct Attr **attrs;
 } Element;

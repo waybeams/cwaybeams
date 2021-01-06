@@ -238,7 +238,7 @@ char *testElementChildren(void) {
     box(name("four"))
   ));
 
-  muAssert(root->childCount == 4, "child count");
+  muAssert(root->child_count == 4, "child count");
 
   struct Element **kids = getChildren(root);
   muAssert(strcmp(getName(kids[0]), "one"), "one");

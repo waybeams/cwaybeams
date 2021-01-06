@@ -256,7 +256,7 @@ Element *newElement(ElementType type, unsigned int attrCount, ...) {
   elem->id = getNextId();
   elem->parent_id = 0;
   elem->type = type;
-  elem->childCount = 0;
+  elem->child_count = 0;
 
   // Process Attrs
   va_list vargs;
@@ -264,9 +264,9 @@ Element *newElement(ElementType type, unsigned int attrCount, ...) {
   for (int i = 0; i < attrCount; i++) {
     struct Attr *attr = va_arg(vargs, struct Attr *);
     if (attr->name == ChildrenAttr) {
-        elem->childCount += (attr->dataSize / POINTER_SIZE);
+        elem->child_count += (attr->dataSize / POINTER_SIZE);
         struct Element **kids = getElementsAttr(attr);
-        for (int k = 0; k < elem->childCount; k++) {
+        for (int k = 0; k < elem->child_count; k++) {
             kids[k]->parent_id = elem->id;
         }
     }
@@ -300,7 +300,7 @@ void printElementIndented(Element *elem, char *indent) {
     char *nextIndent = malloc(strlen(indent) + 2);
     nextIndent = strcpy(nextIndent, indent);
     nextIndent = strcat(nextIndent, "\t");
-    for (int i = 0; i < elem->childCount; i++) {
+    for (int i = 0; i < elem->child_count; i++) {
       printElementIndented(kids[i], nextIndent);
     }
     free(nextIndent);
