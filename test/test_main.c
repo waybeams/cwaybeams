@@ -43,6 +43,7 @@ char *allTests(void) {
 
   // hfsm_test.h
   muRunTest(test_hfsm_creation);
+  muRunTest(test_default_signal);
 
   return NULL;
 }

@@ -7,7 +7,7 @@
 #define DEFAULT_STATE "default"
 
 typedef enum HfsmAttrTypes {
-  HfsmAttrTypeNone = 100,
+  HfsmAttrTypeNone = 30,
   AttrTypeState,
 } HfsmAttrTypes;
 
@@ -21,10 +21,12 @@ typedef enum HfsmAttrTypes {
 #define hfsm_enter_handler(state_name, handler)
 #define hfsm_exit_handler(state_name, handler)
 
+// Attribute getters
+#define hfsm_get_name(node) get_char_attr_from_node(node, AttrTypeState, "")
+
 // Interactions
 #define hfsm_get_state_name(machine) get_char_attr_from_node(machine, AttrTypeState, DEFAULT_STATE)
 
-int hfsm_signal(Node *machine, int signal);
 int hfsm_set_state(Node *machine, char *state_name);
 
 Node *hfsm_get_state(Node *machine);

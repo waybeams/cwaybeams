@@ -2,19 +2,16 @@
 #include "hfsm.h"
 #include <stddef.h>
 #include <stdio.h>
+#include <string.h>
+#include <inttypes.h>
 
-int kb_main_signal(int signal) {
-  printf("Main Signal Handler: %d\n", signal);
+int kb_caps_signal(char *buf, char *signal) {
   return 0;
 }
 
-int kb_caps_signal(int signal) {
-  printf("Caps Signal Handler: %d\n", signal);
-  return 0;
-}
-
-int kb_no_caps_signal(int signal) {
-  printf("NO Caps Signal Handler: %d\n", signal);
+int kb_no_caps_signal(char *buf, char *signal) {
+  strcpy(buf, signal);
+  // buf[0] = signal[0];
   return 0;
 }
 
@@ -22,20 +19,34 @@ Node *new_hfsm_keyboard(void) {
   return hfsm_container(
     hfsm_name("kb_root"),
     hfsm_default_state_name("kb_no_caps"),
+    // kb_signal_handler(kb_no_caps_signal),
     hfsm_children(
       hfsm_container(
         hfsm_name("kb_caps"),
-        signal_handler(&kb_caps_signal)
+        kb_signal_handler(kb_caps_signal)
       ),
       hfsm_container(
         hfsm_name("kb_no_caps"),
-        signal_handler(kb_no_caps_signal)
+        kb_signal_handler(kb_no_caps_signal)
       )
     )
   );
 }
 
-Attr *signal_handler(SignalHandler handler) {
+Attr *kb_signal_handler(SignalHandler handler) {
   return new_ptr_attr(AttrTypeSignal, (unsigned char *)handler);
 }
 
+SignalHandler *kb_get_signal_handler(Node *machine) {
+  Node *state = hfsm_get_state(machine);
+  SignalHandler *handler = (SignalHandler *)get_raw_attr_from_node(state, AttrTypeSignal);
+  return handler;
+}
+
+int kb_send_signal(Node *machine, char *buf, char *signal) {
+  SignalHandler *handler = kb_get_signal_handler(machine);
+  if (handler == NULL) {
+    return -1;
+  }
+  return handler(buf, signal);
+}

@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <inttypes.h>
 
 /**
  * Global id for all instantiated Nodes.
@@ -37,9 +38,11 @@ static NodeId getNextId() {
  *  I'm deferring this work for the moment, as this does the job and also
  *  works with duplicate attribute entries without too much extra complexity.
  */
-static int get_attr_index_by_type(Node *node, AttrType type) {
+static int get_attr_index_by_type(Node *node, int type) {
+  Attr *attr;
   for (int i = 0; i < node->attr_count; i++) {
-    if (node->attrs[i]->type == type) {
+    attr = node->attrs[i];
+    if (attr->type == type) {
       return i;
     }
   }
@@ -59,6 +62,7 @@ void free_attr(Attr *attr) {
     }
   }
 
+  // Function pointers are allocated outside this library.
   if (attr->type < AttrTypeFunction) {
     free(attr->data);
   }
@@ -89,6 +93,7 @@ Attr *newAttr(void) {
   if (attr == NULL) {
     return NULL;
   }
+  attr->type = 0;
   attr->data_size = 0;
   return attr;
 }
@@ -141,6 +146,10 @@ unsigned int get_uint_attr_data(Attr *attr) {
   return *(unsigned int *)get_attr_data(attr);
 }
 
+/**
+ * Create a new attribute with an unsigned char * pointer value and
+ * the provided type.
+ */
 Attr *new_ptr_attr(AttrType type, unsigned char *value) {
   Attr *attr = newAttr();
   if (attr == NULL) {
@@ -149,8 +158,6 @@ Attr *new_ptr_attr(AttrType type, unsigned char *value) {
   attr->type = type;
   attr->data_size = POINTER_SIZE;
   attr->data = value;
-  // attr->data = malloc(attr->data_size);
-  // memcpy(attr->data, &value, attr->data_size);
   return attr;
 }
 
