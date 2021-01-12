@@ -1,6 +1,6 @@
+#include "box.h"
 #include "minunit.h"
 #include "node.h"
-#include "dom.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -31,7 +31,7 @@ char *test_new_width(void) {
 }
 
 char *test_new_larger_width(void) {
-  Attr *attr = new_uint_attr(AttrTypeWidth, 801);
+  Attr *attr = new_uint_attr(BoxAttrTypeWidth, 801);
   unsigned int value = get_uint_attr_data(attr);
 
   muAssert(value == 801, "Expected matching value");

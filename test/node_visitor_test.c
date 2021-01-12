@@ -1,8 +1,8 @@
-#include "node_visitor_test.h"
+#include "box.h"
 #include "minunit.h"
-#include <node_visitor.h>
 #include "node.h"
-#include "dom.h"
+#include "node_visitor_test.h"
+#include <node_visitor.h>
 
 Node *visited[13];
 int visitedIndex = 0;

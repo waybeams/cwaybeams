@@ -1,5 +1,5 @@
 #include "minunit.h"
-#include <dom.h>
+#include <box.h>
 #include <layout.h>
 #include <stddef.h>
 

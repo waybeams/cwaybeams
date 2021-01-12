@@ -2,7 +2,7 @@
 message(STATUS "Building tests now")
 
 set(TEST_SRCS
-  dom_test.c
+  box_test.c
   node_test.c
   node_visitor_test.c
   fixtures/hfsm_keyboard.c
@@ -13,7 +13,7 @@ set(TEST_SRCS
 
 set(TEST_HDRS
   minunit.h
-  dom_test.h
+  box_test.h
   node_test.h
   node_visitor_test.h
   fixtures/hfsm_keyboard.h

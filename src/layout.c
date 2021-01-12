@@ -1,4 +1,4 @@
-#include "dom.h"
+#include "box.h"
 #include "layout.h"
 
 LayoutStatus layoutNode(Node *node) {

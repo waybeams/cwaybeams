@@ -1,7 +1,7 @@
 #ifndef __layout_test_h__
 #define __layout_test_h__
 
-#include <dom.h>
+#include <box.h>
 
 char *testNewLayout(void);
 

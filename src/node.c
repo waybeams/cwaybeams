@@ -278,16 +278,6 @@ Node *new_node(NodeType type, unsigned int attr_count, ...) {
   return node;
 }
 
-/**
- * Print each char code in the provided string.
- */
-void printChars(char *chars) {
-  int i = 0;
-  while (chars[i++] != '\0') {
-    printf("Char: %d %c\n", chars[i], chars[i]);
-  }
-}
-
 void print_element_indented(Node *node, char *indent) {
   printf("------------------------\n");
   printf("%snode.id: %ld\n", indent, node->id);

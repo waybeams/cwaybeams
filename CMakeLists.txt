@@ -19,7 +19,7 @@ SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 configure_file(include/version.h.in include/version.h)
 add_library(cwaybeams SHARED
   src/node.c
-	src/dom.c
+	src/box.c
   src/node_visitor.c
   src/hfsm.c
 	src/layout.c

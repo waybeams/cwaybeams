@@ -1,12 +1,12 @@
+#include "box.h"
 #include "minunit.h"
-#include "node_test.h"
 #include "node.h"
-#include "dom.h"
+#include "node_test.h"
+#include <inttypes.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <inttypes.h>
 
 char *test_new_char_attr(void) {
   Attr *attr = new_char_attr(AttrTypeName, "abcd");

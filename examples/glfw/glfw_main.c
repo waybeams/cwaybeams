@@ -1,4 +1,4 @@
-#include <dom.h>
+#include <box.h>
 #include <stdio.h>
 
 #define GL_COLOR_BUFFER_BIT 0x00004000

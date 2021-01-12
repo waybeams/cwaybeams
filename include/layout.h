@@ -1,7 +1,7 @@
 #ifndef __layout_h__
 #define __layout_h__
 
-#include <dom.h>
+#include <box.h>
 
 typedef enum LayoutStatus {
     LayoutSuccess = 0,

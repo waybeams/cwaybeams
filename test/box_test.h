@@ -1,8 +1,8 @@
-#ifndef __dom_test_h__
-#define __dom_test_h__
+#ifndef __box_test_h__
+#define __box_test_h__
 
 #include "node.h"
-#include "dom.h"
+#include "box.h"
 
 char *test_new_name_attr(void);
 char *test_new_height(void);
@@ -19,4 +19,4 @@ char *test_attr_collection(void);
 char *test_node_types(void);
 char *test_element_children(void);
 
-#endif // __dom_test_h__
+#endif // __box_test_h__

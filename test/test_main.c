@@ -1,5 +1,5 @@
 #include "minunit.h"
-#include <dom_test.h>
+#include <box_test.h>
 #include <node_test.h>
 #include <node_visitor_test.h>
 #include <hfsm_test.h>
@@ -17,7 +17,7 @@ char *allTests(void) {
   muRunTest(test_is_root);
   muRunTest(test_pointer_attr);
 
-  // dom_test.h
+  // box_test.h
   muRunTest(test_new_name_attr);
   muRunTest(test_new_height);
   muRunTest(test_new_width);
