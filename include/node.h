@@ -15,15 +15,15 @@ typedef unsigned long NodeId;
 typedef unsigned int AttrType;
 typedef void (*GestureHandler)(void);
 
-typedef enum AttrTypes {
-  AttrTypeNone = 0,
-  AttrTypeChildren,
-  AttrTypeName,
+typedef enum NodeAttrTypes {
+  NodeAttrTypeNone = 0,
+  NodeAttrTypeChildren,
+  NodeAttrTypeName,
   AttrTypePointer,
   // ALL Attr function pointers MUST have a value >= 500
   // NOTE(lbayes): This is gross, find a better way!
   AttrTypeFunction = 500,
-} AttrTypes;
+} NodeAttrTypes;
 
 typedef enum NodeType {
   TypeNone = 0,

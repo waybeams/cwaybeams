@@ -54,7 +54,7 @@ static int get_attr_index_by_type(Node *node, int type) {
  * may contain, including child Nodes.
  */
 void free_attr(Attr *attr) {
-  if (attr->type == AttrTypeChildren) {
+  if (attr->type == NodeAttrTypeChildren) {
     struct Node **kids = get_nodes_attr(attr);
     int count = attr->data_size / POINTER_SIZE;
     for (int i = 0; i < count; i++) {
@@ -165,7 +165,7 @@ Attr *new_ptr_attr(AttrType type, unsigned char *value) {
  * Get the provided Node children collection.
  */
 struct Node **get_children(Node *node) {
-  int index = get_attr_index_by_type(node, (AttrType)AttrTypeChildren);
+  int index = get_attr_index_by_type(node, (AttrType)NodeAttrTypeChildren);
   if (index > -1) {
     return get_nodes_attr(node->attrs[index]);
   }
@@ -211,7 +211,7 @@ Attr *new_children(unsigned int count, ...) {
     return NULL;
   }
 
-  attr->type = AttrTypeChildren;
+  attr->type = NodeAttrTypeChildren;
   attr->data_size = count * POINTER_SIZE;
 
   struct Node *kids[attr->data_size];
@@ -261,7 +261,7 @@ Node *new_node(NodeType type, unsigned int attr_count, ...) {
   va_start(vargs, attr_count);
   for (int i = 0; i < attr_count; i++) {
     struct Attr *attr = va_arg(vargs, struct Attr *);
-    if (attr->type == AttrTypeChildren) {
+    if (attr->type == NodeAttrTypeChildren) {
         node->child_count += (attr->data_size / POINTER_SIZE);
         struct Node **kids = get_nodes_attr(attr);
         for (int k = 0; k < node->child_count; k++) {

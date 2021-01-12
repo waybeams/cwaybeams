@@ -9,7 +9,7 @@
 #include <string.h>
 
 char *test_new_char_attr(void) {
-  Attr *attr = new_char_attr(AttrTypeName, "abcd");
+  Attr *attr = new_char_attr(NodeAttrTypeName, "abcd");
   char *data = get_char_attr_data(attr);
   muAssert(strcmp(data, "abcd") == 0, "Expected abcd");
   free_attr(attr);
@@ -17,7 +17,7 @@ char *test_new_char_attr(void) {
 }
 
 char *test_new_uint_attr(void) {
-  Attr *attr = new_uint_attr(AttrTypeName, 1234);
+  Attr *attr = new_uint_attr(NodeAttrTypeName, 1234);
   unsigned int data = get_uint_attr_data(attr);
   muAssert(data == 1234, "Expected 1234");
   free_attr(attr);

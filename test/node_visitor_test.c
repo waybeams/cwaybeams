@@ -48,12 +48,12 @@ static Node *create_tree(void) {
 
 char *testFindElementWithMatchingAttr(void) {
   Node *root = create_tree();
-  Node *missing = find_element_with_matching_char_attr(root, AttrTypeName,
+  Node *missing = find_element_with_matching_char_attr(root, NodeAttrTypeName,
       "not-in-tree");
   muAssert(missing == NULL, "Expected not found");
-  Node *body = find_element_with_matching_char_attr(root, AttrTypeName, "body");
+  Node *body = find_element_with_matching_char_attr(root, NodeAttrTypeName, "body");
   muAssert(body != NULL, "Expected to find body");
-  Node *title = find_element_with_matching_char_attr(root, AttrTypeName, "title");
+  Node *title = find_element_with_matching_char_attr(root, NodeAttrTypeName, "title");
   muAssert(title != NULL, "Expected to find title");
   muAssert(title->parent_id == body->id, "Expected child/parent relationship");
   free_node(root);

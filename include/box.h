@@ -7,6 +7,7 @@ typedef enum BoxAttrTypes {
   BoxAttrTypesNone = 100,
   BoxAttrTypeHeight,
   BoxAttrTypeLayout,
+  BoxAttrTypeName,
   BoxAttrTypeText,
   BoxAttrTypeWidth,
   BoxAttrTypeX,
@@ -33,7 +34,7 @@ typedef enum Layout {
     layout(LayoutHorizontal), __VA_ARGS__)
 
 // Attribute setter macros
-#define name(value) new_char_attr(AttrTypeName, value)
+#define name(value) new_char_attr(BoxAttrTypeName, value)
 #define text(value) new_char_attr(BoxAttrTypeText, value);
 #define layout(value) new_uint_attr(BoxAttrTypeLayout, value)
 #define width(value) new_uint_attr(BoxAttrTypeWidth, value)
@@ -44,7 +45,7 @@ typedef enum Layout {
 #define z(value) new_uint_attr(BoxAttrTypeZ, value)
 
 // Attribute getter macros
-#define get_name(node) get_char_attr_from_node(node, AttrTypeName, DEFAULT_CHAR)
+#define get_name(node) get_char_attr_from_node(node, BoxAttrTypeName, DEFAULT_CHAR)
 #define get_layout(node) get_uint_attr_from_node(node, BoxAttrTypeLayout, LayoutDefault)
 #define get_width(node) get_uint_attr_from_node(node, BoxAttrTypeWidth, DEFAULT_ZERO)
 #define get_height(node) get_uint_attr_from_node(node, BoxAttrTypeHeight, DEFAULT_ZERO)

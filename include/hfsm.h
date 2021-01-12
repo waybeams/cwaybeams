@@ -8,7 +8,8 @@
 
 typedef enum HfsmAttrTypes {
   HfsmAttrTypeNone = 30,
-  AttrTypeState,
+  HfsmAttrTypeName,
+  HfsmAttrTypeState,
 } HfsmAttrTypes;
 
 // Entities
@@ -16,16 +17,16 @@ typedef enum HfsmAttrTypes {
 
 // Attributes
 #define hfsm_children(...) new_children(PP_NARG(__VA_ARGS__), __VA_ARGS__)
-#define hfsm_name(value) new_char_attr(AttrTypeName, value)
-#define hfsm_default_state_name(value) new_char_attr(AttrTypeState, value)
+#define hfsm_name(value) new_char_attr(HfsmAttrTypeName, value)
+#define hfsm_default_state_name(value) new_char_attr(HfsmAttrTypeState, value)
 #define hfsm_enter_handler(state_name, handler)
 #define hfsm_exit_handler(state_name, handler)
 
 // Attribute getters
-#define hfsm_get_name(node) get_char_attr_from_node(node, AttrTypeState, "")
+#define hfsm_get_name(node) get_char_attr_from_node(node, HfsmAttrTypeState, "")
 
 // Interactions
-#define hfsm_get_state_name(machine) get_char_attr_from_node(machine, AttrTypeState, DEFAULT_STATE)
+#define hfsm_get_state_name(machine) get_char_attr_from_node(machine, HfsmAttrTypeState, DEFAULT_STATE)
 
 int hfsm_set_state(Node *machine, char *state_name);
 
