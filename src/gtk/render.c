@@ -1,4 +1,5 @@
 #include "render.h"
+#include "box.h"
 #include <gtk/gtk.h>
 
 GtkWidget *getWidget(Rendered *r) {
@@ -11,7 +12,7 @@ Rendered newRendered(Node *node) {
 GtkWidget *newWidget(Node *node) {
   GtkWidget *widget;
   switch(node->type) {
-    case TypeNone:
+    case NodeTypeNone:
       break;
     case TypeBox:
       break;

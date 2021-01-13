@@ -12,8 +12,14 @@ typedef enum HfsmAttrTypes {
   HfsmAttrTypeState,
 } HfsmAttrTypes;
 
+typedef enum HfsmNodeType {
+  HfsmNodeTypeNone = 0,
+  HfsmNodeTypeContainer,
+} HfsmNodeType;
+
 // Entities
-#define hfsm_container(...) new_node(TypeNone, PP_NARG(__VA_ARGS__), __VA_ARGS__)
+#define hfsm_container(...) new_node(HfsmNodeTypeContainer, PP_NARG(__VA_ARGS__), \
+    __VA_ARGS__)
 
 // Attributes
 #define hfsm_children(...) new_children(PP_NARG(__VA_ARGS__), __VA_ARGS__)

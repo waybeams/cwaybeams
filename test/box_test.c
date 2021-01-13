@@ -31,7 +31,7 @@ char *test_new_width(void) {
 }
 
 char *test_new_larger_width(void) {
-  Attr *attr = new_uint_attr(BoxAttrTypeWidth, 801);
+  Attr *attr = new_uint_attr(BoxAttrWidth, 801);
   unsigned int value = get_uint_attr_data(attr);
 
   muAssert(value == 801, "Expected matching value");
@@ -40,7 +40,7 @@ char *test_new_larger_width(void) {
 }
 
 char *test_new_box(void) {
-  Node *one = new_node(TypeNone, 0);
+  Node *one = new_node(BoxTypeNone, 0);
   muAssert(one->parent_id == 0, "Expected empty parent_id");
   free_node(one);
   return NULL;
@@ -66,7 +66,7 @@ char *test_get_name(void) {
 
 char *test_layout(void) {
   Node *root = vbox(name("root"));
-  Layout layout = get_layout(root);
+  BoxLayout layout = get_layout(root);
   muAssert(layout == LayoutVertical, "Expected VBox");
   free_node(root);
   return NULL;
@@ -74,7 +74,7 @@ char *test_layout(void) {
 
 char *test_default_layout(void) {
   Node *root = box(name("root"));
-  Layout layout = get_layout(root);
+  BoxLayout layout = get_layout(root);
   muAssert(layout == LayoutDefault, "Expected default layout");
   free_node(root);
   return NULL;
@@ -141,15 +141,15 @@ char *test_node_types(void) {
   Node *elem;
 
   elem = box(name("box"));
-  muAssert(elem->type == TypeBox, "Expected Box");
+  muAssert(elem->type == BoxTypeBox, "Expected Box");
   free_node(elem);
 
   elem = vbox(name("vbox"));
-  muAssert(elem->type == TypeVBox, "Expected VBox");
+  muAssert(elem->type == BoxTypeVBox, "Expected VBox");
   free_node(elem);
 
   elem = hbox(name("hbox"));
-  muAssert(elem->type == TypeHBox, "Expected HBox");
+  muAssert(elem->type == BoxTypeHBox, "Expected HBox");
   free_node(elem);
   return NULL;
 }

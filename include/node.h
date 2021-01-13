@@ -11,8 +11,9 @@
 #define NODE_ATTR_CHILDREN 1
 #define NODE_ATTR_HANDLER 2
 
-typedef unsigned long NodeId;
 typedef unsigned int AttrType;
+typedef unsigned int NodeType;
+typedef unsigned long NodeId;
 typedef void (*GestureHandler)(void);
 
 typedef enum NodeAttrTypes {
@@ -20,25 +21,8 @@ typedef enum NodeAttrTypes {
   NodeAttrTypeChildren,
   NodeAttrTypeName,
   AttrTypePointer,
-  // ALL Attr function pointers MUST have a value >= 500
-  // NOTE(lbayes): This is gross, find a better way!
   AttrTypeFunction = 500,
 } NodeAttrTypes;
-
-typedef enum NodeType {
-  TypeNone = 0,
-  TypeBox,
-  TypeVBox,
-  TypeHBox,
-  TypeButton,
-  TypeLink,
-  TypeStyle,
-  TypeApp,
-  TypeWindow,
-  TypeHead,
-  TypeBody
-} NodeType;
-
 
 /**
  * Container for arbitrary data

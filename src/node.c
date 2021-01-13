@@ -252,8 +252,8 @@ Node *new_node(NodeType type, unsigned int attr_count, ...) {
   }
   Node *node = malloc(sizeof(struct Node));
   node->id = getNextId();
-  node->parent_id = 0;
   node->type = type;
+  node->parent_id = 0;
   node->child_count = 0;
 
   // Process Attrs
