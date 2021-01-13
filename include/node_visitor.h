@@ -16,7 +16,7 @@ VisitStatus each_child(Node *node, VisitHandler handler);
 VisitStatus depth_first(Node *node, VisitHandler handler);
 VisitStatus breadth_first(Node *node, VisitHandler handler);
 
-Node *find_element_with_matching_char_attr(Node *node, AttrType type,
+Node *find_element_with_matching_char_attr(Node *node, NodeAttr type,
 		char *value);
 
 #endif // __node_visitor_h__

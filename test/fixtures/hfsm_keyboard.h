@@ -15,14 +15,14 @@
  */
 typedef int (SignalHandler)(char *buf, char *signal);
 
-typedef enum KeyboardAttrTypes {
+typedef enum KeyboardAttrs {
   KeyboardAttrTypeNone = 100,
 
   // Set the function handler enum value for all subsequent function handlers.
   // NOTE(lbayes): This is gross, find a better way!
-  KeyboardAttrTypeFunction = AttrTypeFunction,
-  AttrTypeSignal = 501,
-} KeyboardAttrTypes;
+  KeyboardAttrFunction = NodeAttrFunction,
+  KeyboardAttrSignal,
+} KeyboardAttrs;
 
 Node *new_hfsm_keyboard(void);
 int kb_send_signal(Node *machine, char *buf, char *signal);

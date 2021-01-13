@@ -73,4 +73,3 @@ int new_app(int argc, char *argv[]) {
     return status;
 }
 
-

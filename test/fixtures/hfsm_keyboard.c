@@ -34,12 +34,12 @@ Node *new_hfsm_keyboard(void) {
 }
 
 Attr *kb_signal_handler(SignalHandler handler) {
-  return new_ptr_attr(AttrTypeSignal, (unsigned char *)handler);
+  return new_ptr_attr(KeyboardAttrSignal, (unsigned char *)handler);
 }
 
 SignalHandler *kb_get_signal_handler(Node *machine) {
   Node *state = hfsm_get_state(machine);
-  SignalHandler *handler = (SignalHandler *)get_raw_attr_from_node(state, AttrTypeSignal);
+  SignalHandler *handler = (SignalHandler *)get_raw_attr_from_node(state, KeyboardAttrSignal);
   return handler;
 }
 

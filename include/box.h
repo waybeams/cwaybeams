@@ -10,6 +10,7 @@ typedef enum BoxAttr {
   BoxAttrLayout,
   BoxAttrName,
   BoxAttrText,
+  BoxAttrTitle,
   BoxAttrWidth,
   BoxAttrX,
   BoxAttrY,
@@ -42,6 +43,8 @@ typedef enum BoxLayout {
  */
 #define app(...) new_node(BoxTypeApp, PP_NARG(__VA_ARGS__), __VA_ARGS__)
 #define window(...) new_node(BoxTypeWindow, PP_NARG(__VA_ARGS__), __VA_ARGS__)
+#define body(...) new_node(BoxTypeBody, PP_NARG(__VA_ARGS__), __VA_ARGS__)
+
 #define button(...) new_node(BoxTypeButton, PP_NARG(__VA_ARGS__), __VA_ARGS__)
 #define box(...) new_node(BoxTypeBox, PP_NARG(__VA_ARGS__), __VA_ARGS__)
 
@@ -51,6 +54,7 @@ typedef enum BoxLayout {
 // Attribute setter macros
 #define name(value) new_char_attr(BoxAttrName, value)
 #define text(value) new_char_attr(BoxAttrText, value)
+#define title(value) new_char_attr(BoxAttrTitle, value)
 #define label(value) new_char_attr(BoxAttrLabel, value)
 #define layout(value) new_uint_attr(BoxAttrLayout, value)
 #define width(value) new_uint_attr(BoxAttrWidth, value)

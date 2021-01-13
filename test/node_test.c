@@ -9,7 +9,7 @@
 #include <string.h>
 
 char *test_new_char_attr(void) {
-  Attr *attr = new_char_attr(NodeAttrTypeName, "abcd");
+  Attr *attr = new_char_attr(NodeAttrName, "abcd");
   char *data = get_char_attr_data(attr);
   muAssert(strcmp(data, "abcd") == 0, "Expected abcd");
   free_attr(attr);
@@ -17,7 +17,7 @@ char *test_new_char_attr(void) {
 }
 
 char *test_new_uint_attr(void) {
-  Attr *attr = new_uint_attr(NodeAttrTypeName, 1234);
+  Attr *attr = new_uint_attr(NodeAttrName, 1234);
   unsigned int data = get_uint_attr_data(attr);
   muAssert(data == 1234, "Expected 1234");
   free_attr(attr);
@@ -77,7 +77,7 @@ int add_func(int a, int b) {
 }
 
 char *test_pointer_attr(void) {
-  Attr *attr = new_ptr_attr(AttrTypeFunction, (unsigned char *)add_func);
+  Attr *attr = new_ptr_attr(NodeAttrFunction, (unsigned char *)add_func);
   FakeAddFunc *f = (FakeAddFunc *)get_attr_data(attr);
   // #include <inttypes.h>
   // printf("0x%" PRIXPTR "\n", (uintptr_t)f);

@@ -11,25 +11,24 @@
 #define NODE_ATTR_CHILDREN 1
 #define NODE_ATTR_HANDLER 2
 
-typedef unsigned int AttrType;
+typedef unsigned int NodeAttr;
 typedef unsigned int NodeType;
 typedef unsigned long NodeId;
 typedef void (*GestureHandler)(void);
 
-typedef enum NodeAttrTypes {
-  NodeAttrTypeNone = 0,
-  NodeAttrTypeChildren,
-  NodeAttrTypeName,
-  AttrTypePointer,
-  AttrTypeFunction = 500,
-} NodeAttrTypes;
+typedef enum NodeAttrs {
+  NodeAttrNone = 0,
+  NodeAttrChildren,
+  NodeAttrName,
+  NodeAttrFunction = 500,
+} NodeAttrs;
 
 /**
  * Container for arbitrary data
  * values.
  */
 typedef struct Attr {
-  AttrType type;
+  NodeAttr type;
   unsigned int data_size;
   unsigned char *data;
 } Attr;
@@ -72,12 +71,13 @@ typedef struct Node {
 
 // Attribute custom factories
 Node *new_node(NodeType type, unsigned int count, ...);
+Attr *new_attr(void);
 Attr *new_children(unsigned int count, ...);
 
 // Attribute type factories
-Attr *new_char_attr(AttrType type, char *value);
-Attr *new_uint_attr(AttrType type, unsigned value);
-Attr *new_ptr_attr(AttrType type, unsigned char *value);
+Attr *new_char_attr(NodeAttr type, char *value);
+Attr *new_uint_attr(NodeAttr type, unsigned value);
+Attr *new_ptr_attr(NodeAttr type, unsigned char *value);
 
 // Attribute type getters
 unsigned char *get_attr_data(Attr *attr);
@@ -99,9 +99,9 @@ void free_node(Node *node);
 void free_attr(Attr *attr);
 
 // Used by Macros only
-char *get_char_attr_from_node(Node *node, AttrType type, char *default_value);
-unsigned int get_uint_attr_from_node(Node *node, AttrType type,
+char *get_char_attr_from_node(Node *node, NodeAttr type, char *default_value);
+unsigned int get_uint_attr_from_node(Node *node, NodeAttr type,
     unsigned int default_value);
-unsigned char *get_raw_attr_from_node(Node *node, AttrType type);
+unsigned char *get_raw_attr_from_node(Node *node, NodeAttr type);
 
 #endif // __node_h__
