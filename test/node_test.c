@@ -88,3 +88,21 @@ char *test_pointer_attr(void) {
   return NULL;
 }
 
+char *test_leaf_hash(void) {
+  Node *one = box(name("abcd"));
+  Node *two = box(name("abcd"));
+  Node *three = box(
+    name("abcd"),
+    children(
+      box(name("child"))
+    )
+  );
+
+  muAssert(one->hash == two->hash, "Expected one and two to match");
+  muAssert(one->hash != three->hash, "Expected one and three to not match");
+
+  free_node(one);
+  // free_node(two);
+  return NULL;
+}
+

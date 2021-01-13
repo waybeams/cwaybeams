@@ -16,6 +16,7 @@ char *allTests(void) {
   muRunTest(test_element_with_child);
   muRunTest(test_is_root);
   muRunTest(test_pointer_attr);
+  muRunTest(test_leaf_hash);
 
   // box_test.h
   muRunTest(test_new_name_attr);

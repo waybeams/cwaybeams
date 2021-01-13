@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <limits.h>
 #include <stdbool.h>
+#include "fnv.h"
 
 #define DEFAULT_ZERO 0
 #define DEFAULT_CHAR ""
@@ -14,6 +15,7 @@
 typedef unsigned int NodeAttr;
 typedef unsigned int NodeType;
 typedef unsigned long NodeId;
+typedef Fnv32_t NodeHash;
 typedef void (*GestureHandler)(void);
 
 typedef enum NodeAttrs {
@@ -22,6 +24,10 @@ typedef enum NodeAttrs {
   NodeAttrName,
   NodeAttrFunction = 500,
 } NodeAttrs;
+
+typedef enum NodeTypes {
+  NodeTypeNode = 0,
+} NodeTypes;
 
 /**
  * Container for arbitrary data
@@ -36,6 +42,7 @@ typedef struct Attr {
 typedef struct Node {
   NodeId id;
   NodeId parent_id;
+  NodeHash hash;
   NodeType type;
   unsigned int child_count;
   unsigned int attr_count;
@@ -67,6 +74,7 @@ typedef struct Node {
 /* Note dummy first argument _ and ##__VA_ARGS__ instead of __VA_ARGS__ */
 #define PP_NARG(...)     PP_NARG_(_, ##__VA_ARGS__, PP_RSEQ_N())
 
+#define node(...) new_node(NodeTypeNode, PP_NARG(__VA_ARGS__), __VA_ARGS__)
 #define children(...) new_children(PP_NARG(__VA_ARGS__), __VA_ARGS__)
 
 // Attribute custom factories

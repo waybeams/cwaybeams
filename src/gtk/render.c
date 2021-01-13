@@ -3,7 +3,6 @@
 #include <gtk/gtk.h>
 #include <stdlib.h>
 
-
 GtkWidget *widget_from_node(Node *node);
 
 Rendered *render(Node *node) {
@@ -45,7 +44,6 @@ static void on_app_activate(GApplication *app, gpointer data) {
     // display the window
     // gtk_widget_show_all(GTK_WIDGET(window));
 }
-
 
 GtkWidget *render_window(Node *node) {
   // GtkWidget *window = gtk_application_window_new(GTK_APPLICATION(app));

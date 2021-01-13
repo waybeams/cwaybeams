@@ -18,11 +18,12 @@ SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 # enable_testing()
 configure_file(include/version.h.in include/version.h)
 add_library(cwaybeams SHARED
-  src/node.c
 	src/box.c
-  src/node_visitor.c
-  src/hfsm.c
 	src/layout.c
+  src/hfsm.c
+	src/fnv_32a.c
+  src/node.c
+  src/node_visitor.c
 	)
 target_include_directories(cwaybeams PUBLIC include src)
 set_target_properties(cwaybeams PROPERTIES VERSION ${PROJECT_VERSION})
