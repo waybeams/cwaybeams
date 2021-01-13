@@ -1,39 +1,42 @@
 #include "render.h"
 #include "box.h"
 #include <gtk/gtk.h>
+#include <stdlib.h>
 
-GtkWidget *getWidget(Rendered *r) {
-  return (GtkWidget *)r->widget;
+GtkWidget *widget_from_node(Node *node);
+
+Rendered *render(Node *node) {
+  Rendered *r = malloc(sizeof(Rendered));
+  r->node = node;
+  r->widget = (unsigned char *)widget_from_node(node);
+  return r;
 }
 
-Rendered newRendered(Node *node) {
-}
-
-GtkWidget *newWidget(Node *node) {
+GtkWidget *widget_from_node(Node *node) {
   GtkWidget *widget;
   switch(node->type) {
-    case NodeTypeNone:
+    case BoxTypeNone:
       break;
-    case TypeBox:
+    case BoxTypeBox:
       break;
-    case TypeVBox:
+    case BoxTypeVBox:
       break;
-    case TypeHBox:
+    case BoxTypeHBox:
       break;
-    case TypeButton:
-      widget = gtk_button_new_with_label("DEFAULT LABEL");
+    case BoxTypeButton:
+      widget = gtk_button_new_with_label(get_label(node));
       break;
-    case TypeLink:
+    case BoxTypeLink:
       break;
-    case TypeStyle:
+    case BoxTypeStyle:
       break;
-    case TypeApp:
+    case BoxTypeApp:
       break;
-    case TypeWindow:
+    case BoxTypeWindow:
       break;
-    case TypeHead:
+    case BoxTypeHead:
       break;
-    case TypeBody:
+    case BoxTypeBody:
       break;
   }
 

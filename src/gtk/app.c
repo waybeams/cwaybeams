@@ -1,9 +1,16 @@
+#include "render.h"
+#include "box.h"
 #include <gtk/gtk.h>
 #include <stdbool.h>
 
 static char *btn_label_one = "Label One";
 static char *btn_label_two = "Label Two";
 static char *btn_label;
+
+GtkWidget *get_widget(Rendered *r) {
+  return (GtkWidget *)r->widget;
+}
+
 
 // callback function which is called when button is clicked
 static void on_button_clicked(GtkButton *btn, gpointer data) {
@@ -35,8 +42,14 @@ static void on_app_activate(GApplication *app, gpointer data) {
     // connect the event-handler for "clicked" signal of button
     g_signal_connect(btn, "clicked", G_CALLBACK(on_button_clicked), NULL);
 
+    Node *b = button(label("Hello World"));
+    Rendered *r = render(b);
+    GtkWidget *w = get_widget(r);
+
+    gtk_container_add(GTK_CONTAINER(fixedContainer), w);
+
     // add the button to the window
-    gtk_container_add(GTK_CONTAINER(fixedContainer), btn);
+    // gtk_container_add(GTK_CONTAINER(fixedContainer), btn);
     gtk_container_add(GTK_CONTAINER(window), fixedContainer);
     // display the window
     gtk_widget_show_all(GTK_WIDGET(window));

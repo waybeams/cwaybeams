@@ -6,7 +6,7 @@
 typedef struct Rendered {
   Node *node;
   unsigned char *widget;
-}Rendered;
+} Rendered;
 
 Rendered *render(Node *node);
 

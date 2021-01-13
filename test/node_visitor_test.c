@@ -56,6 +56,7 @@ char *testFindElementWithMatchingAttr(void) {
   Node *title = find_element_with_matching_char_attr(root, BoxAttrName, "title");
   muAssert(title != NULL, "Expected to find title");
   muAssert(title->parent_id == body->id, "Expected child/parent relationship");
+
   free_node(root);
   return NULL;
 }

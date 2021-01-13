@@ -6,6 +6,7 @@
 typedef enum BoxAttr {
   BoxAttrNone = 100,
   BoxAttrHeight,
+  BoxAttrLabel,
   BoxAttrLayout,
   BoxAttrName,
   BoxAttrText,
@@ -41,15 +42,16 @@ typedef enum BoxLayout {
  */
 #define app(...) new_node(BoxTypeApp, PP_NARG(__VA_ARGS__), __VA_ARGS__)
 #define window(...) new_node(BoxTypeWindow, PP_NARG(__VA_ARGS__), __VA_ARGS__)
+#define button(...) new_node(BoxTypeButton, PP_NARG(__VA_ARGS__), __VA_ARGS__)
 #define box(...) new_node(BoxTypeBox, PP_NARG(__VA_ARGS__), __VA_ARGS__)
-#define vbox(...) new_node(BoxTypeVBox, PP_NARG(__VA_ARGS__) + 1, \
-    layout(LayoutVertical), __VA_ARGS__)
-#define hbox(...) new_node(BoxTypeHBox, PP_NARG(__VA_ARGS__) + 1, \
-    layout(LayoutHorizontal), __VA_ARGS__)
+
+#define vbox(...) new_node(BoxTypeVBox, PP_NARG(__VA_ARGS__) + 1, layout(LayoutVertical), __VA_ARGS__)
+#define hbox(...) new_node(BoxTypeHBox, PP_NARG(__VA_ARGS__) + 1, layout(LayoutHorizontal), __VA_ARGS__)
 
 // Attribute setter macros
 #define name(value) new_char_attr(BoxAttrName, value)
-#define text(value) new_char_attr(BoxAttrText, value);
+#define text(value) new_char_attr(BoxAttrText, value)
+#define label(value) new_char_attr(BoxAttrLabel, value)
 #define layout(value) new_uint_attr(BoxAttrLayout, value)
 #define width(value) new_uint_attr(BoxAttrWidth, value)
 // #define handler(value) new_pointer_attr(GestureHandlerAttr, value)
@@ -60,6 +62,9 @@ typedef enum BoxLayout {
 
 // Attribute getter macros
 #define get_name(node) get_char_attr_from_node(node, BoxAttrName, DEFAULT_CHAR)
+#define get_text(node) get_char_attr_from_node(node, BoxAttrText, DEFAULT_CHAR)
+#define get_label(node) get_char_attr_from_node(node, BoxAttrLabel, DEFAULT_CHAR)
+
 #define get_layout(node) get_uint_attr_from_node(node, BoxAttrLayout, LayoutDefault)
 #define get_width(node) get_uint_attr_from_node(node, BoxAttrWidth, DEFAULT_ZERO)
 #define get_height(node) get_uint_attr_from_node(node, BoxAttrHeight, DEFAULT_ZERO)
