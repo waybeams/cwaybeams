@@ -2,6 +2,9 @@
 #define __render_h__
 
 #include "node.h"
+#include "box.h"
+
+typedef Node *(*AppRenderer)(BoxServices *s);
 
 typedef struct Rendered {
   Node *node;
@@ -9,7 +12,6 @@ typedef struct Rendered {
 } Rendered;
 
 Rendered *render(Node *node);
-int new_app(int argc, char *argv[]);
-int exec_app(Node *app, int argc, char *argv[]);
+int exec_app(AppRenderer r, BoxServices *s);
 
 #endif // __render_h__
