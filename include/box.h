@@ -38,6 +38,9 @@ typedef enum BoxLayout {
   LayoutHorizontal,
 } BoxLayout;
 
+typedef struct BoxServices {
+} BoxServices;
+
 /**
  * Wrap variadic macros with expected names.
  */
