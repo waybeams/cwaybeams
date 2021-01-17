@@ -9,6 +9,7 @@ char *test_hfsm_creation(void) {
   Node *machine = new_hfsm_keyboard();
   char *name = hfsm_get_state_name(machine);
   muAssert(strcmp(name, "kb_no_caps") == 0, "Expected default state");
+
   free_node(machine);
   return NULL;
 }
@@ -36,6 +37,7 @@ char *test_default_signal(void) {
   muAssert(strcmp(result, "abcd") == 0, "Expected buffer to fill");
 
   free_node(machine);
+  free(result);
   return NULL;
 }
 

@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <limits.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "fast_hash.h"
 
 #define DEFAULT_ZERO 0
@@ -12,18 +13,27 @@
 #define NODE_ATTR_CHILDREN 1
 #define NODE_ATTR_HANDLER 2
 
-typedef unsigned int NodeAttr;
-typedef unsigned int NodeType;
+typedef uint16_t AttrType;
+typedef uint16_t AttrKey;
+typedef uint16_t NodeType;
 typedef unsigned long NodeId;
 typedef uint32_t NodeHash;
 typedef void (*GestureHandler)(void);
 
-typedef enum NodeAttrs {
-  NodeAttrNone = 0,
-  NodeAttrChildren,
-  NodeAttrName,
-  NodeAttrFunction = 500,
-} NodeAttrs;
+typedef enum NodeAttrTypes {
+  NodeAttrTypeNone = 0,
+  NodeAttrTypesChildren,
+  NodeAttrTypesChars,
+  NodeAttrTypesUint,
+  NodeAttrTypesPtr,
+  NodeAttrTypesExtPtr,
+} NodeAttrTypes;
+
+typedef enum NodeAttrKeys {
+  NodeAttrKeysNone = 0,
+  NodeAttrKeysChildren,
+  NodeAttrKeysLast,
+} NodeAttrKeys;
 
 typedef enum NodeTypes {
   NodeTypeNode = 0,
@@ -34,8 +44,9 @@ typedef enum NodeTypes {
  * values.
  */
 typedef struct Attr {
-  NodeAttr type;
-  unsigned int data_size;
+  AttrKey key;
+  AttrType type;
+  uint16_t data_size;
   unsigned char *data;
 } Attr;
 
@@ -83,16 +94,16 @@ Attr *new_attr(void);
 Attr *new_children(unsigned int count, ...);
 
 // Attribute type factories
-Attr *new_char_attr(NodeAttr type, char *value);
-Attr *new_uint_attr(NodeAttr type, unsigned value);
-Attr *new_ptr_attr(NodeAttr type, unsigned char *value);
+Attr *new_char_attr(AttrKey key, char *value);
+Attr *new_uint_attr(AttrKey key, unsigned value);
+Attr *new_ptr_attr(AttrKey key, unsigned char *value);
+Attr *new_ext_ptr_attr(AttrKey key, unsigned char *value);
 
 // Attribute type getters
 unsigned char *get_attr_data(Attr *attr);
-struct Node **get_nodes_attr(Attr *attr);
+struct Node **get_children_attr_data(Attr *attr);
 unsigned int get_uint_attr_data(Attr *attr);
 char *get_char_attr_data(Attr *attr);
-
 
 // Node Attribute getters
 struct Node **get_children(Node *node);
@@ -100,16 +111,17 @@ struct Node **get_children(Node *node);
 // Node helpers
 void print_node(Node *node);
 bool is_root(Node *node);
-void emit_event(Node *node, char *gesture_name);
+void emit_event(Node *node, AttrKey key, char *gesture_name);
+char *node_to_str(Node *node);
 
 // Destructors
 void free_node(Node *node);
 void free_attr(Attr *attr);
 
 // Used by Macros only
-char *get_char_attr_from_node(Node *node, NodeAttr type, char *default_value);
-unsigned int get_uint_attr_from_node(Node *node, NodeAttr type,
+char *get_char_attr_from_node(Node *node, AttrType type, char *default_value);
+unsigned int get_uint_attr_from_node(Node *node, AttrType type,
     unsigned int default_value);
-unsigned char *get_raw_attr_from_node(Node *node, NodeAttr type);
+unsigned char *get_raw_attr_from_node(Node *node, AttrType type);
 
 #endif // __node_h__

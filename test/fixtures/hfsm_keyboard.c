@@ -34,7 +34,7 @@ Node *new_hfsm_keyboard(void) {
 }
 
 Attr *kb_signal_handler(SignalHandler handler) {
-  return new_ptr_attr(KeyboardAttrSignal, (unsigned char *)handler);
+  return new_ext_ptr_attr(KeyboardAttrSignal, (unsigned char *)handler);
 }
 
 SignalHandler *kb_get_signal_handler(Node *machine) {

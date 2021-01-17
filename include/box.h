@@ -3,19 +3,19 @@
 
 #include "node.h"
 
-typedef enum BoxAttr {
-  BoxAttrNone = 100,
-  BoxAttrHeight,
-  BoxAttrLabel,
-  BoxAttrLayout,
-  BoxAttrName,
-  BoxAttrText,
-  BoxAttrTitle,
-  BoxAttrWidth,
-  BoxAttrX,
-  BoxAttrY,
-  BoxAttrZ,
-} BoxAttr;
+typedef enum BoxAttrKeysKeys {
+  BoxAttrKeysNone = 100,
+  BoxAttrKeysHeight,
+  BoxAttrKeysLabel,
+  BoxAttrKeysLayout,
+  BoxAttrKeysName,
+  BoxAttrKeysText,
+  BoxAttrKeysTitle,
+  BoxAttrKeysWidth,
+  BoxAttrKeysX,
+  BoxAttrKeysY,
+  BoxAttrKeysZ,
+} BoxAttrKeysKeys;
 
 typedef enum BoxType {
   BoxTypeNone = 0,
@@ -55,28 +55,28 @@ typedef struct BoxServices {
 #define hbox(...) new_node(BoxTypeHBox, PP_NARG(__VA_ARGS__) + 1, layout(LayoutHorizontal), __VA_ARGS__)
 
 // Attribute setter macros
-#define name(value) new_char_attr(BoxAttrName, value)
-#define text(value) new_char_attr(BoxAttrText, value)
-#define title(value) new_char_attr(BoxAttrTitle, value)
-#define label(value) new_char_attr(BoxAttrLabel, value)
-#define layout(value) new_uint_attr(BoxAttrLayout, value)
-#define width(value) new_uint_attr(BoxAttrWidth, value)
-// #define handler(value) new_pointer_attr(GestureHandlerAttr, value)
-#define height(value) new_uint_attr(BoxAttrHeight, value)
-#define x(value) new_uint_attr(BoxAttrX, value)
-#define y(value) new_uint_attr(BoxAttrY, value)
-#define z(value) new_uint_attr(BoxAttrZ, value)
+#define name(value) new_char_attr(BoxAttrKeysName, value)
+#define text(value) new_char_attr(BoxAttrKeysText, value)
+#define title(value) new_char_attr(BoxAttrKeysTitle, value)
+#define label(value) new_char_attr(BoxAttrKeysLabel, value)
+#define layout(value) new_uint_attr(BoxAttrKeysLayout, value)
+#define width(value) new_uint_attr(BoxAttrKeysWidth, value)
+// #define handler(value) new_ext_ptr_attr(GestureHandlerAttr, value)
+#define height(value) new_uint_attr(BoxAttrKeysHeight, value)
+#define x(value) new_uint_attr(BoxAttrKeysX, value)
+#define y(value) new_uint_attr(BoxAttrKeysY, value)
+#define z(value) new_uint_attr(BoxAttrKeysZ, value)
 
 // Attribute getter macros
-#define get_name(node) get_char_attr_from_node(node, BoxAttrName, DEFAULT_CHAR)
-#define get_text(node) get_char_attr_from_node(node, BoxAttrText, DEFAULT_CHAR)
-#define get_label(node) get_char_attr_from_node(node, BoxAttrLabel, DEFAULT_CHAR)
+#define get_name(node) get_char_attr_from_node(node, BoxAttrKeysName, DEFAULT_CHAR)
+#define get_text(node) get_char_attr_from_node(node, BoxAttrKeysText, DEFAULT_CHAR)
+#define get_label(node) get_char_attr_from_node(node, BoxAttrKeysLabel, DEFAULT_CHAR)
 
-#define get_layout(node) get_uint_attr_from_node(node, BoxAttrLayout, LayoutDefault)
-#define get_width(node) get_uint_attr_from_node(node, BoxAttrWidth, DEFAULT_ZERO)
-#define get_height(node) get_uint_attr_from_node(node, BoxAttrHeight, DEFAULT_ZERO)
-#define get_x(node) get_uint_attr_from_node(node, BoxAttrX, DEFAULT_ZERO)
-#define get_y(node) get_uint_attr_from_node(node, BoxAttrY, DEFAULT_ZERO)
-#define get_z(node) get_uint_attr_from_node(node, BoxAttrZ, DEFAULT_ZERO)
+#define get_layout(node) get_uint_attr_from_node(node, BoxAttrKeysLayout, LayoutDefault)
+#define get_width(node) get_uint_attr_from_node(node, BoxAttrKeysWidth, DEFAULT_ZERO)
+#define get_height(node) get_uint_attr_from_node(node, BoxAttrKeysHeight, DEFAULT_ZERO)
+#define get_x(node) get_uint_attr_from_node(node, BoxAttrKeysX, DEFAULT_ZERO)
+#define get_y(node) get_uint_attr_from_node(node, BoxAttrKeysY, DEFAULT_ZERO)
+#define get_z(node) get_uint_attr_from_node(node, BoxAttrKeysZ, DEFAULT_ZERO)
 
 #endif // __box_h__

@@ -6,11 +6,11 @@
 
 #define DEFAULT_STATE "default"
 
-typedef enum HfsmAttrTypes {
-  HfsmAttrTypeNone = 30,
-  HfsmAttrTypeName,
-  HfsmAttrTypeState,
-} HfsmAttrTypes;
+typedef enum HfsmAttrKeys {
+  HfsmAttrKeyNone = NodeAttrKeysLast,
+  HfsmAttrKeyName,
+  HfsmAttrKeyState,
+} HfsmAttrKeys;
 
 typedef enum HfsmNodeType {
   HfsmNodeTypeNone = 0,
@@ -23,16 +23,16 @@ typedef enum HfsmNodeType {
 
 // Attributes
 #define hfsm_children(...) new_children(PP_NARG(__VA_ARGS__), __VA_ARGS__)
-#define hfsm_name(value) new_char_attr(HfsmAttrTypeName, value)
-#define hfsm_default_state_name(value) new_char_attr(HfsmAttrTypeState, value)
+#define hfsm_name(value) new_char_attr(HfsmAttrKeyName, value)
+#define hfsm_default_state_name(value) new_char_attr(HfsmAttrKeyState, value)
 #define hfsm_enter_handler(state_name, handler)
 #define hfsm_exit_handler(state_name, handler)
 
 // Attribute getters
-#define hfsm_get_name(node) get_char_attr_from_node(node, HfsmAttrTypeState, "")
+#define hfsm_get_name(node) get_char_attr_from_node(node, HfsmAttrKeyState, "")
 
 // Interactions
-#define hfsm_get_state_name(machine) get_char_attr_from_node(machine, HfsmAttrTypeState, DEFAULT_STATE)
+#define hfsm_get_state_name(machine) get_char_attr_from_node(machine, HfsmAttrKeyState, DEFAULT_STATE)
 
 int hfsm_set_state(Node *machine, char *state_name);
 

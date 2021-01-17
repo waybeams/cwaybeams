@@ -31,7 +31,7 @@ char *test_new_width(void) {
 }
 
 char *test_new_larger_width(void) {
-  Attr *attr = new_uint_attr(BoxAttrWidth, 801);
+  Attr *attr = new_uint_attr(BoxAttrKeysWidth, 801);
   unsigned int value = get_uint_attr_data(attr);
 
   muAssert(value == 801, "Expected matching value");
