@@ -98,11 +98,12 @@ char *test_leaf_hash(void) {
     )
   );
 
-  muAssert(one->hash == two->hash, "Expected one and two to match");
-  muAssert(one->hash != three->hash, "Expected one and three to not match");
+  muAssert(one->hash == two->hash, "Expected one and two");
+  muAssert(one->hash != three->hash, "Expected one and three");
 
   free_node(one);
-  // free_node(two);
+  free_node(two);
+  free_node(three);
   return NULL;
 }
 

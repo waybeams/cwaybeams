@@ -243,22 +243,21 @@ struct Node **get_nodes_attr(Attr *attr) {
 }
 
 static NodeHash hash_char_attr(Attr *attr) {
-  NodeHash *hash = malloc(sizeof(NodeHash));
-  return *hash;
+  return 0;
 }
 
-static NodeHash *hash_attr(Attr *attr) {
-  return NULL;
+static NodeHash hash_attr(Attr *attr) {
+  NodeAttr type = attr->type;
+  return type;
 }
 
 static NodeHash hash_node(Node *node) {
   NodeHash hash;
   // NodeHash hash = (NodeHash)fnv_32a_buf(node->child_count, 1, 0);
-  // Attr *attr = get_name(node);
-  // for (int i = 0; i < node->attr_count; i++) {
-    // attr = node->attrs[i];
-    // hash += hash_attr(attr);
-  // }
+  for (int i = 0; i < node->attr_count; i++) {
+    Attr *attr = node->attrs[i];
+    hash *= hash_attr(attr);
+  }
 
   return hash;
 }

@@ -100,7 +100,7 @@ struct Node **get_children(Node *node);
 // Node helpers
 void print_node(Node *node);
 bool is_root(Node *node);
-void emit_event(Node *node, char *getsture_name);
+void emit_event(Node *node, char *gesture_name);
 
 // Destructors
 void free_node(Node *node);
