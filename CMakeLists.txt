@@ -25,7 +25,7 @@ add_library(cwaybeams SHARED
   src/node.c
   src/node_visitor.c
 	)
-target_include_directories(cwaybeams PUBLIC include src)
+target_include_directories(cwaybeams PUBLIC include src vendor/hash)
 set_target_properties(cwaybeams PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(cwaybeams PROPERTIES SOVERSION 0)
 target_include_directories(cwaybeams PRIVATE .)
@@ -45,6 +45,7 @@ target_include_directories(cwaybeams PRIVATE .)
 find_package(GTK REQUIRED "gtk+-3.0")
 pkg_check_modules(GTK REQUIRED "gtk+-3.0")
 
+add_library(fast-hash SHARED vendor/hash/fast_hash.c)
 add_library(cwaybeams-gtk SHARED src/gtk/app.c src/gtk/render.c)
 set_target_properties(cwaybeams-gtk PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(cwaybeams-gtk PROPERTIES SOVERSION 0)

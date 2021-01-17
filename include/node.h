@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <limits.h>
 #include <stdbool.h>
-#include "fnv.h"
+#include "fast_hash.h"
 
 #define DEFAULT_ZERO 0
 #define DEFAULT_CHAR ""
@@ -15,7 +15,7 @@
 typedef unsigned int NodeAttr;
 typedef unsigned int NodeType;
 typedef unsigned long NodeId;
-typedef Fnv32_t NodeHash;
+typedef uint32_t NodeHash;
 typedef void (*GestureHandler)(void);
 
 typedef enum NodeAttrs {
