@@ -10,15 +10,19 @@
 #define DEFAULT_ZERO 0
 #define DEFAULT_CHAR ""
 
-#define NODE_ATTR_CHILDREN 1
-#define NODE_ATTR_HANDLER 2
-
 typedef uint16_t AttrType;
 typedef uint16_t AttrKey;
 typedef uint16_t NodeType;
 typedef unsigned long NodeId;
 typedef uint32_t NodeHash;
 typedef void (*GestureHandler)(void);
+
+#define NODE_ATTR_CHILDREN "children"
+#define NODE_ATTR_CHARS "chars"
+#define NODE_ATTR_CHARS_LEN strlen(NODE_ATTR_CHARS)
+#define NODE_ATTR_UINT "uint"
+#define NODE_ATTR_PTR "ptr"
+#define NODE_ATTR_EXT_PTR "extptr"
 
 typedef enum NodeAttrTypes {
   NodeAttrTypeNone = 0,
@@ -110,9 +114,9 @@ struct Node **get_children(Node *node);
 
 // Node helpers
 void print_node(Node *node);
+void node_to_str(char *dest, Node *node);
 bool is_root(Node *node);
 void emit_event(Node *node, AttrKey key, char *gesture_name);
-char *node_to_str(Node *node);
 
 // Destructors
 void free_node(Node *node);

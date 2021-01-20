@@ -94,3 +94,4 @@ Node *find_element_with_matching_char_attr(Node *node, AttrType type,
   }
   return NULL;
 }
+

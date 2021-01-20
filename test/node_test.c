@@ -111,19 +111,13 @@ char *test_leaf_hash(void) {
 }
 
 char *test_str_one(void) {
-  /*
-  Node *one = box(name("abcd"));
-  char *str = node_to_str(one);
-  printf("str: %s\n", str);
-
-  muAssert(str != NULL, "Expected result");
-  muAssert(strcmp(str, "abcd") == 0, "Expect string match");
+  char result[256] = {0};
+  Node *one = node(name("abcd"));
+  node_to_str(result, one);
+  char *expected = " node.type=0 attr_104.type=2 attr_104.chars=abcd";
+  muAssert(strcmp(result, expected) == 0, "Expect string match");
 
   free_node(one);
-  if (str != NULL) {
-    free(str);
-  }
-  */
   return NULL;
 }
 

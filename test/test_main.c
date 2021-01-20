@@ -44,12 +44,12 @@ char *allTests(void) {
   muRunTest(test_is_root);
   muRunTest(test_pointer_attr);
   muRunTest(test_leaf_hash);
-  muRunTest(test_str_one);
 
   // node_visitor_test.h
   muRunTest(testDepthFirst);
   muRunTest(testBreadthFirst);
   muRunTest(testFindElementWithMatchingAttr);
+  muRunTest(test_str_one);
 
   return NULL;
 }

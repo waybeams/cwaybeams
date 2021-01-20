@@ -281,25 +281,6 @@ static NodeHash hash_node(Node *node) {
   return hash;
 }
 
-static size_t attr_to_char_len(Attr *attr) {
-}
-
-static size_t node_to_char_len(Node *node) {
-  size_t len = 0;
-  return snprintf(NULL, len, "Node type:%d", node->type);
-}
-
-char  *node_to_str(Node *node) {
-  size_t len = node_to_char_len(node);
-
-  if (len > 0) {
-    char *result = malloc(len);
-    return result;
-  }
-
-  return NULL;
-}
-
 /**
  * Create a new Node with the provided attributes.
  */
@@ -337,32 +318,6 @@ Node *new_node(NodeType type, unsigned int attr_count, ...) {
   return node;
 }
 
-void print_element_indented(Node *node, char *indent) {
-  printf("------------------------\n");
-  printf("%snode.id: %ld\n", indent, node->id);
-  printf("%snode.parent_id: %ld\n", indent, node->parent_id);
-  // printf("%snode.type: %s\n", indent, get_type(node));
-  struct Node **kids = get_children(node);
-  if (kids != NULL) {
-    char *nextIndent = malloc(strlen(indent) + 2);
-    nextIndent = strcpy(nextIndent, indent);
-    nextIndent = strcat(nextIndent, "\t");
-    for (int i = 0; i < node->child_count; i++) {
-      print_element_indented(kids[i], nextIndent);
-    }
-    free(nextIndent);
-  }
-}
-
-/**
- * Print the provided node and attributes.
- */
-void print_node(Node *node) {
-  char *empty = malloc(1);
-  print_element_indented(node, "");
-  free(empty);
-}
-
 /**
  * Call any handlers found for the provided gesture type.
  */
@@ -380,5 +335,69 @@ void emit_event(Node *node, AttrKey key, char *gesture_name) {
  */
 bool is_root(Node *node) {
   return node->parent_id == 0;
+}
+
+static void attr_chars_to_str(char *dest, Attr *attr, char *indent) {
+  sprintf(dest, "%s attr_%d.%s=%s", dest, attr->key, NODE_ATTR_CHARS, attr->data);
+}
+
+static void attr_to_str(char *dest, Attr *attr, char *indent) {
+  sprintf(dest, "%s attr_%d.type=%d", dest, attr->key, attr->type);
+
+  switch (attr->type) {
+    case NodeAttrTypesChars:
+      attr_chars_to_str(dest, attr, indent);
+      break;
+  }
+}
+
+static void node_children_to_str(char *dest, Node *node, char *indent) {
+}
+
+void node_to_str_indented(char *dest, Node *node, char *indent) {
+  sprintf(dest, "%s node.type=%d", dest, node->type);
+
+  for (int i = 0; i < node->attr_count; i++) {
+    attr_to_str(dest, node->attrs[i], indent);
+  }
+
+  node_children_to_str(dest, node, indent);
+}
+
+void node_to_str(char *dest, Node *node) {
+  node_to_str_indented(dest, node, "");
+}
+
+/*
+static size_t node_to_char_len(Node *node) {
+  size_t len = 0;
+  return snprintf(NULL, len, "%d", node->type);
+}
+*/
+
+void print_node_indented(Node *node, char *indent) {
+  printf("------------------------\n");
+  printf("%snode.id: %ld\n", indent, node->id);
+  printf("%snode.parent_id: %ld\n", indent, node->parent_id);
+  // printf("%snode.type: %s\n", indent, get_type(node));
+  struct Node **kids = get_children(node);
+  if (kids != NULL) {
+    char *nextIndent = malloc(strlen(indent) + 2);
+    nextIndent = strcpy(nextIndent, indent);
+    nextIndent = strcat(nextIndent, "\t");
+    for (int i = 0; i < node->child_count; i++) {
+      print_node_indented(kids[i], nextIndent);
+    }
+    free(nextIndent);
+  }
+}
+
+/**
+ * Print the provided node and attributes.
+ */
+void print_node(Node *node) {
+  char *empty = malloc(1);
+  print_node_indented(node, "");
+  free(empty);
 }
 
