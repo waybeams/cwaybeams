@@ -15,10 +15,10 @@
     printf("\n----\nRUNNING: %s\n", argv[0]);\
     char *result = name();\
     if (result != 0) {\
-        printf("FAILED: %s\n", result);\
+        printf("\033[1m\x1b[31mFAILED:\033[0m \x1b[31m%s\x1b[00m\n", result);\
     }\
     else {\
-        printf("ALL TESTS PASSED\n");\
+        printf("\033[1m\x1b[32mALL TESTS PASSED\x1b[00m\033[0m\n");\
     }\
     printf("Tests run: %d\n", testsRun);\
     exit(result != 0);\
