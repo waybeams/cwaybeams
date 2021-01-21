@@ -90,23 +90,17 @@ char *test_pointer_attr(void) {
 }
 
 char *test_leaf_hash(void) {
-  /*
   Node *one = box(name("abcd"));
   Node *two = box(name("abcd"));
-  Node *three = box(
-    name("abcd"),
-    children(
-      box(name("child"))
-    )
-  );
+  Node *three = box(name("efgh"));
 
   muAssert(one->hash == two->hash, "Expected one and two");
   muAssert(one->hash != three->hash, "Expected one and three");
+  muAssert(two->hash != three->hash, "Expected one and three");
 
   free_node(one);
   free_node(two);
   free_node(three);
-  */
   return NULL;
 }
 

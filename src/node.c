@@ -263,24 +263,10 @@ struct Node **get_children_attr_data(Attr *attr) {
   return (struct Node **)get_attr_data(attr);
 }
 
-static NodeHash hash_char_attr(Attr *attr) {
-  return 0;
-}
-
-static NodeHash hash_attr(Attr *attr) {
-  AttrType type = attr->type;
-  return type;
-}
-
 static NodeHash hash_node(Node *node) {
-  NodeHash hash;
-  // NodeHash hash = (NodeHash)fnv_32a_buf(node->child_count, 1, 0);
-  for (int i = 0; i < node->attr_count; i++) {
-    Attr *attr = node->attrs[i];
-    hash *= hash_attr(attr);
-  }
-
-  return hash;
+  char node_str[1024] = {0};
+  node_to_str(node_str, node);
+  return fast_hash(node_str, strlen(node_str));
 }
 
 /**
@@ -315,8 +301,8 @@ Node *new_node(NodeType type, unsigned int attr_count, ...) {
 
   node->attr_count = attr_count;
   node->attrs = attrs;
-  node->hash = hash_node(node);
 
+  node->hash = hash_node(node);
   return node;
 }
 
