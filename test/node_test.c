@@ -112,12 +112,33 @@ char *test_leaf_hash(void) {
 
 char *test_str_one(void) {
   char result[256] = {0};
-  Node *one = node(name("abcd"));
-  node_to_str(result, one);
-  char *expected = " node.type=0 attr_104.type=2 attr_104.chars=abcd";
+  Node *root = node(name("abcd"));
+  node_to_str(result, root);
+  char *expected = "\nnode.type=0 attr_104.type=2 attr_104.chars=abcd";
   muAssert(strcmp(result, expected) == 0, "Expect string match");
 
-  free_node(one);
+  free_node(root);
+  return NULL;
+}
+
+char *test_str_kids(void) {
+  Node *root = node(
+    name("abcd"),
+    children(
+      node(name("efgh")),
+      node(name("ijkl"))
+    )
+  );
+
+  char result[256] = {0};
+  node_to_str(result, root);
+
+  char *expected = "\nnode.type=0 attr_104.type=2 attr_104.chars=abcd attr_1.type=1\n\
+\tnode.type=0 attr_104.type=2 attr_104.chars=efgh\n\
+\tnode.type=0 attr_104.type=2 attr_104.chars=ijkl";
+  muAssert(strcmp(result, expected) == 0, "Expect string match");
+
+  free_node(root);
   return NULL;
 }
 

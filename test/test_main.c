@@ -50,6 +50,7 @@ char *allTests(void) {
   muRunTest(testBreadthFirst);
   muRunTest(testFindElementWithMatchingAttr);
   muRunTest(test_str_one);
+  muRunTest(test_str_kids);
 
   return NULL;
 }

@@ -20,6 +20,8 @@ static int *ptr;
  */
 static uint8_t POINTER_SIZE = sizeof(ptr);
 
+static void node_to_str_indented(char *dest, Node *node, char *indent);
+
 /**
  * Get the next incremental identifier.
  */
@@ -352,10 +354,17 @@ static void attr_to_str(char *dest, Attr *attr, char *indent) {
 }
 
 static void node_children_to_str(char *dest, Node *node, char *indent) {
+  struct Node **kids = get_children(node);
+  if (kids != NULL) {
+    sprintf(indent, "%s\t", indent);
+    for (int i = 0; i < node->child_count; i++) {
+      node_to_str_indented(dest, kids[i], indent);
+    }
+  }
 }
 
-void node_to_str_indented(char *dest, Node *node, char *indent) {
-  sprintf(dest, "%s node.type=%d", dest, node->type);
+static void node_to_str_indented(char *dest, Node *node, char *indent) {
+  sprintf(dest, "%s\n%snode.type=%d", dest, indent, node->type);
 
   for (int i = 0; i < node->attr_count; i++) {
     attr_to_str(dest, node->attrs[i], indent);
@@ -365,7 +374,8 @@ void node_to_str_indented(char *dest, Node *node, char *indent) {
 }
 
 void node_to_str(char *dest, Node *node) {
-  node_to_str_indented(dest, node, "");
+  char indent[128] = {0};
+  node_to_str_indented(dest, node, indent);
 }
 
 /*
@@ -375,29 +385,12 @@ static size_t node_to_char_len(Node *node) {
 }
 */
 
-void print_node_indented(Node *node, char *indent) {
-  printf("------------------------\n");
-  printf("%snode.id: %ld\n", indent, node->id);
-  printf("%snode.parent_id: %ld\n", indent, node->parent_id);
-  // printf("%snode.type: %s\n", indent, get_type(node));
-  struct Node **kids = get_children(node);
-  if (kids != NULL) {
-    char *nextIndent = malloc(strlen(indent) + 2);
-    nextIndent = strcpy(nextIndent, indent);
-    nextIndent = strcat(nextIndent, "\t");
-    for (int i = 0; i < node->child_count; i++) {
-      print_node_indented(kids[i], nextIndent);
-    }
-    free(nextIndent);
-  }
-}
-
 /**
  * Print the provided node and attributes.
  */
 void print_node(Node *node) {
-  char *empty = malloc(1);
-  print_node_indented(node, "");
-  free(empty);
+  char dest[512] = {0};
+  node_to_str(dest, node);
+  printf("%s\n", dest);
 }
 
