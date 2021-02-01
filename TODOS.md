@@ -7,7 +7,6 @@
 - [ ] Serialize nodes and attrs to string
 - [ ] Introduce flag for string formatting / pretty print
 - [ ] Hash string representation of each node
-- [ ] Move gesture / event features out of node into box?
 
 ## Other
 - [ ] Initial pass at selector queries

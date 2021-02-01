@@ -2,7 +2,6 @@
 #include "minunit.h"
 #include "node.h"
 #include "node_test.h"
-#include "str_builder.h"
 #include <inttypes.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -106,13 +105,12 @@ char *test_leaf_hash(void) {
 }
 
 char *test_str_one(void) {
+  char result[256] = {0};
   Node *root = node(name("abcd"));
-  str_builder_t *str = node_to_str(root);
-  const char *result = str_builder_peek(str);
+  node_to_str(result, root);
   char *expected = "\nnode.type=0 attr_104.type=2 attr_104.chars=abcd";
   muAssert(strcmp(result, expected) == 0, "Expect string match");
 
-  str_builder_destroy(str);
   free_node(root);
   return NULL;
 }
@@ -126,15 +124,14 @@ char *test_str_kids(void) {
     )
   );
 
-  str_builder_t *str = node_to_str(root);
+  char result[256] = {0};
+  node_to_str(result, root);
 
   char *expected = "\nnode.type=0 attr_104.type=2 attr_104.chars=abcd attr_1.type=1\n\
 \tnode.type=0 attr_104.type=2 attr_104.chars=efgh\n\
 \tnode.type=0 attr_104.type=2 attr_104.chars=ijkl";
-  const char *result = str_builder_peek(str);
   muAssert(strcmp(result, expected) == 0, "Expect string match");
 
-  str_builder_destroy(str);
   free_node(root);
   return NULL;
 }

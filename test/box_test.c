@@ -48,10 +48,10 @@ char *test_new_box(void) {
 
 char *test_new_box_with_name(void) {
   Node *one = box(name("abcd"));
-  // muAssert(one->parent_id == 0, "Expected empty parent_id");
-  // Attr *attr = one->attrs[0];
-  // char *name = get_char_attr_data(attr);
-  // muAssert(strcmp(name, "abcd") == 0, "Expected name attr");
+  muAssert(one->parent_id == 0, "Expected empty parent_id");
+  Attr *attr = one->attrs[0];
+  char *name = get_char_attr_data(attr);
+  muAssert(strcmp(name, "abcd") == 0, "Expected name attr");
   free_node(one);
   return NULL;
 }

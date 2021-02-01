@@ -6,7 +6,6 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "fast_hash.h"
-#include "str_builder.h"
 
 #define DEFAULT_ZERO 0
 #define DEFAULT_CHAR ""
@@ -20,6 +19,7 @@ typedef void (*GestureHandler)(void);
 
 #define NODE_ATTR_CHILDREN "children"
 #define NODE_ATTR_CHARS "chars"
+#define NODE_ATTR_CHARS_LEN strlen(NODE_ATTR_CHARS)
 #define NODE_ATTR_UINT "uint"
 #define NODE_ATTR_PTR "ptr"
 #define NODE_ATTR_EXT_PTR "extptr"
@@ -114,7 +114,7 @@ struct Node **get_children(Node *node);
 
 // Node helpers
 void print_node(Node *node);
-str_builder_t *node_to_str(Node *node);
+void node_to_str(char *dest, Node *node);
 bool is_root(Node *node);
 void emit_event(Node *node, AttrKey key, char *gesture_name);
 
