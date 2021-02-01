@@ -302,7 +302,7 @@ Node *new_node(NodeType type, unsigned int attr_count, ...) {
 
   node->attr_count = attr_count;
   node->attrs = attrs;
-  node->hash = hash_node(node);
+  // node->hash = hash_node(node);
   return node;
 }
 
@@ -370,7 +370,9 @@ str_builder_t *node_to_str(Node *node) {
  */
 void print_node(Node *node) {
   str_builder_t *str = node_to_str(node);
-  printf("%s", str_builder_peek(str));
+  char *value = str_builder_dump(str, NULL);
+  printf("%s", value);
   str_builder_destroy(str);
+  free(value);
 }
 

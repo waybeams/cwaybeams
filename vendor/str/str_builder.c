@@ -163,7 +163,7 @@ char *str_builder_dump(const str_builder_t *sb, size_t *len)
     if (sb == NULL)
         return NULL;
 
-    if (len != NULL)
+    if (len == NULL)
         *len = sb->len;
     out = malloc(sb->len+1);
     memcpy(out, sb->str, sb->len+1);
