@@ -20,7 +20,7 @@ static int *ptr;
  */
 static uint8_t POINTER_SIZE = sizeof(ptr);
 
-static void node_to_str_indented(char *dest, Node *node, char *indent);
+static void node_to_str_indented(str_builder_t *str, Node *node, char *indent);
 
 /**
  * Get the next incremental identifier.
@@ -264,9 +264,10 @@ struct Node **get_children_attr_data(Attr *attr) {
 }
 
 static NodeHash hash_node(Node *node) {
-  char node_str[1024] = {0};
-  node_to_str(node_str, node);
-  return fast_hash(node_str, strlen(node_str));
+  str_builder_t *str = node_to_str(node);
+  uint32_t hash = fast_hash(str_builder_peek(str), str_builder_len(str));
+  str_builder_destroy(str);
+  return hash;
 }
 
 /**
@@ -301,7 +302,6 @@ Node *new_node(NodeType type, unsigned int attr_count, ...) {
 
   node->attr_count = attr_count;
   node->attrs = attrs;
-
   node->hash = hash_node(node);
   return node;
 }
@@ -325,58 +325,52 @@ bool is_root(Node *node) {
   return node->parent_id == 0;
 }
 
-static void attr_chars_to_str(char *dest, Attr *attr, char *indent) {
-  sprintf(dest, "%s attr_%d.%s=%s", dest, attr->key, NODE_ATTR_CHARS, attr->data);
+static void attr_chars_to_str(str_builder_t *str, Attr *attr, char *indent) {
+  // sprintf(dest, "%s attr_%d.%s=%s", dest, attr->key, NODE_ATTR_CHARS, attr->data);
 }
 
-static void attr_to_str(char *dest, Attr *attr, char *indent) {
-  sprintf(dest, "%s attr_%d.type=%d", dest, attr->key, attr->type);
+static void attr_to_str(str_builder_t *str, Attr *attr, char *indent) {
+  // sprintf(dest, "%s attr_%d.type=%d", dest, attr->key, attr->type);
 
   switch (attr->type) {
     case NodeAttrTypesChars:
-      attr_chars_to_str(dest, attr, indent);
+      attr_chars_to_str(str, attr, indent);
       break;
   }
 }
 
-static void node_children_to_str(char *dest, Node *node, char *indent) {
+static void node_children_to_str(str_builder_t *str, Node *node, char *indent) {
   struct Node **kids = get_children(node);
   if (kids != NULL) {
     sprintf(indent, "%s\t", indent);
     for (int i = 0; i < node->child_count; i++) {
-      node_to_str_indented(dest, kids[i], indent);
+      node_to_str_indented(str, kids[i], indent);
     }
   }
 }
 
-static void node_to_str_indented(char *dest, Node *node, char *indent) {
-  sprintf(dest, "%s\n%snode.type=%d", dest, indent, node->type);
+static void node_to_str_indented(str_builder_t *str, Node *node, char *indent) {
+  // sprintf(dest, "%s\n%snode.type=%d", dest, indent, node->type);
 
   for (int i = 0; i < node->attr_count; i++) {
-    attr_to_str(dest, node->attrs[i], indent);
+    attr_to_str(str, node->attrs[i], indent);
   }
 
-  node_children_to_str(dest, node, indent);
+  node_children_to_str(str, node, indent);
 }
 
-void node_to_str(char *dest, Node *node) {
-  char indent[128] = {0};
-  node_to_str_indented(dest, node, indent);
+str_builder_t *node_to_str(Node *node) {
+  str_builder_t *str = str_builder_create();
+  char indent[64] = {0};
+  node_to_str_indented(str, node, indent);
 }
-
-/*
-static size_t node_to_char_len(Node *node) {
-  size_t len = 0;
-  return snprintf(NULL, len, "%d", node->type);
-}
-*/
 
 /**
  * Print the provided node and attributes.
  */
 void print_node(Node *node) {
-  char dest[512] = {0};
-  node_to_str(dest, node);
-  printf("%s\n", dest);
+  str_builder_t *str = node_to_str(node);
+  printf("%s", str_builder_peek(str));
+  str_builder_destroy(str);
 }
 
