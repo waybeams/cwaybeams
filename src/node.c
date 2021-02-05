@@ -350,7 +350,9 @@ static void node_children_to_str(str_builder_t *str, Node *node, char *indent) {
 }
 
 static void node_to_str_indented(str_builder_t *str, Node *node, char *indent) {
-  // sprintf(dest, "%s\n%snode.type=%d", dest, indent, node->type);
+  char *new_str = {0};
+  sprintf(new_str, "%snode.type=%d", indent, node->type);
+  str_builder_add_str(str, new_str, strlen(new_str));
 
   for (int i = 0; i < node->attr_count; i++) {
     attr_to_str(str, node->attrs[i], indent);
@@ -363,6 +365,7 @@ str_builder_t *node_to_str(Node *node) {
   str_builder_t *str = str_builder_create();
   char indent[64] = {0};
   node_to_str_indented(str, node, indent);
+  return str;
 }
 
 /**
