@@ -326,11 +326,20 @@ bool is_root(Node *node) {
 }
 
 static void attr_chars_to_str(str_builder_t *str, Attr *attr, char *indent) {
-  // sprintf(dest, "%s attr_%d.%s=%s", dest, attr->key, NODE_ATTR_CHARS, attr->data);
+  char *content = " attr_%d.chars=%s";
+  char *data = attr->data;
+  size_t content_size = strlen(content) + strlen(data) + 32;
+  char *new_str[content_size];
+  sprintf(new_str, content, attr->key, data);
+  str_builder_add_str(str, new_str, 0);
 }
 
 static void attr_to_str(str_builder_t *str, Attr *attr, char *indent) {
-  // sprintf(dest, "%s attr_%d.type=%d", dest, attr->key, attr->type);
+  char *content = " attr_%d.type=%d";
+  size_t content_size = strlen(content) + 32;
+  char *new_str[content_size];
+  sprintf(new_str, content, attr->key, attr->type);
+  str_builder_add_str(str, new_str, 0);
 
   switch (attr->type) {
     case NodeAttrTypesChars:
@@ -342,7 +351,8 @@ static void attr_to_str(str_builder_t *str, Attr *attr, char *indent) {
 static void node_children_to_str(str_builder_t *str, Node *node, char *indent) {
   struct Node **kids = get_children(node);
   if (kids != NULL) {
-    sprintf(indent, "%s\t", indent);
+    // sprintf(indent, "%s\t", indent);
+    str_builder_add_str(str, "\n", 0);
     for (int i = 0; i < node->child_count; i++) {
       node_to_str_indented(str, kids[i], indent);
     }
@@ -350,9 +360,12 @@ static void node_children_to_str(str_builder_t *str, Node *node, char *indent) {
 }
 
 static void node_to_str_indented(str_builder_t *str, Node *node, char *indent) {
-  char *new_str = {0};
-  sprintf(new_str, "%snode.type=%d", indent, node->type);
-  str_builder_add_str(str, new_str, strlen(new_str));
+  char *content = "node.type=";
+  size_t indent_size = strlen(indent);
+  size_t content_size = strlen(indent) + strlen(content) + 32;
+  char *new_str[content_size];
+  sprintf(new_str, "%s%s%d", indent, content, node->type);
+  str_builder_add_str(str, new_str, 0);
 
   for (int i = 0; i < node->attr_count; i++) {
     attr_to_str(str, node->attrs[i], indent);

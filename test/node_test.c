@@ -128,7 +128,8 @@ char *test_str_kids(void) {
   );
 
   str_builder_t *str = node_to_str(root);
-  char *result = str_builder_dump(str, NULL);
+  char *result = str_builder_peek(str);
+  printf("YOOOOOOO: %s\n", result);
 
   char *expected = "\nnode.type=0 attr_104.type=2 attr_104.chars=abcd attr_1.type=1\n\
 \tnode.type=0 attr_104.type=2 attr_104.chars=efgh\n\
@@ -136,7 +137,6 @@ char *test_str_kids(void) {
   muAssert(strcmp(result, expected) == 0, "Expect string match");
   // print_node(root);
   str_builder_destroy(str);
-  free(result);
   free_node(root);
   return NULL;
 }
