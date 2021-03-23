@@ -301,8 +301,7 @@ Node *new_node(NodeType type, unsigned int attr_count, ...) {
 
   node->attr_count = attr_count;
   node->attrs = attrs;
-
-  node->hash = hash_node(node);
+  // node->hash = hash_node(node);
   return node;
 }
 
