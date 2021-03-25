@@ -8,11 +8,11 @@ If you're curious about what it might do or be, check out [examples/*](examples)
 Also, check out the [blog](blog) for more info.
 
 # Getting Started
+I prefer to run cmake with an in-place build.
 
 ```bash
-mkdir dist && cd dist
-cmake ../
-make
-ls -la
-./bin/cwaybeams-test
+cmake . && \
+make && \
+./bin/cwaybeams-test && \
+valgrind ./bin/cwaybeams-test
 ```
