@@ -1,18 +1,23 @@
-#include "render.h"
 #include "box.h"
+#include "gtk/render.h"
+#include "render.h"
 #include <gtk/gtk.h>
 #include <stdlib.h>
 
-GtkWidget *widget_from_node(Node *node);
+#define DEFAULT_WINDOW_WIDTH 1024
+#define DEFAULT_WINDOW_HEIGHT 768
 
-Rendered *render(Node *node) {
+GtkWidget *widget_from_node(Node *node, GtkRenderContext *c);
+
+Rendered *render(Node *node, void *context) {
+  GtkRenderContext *c = (GtkRenderContext*)context;
   Rendered *r = malloc(sizeof(Rendered));
   r->node = node;
-  r->widget = (unsigned char *)widget_from_node(node);
+  r->widget = (unsigned char *)widget_from_node(node, c);
   return r;
 }
 
-GtkWidget *render_button(Node *node) {
+GtkWidget *render_button(Node *node, GtkRenderContext *c) {
   return gtk_button_new_with_label(get_label(node));
 }
 
@@ -21,7 +26,7 @@ static void on_app_activate(GApplication *app, gpointer data) {
     // GtkApplication is sub-class of GApplication
     // downcast GApplication* to GtkApplication* with GTK_APPLICATION() macro
     GtkWidget *window = gtk_application_window_new(GTK_APPLICATION(app));
-    gtk_widget_set_size_request(window, 1024, 768);
+    // gtk_widget_set_size_request(window, 1024, 768);
 
     GtkWidget *fixedContainer = gtk_fixed_new();
 
@@ -45,14 +50,22 @@ static void on_app_activate(GApplication *app, gpointer data) {
     // gtk_widget_show_all(GTK_WIDGET(window));
 }
 
-GtkWidget *render_window(Node *node) {
-  // GtkWidget *window = gtk_application_window_new(GTK_APPLICATION(app));
-  // gtk_widget_set_size_request(window, 1024, 768);
-  // return window;
-  return NULL;
+GtkWidget *render_window(Node *node, GtkRenderContext *c) {
+  GtkWidget *window = gtk_application_window_new(GTK_APPLICATION(c->application));
+  unsigned int width = get_width(node);
+  if (width == 0) {
+    width = DEFAULT_WINDOW_WIDTH;
+  }
+  unsigned int height = get_height(node);
+  if (height == 0) {
+    height = DEFAULT_WINDOW_HEIGHT;
+  }
+  gtk_widget_set_size_request(window, width, height);
+  c->window = window;
+  return window;
 }
 
-GtkWidget *render_app(Node *node) {
+GtkWidget *render_app(Node *node, GtkRenderContext *c) {
   GtkApplication *app = gtk_application_new(
       "org.gtkmm.example.HelloApp",
       G_APPLICATION_FLAGS_NONE
@@ -60,6 +73,8 @@ GtkWidget *render_app(Node *node) {
   if (app == NULL) {
     return NULL;
   }
+
+  c->application = app;
 
   g_signal_connect(app, "activate", G_CALLBACK(on_app_activate), NULL);
   return (GtkWidget *)app;
@@ -71,13 +86,13 @@ GtkWidget *render_app(Node *node) {
   // deallocate the application object
   // g_object_unref(app);
 
-GtkWidget *widget_from_node(Node *node) {
+GtkWidget *widget_from_node(Node *node, GtkRenderContext *c) {
   GtkWidget *widget;
   switch(node->type) {
     case BoxTypeNone:
       break;
     case BoxTypeApp:
-      return render_app(node);
+      return render_app(node, c);
       break;
     case BoxTypeBox:
       break;
@@ -86,13 +101,13 @@ GtkWidget *widget_from_node(Node *node) {
     case BoxTypeHBox:
       break;
     case BoxTypeButton:
-      return render_button(node);
+      return render_button(node, c);
     case BoxTypeLink:
       break;
     case BoxTypeStyle:
       break;
     case BoxTypeWindow:
-      return render_window(node);
+      return render_window(node, c);
     case BoxTypeHead:
       break;
     case BoxTypeBody:

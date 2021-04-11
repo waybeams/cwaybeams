@@ -1,3 +1,4 @@
+#include "gtk/render.h"
 #include "render.h"
 #include "box.h"
 #include <gtk/gtk.h>
@@ -43,7 +44,13 @@ static void on_app_activate(GApplication *app, gpointer data) {
     g_signal_connect(btn, "clicked", G_CALLBACK(on_button_clicked), NULL);
 
     Node *b = button(label("Hello World"));
-    Rendered *r = render(b);
+    GtkRenderContext *c = malloc(sizeof(GtkRenderContext));
+    if (c == NULL) {
+      printf("Failed to initialize GtkRenderContext");
+      exit(1);
+    }
+
+    Rendered *r = render(b, c);
     GtkWidget *w = get_widget(r);
 
     gtk_container_add(GTK_CONTAINER(fixedContainer), w);

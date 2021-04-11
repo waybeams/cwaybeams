@@ -1,7 +1,13 @@
 # TODOS
 
+## Proof of Life
+- [ ] Render GTK Application from declarations
+- [ ] Render GTK Window from declarations
+- [ ] Render GTK Button from declarations
+- [x] Pass GTK context data (app and window) through render calls
+
 ## Tree caching and comparison
-- [ ] Migrate abstract node attributes to C types (e.g., uint32\_t, bool, or char)
+- [x] Migrate abstract node attributes to C types (e.g., uint32\_t, bool, or char)
 - [ ] Migrate concrete node attributes to application types (e.g., name, children or width)
 - [ ] Get string size of any given node
 - [ ] Serialize nodes and attrs to string

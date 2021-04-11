@@ -11,7 +11,7 @@ typedef struct Rendered {
   unsigned char *widget;
 } Rendered;
 
-Rendered *render(Node *node);
+Rendered *render(Node *node, void *context);
 int exec_app(AppRenderer r, BoxServices *s);
 
 #endif // __render_h__
