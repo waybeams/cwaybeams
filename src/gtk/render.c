@@ -14,6 +14,7 @@ Rendered *render(Node *node, void *context) {
   Rendered *r = malloc(sizeof(Rendered));
   r->node = node;
   r->widget = (unsigned char *)widget_from_node(node, c);
+  r->context = c;
   return r;
 }
 
@@ -70,24 +71,26 @@ GtkWidget *render_app(Node *node, GtkRenderContext *c) {
       "org.gtkmm.example.HelloApp",
       G_APPLICATION_FLAGS_NONE
   );
+
   if (app == NULL) {
     return NULL;
   }
 
   c->application = app;
-
   g_signal_connect(app, "activate", G_CALLBACK(on_app_activate), NULL);
   return (GtkWidget *)app;
 }
 
-  // start the application, terminate by closing the window
-  // GtkApplication* is upcast to GApplication* with G_APPLICATION() macro
-  // int status = g_application_run(G_APPLICATION(app), argc, argv);
-  // deallocate the application object
-  // g_object_unref(app);
+int application_run(GtkApplication *app, int argc, char *argv[]) {
+  int status = g_application_run(G_APPLICATION(app), argc, argv);
+  g_object_unref(app);
+  return status;
+}
 
 GtkWidget *widget_from_node(Node *node, GtkRenderContext *c) {
+  printf("widget_from_node with: %d\n", node->type);
   GtkWidget *widget;
+
   switch(node->type) {
     case BoxTypeNone:
       break;

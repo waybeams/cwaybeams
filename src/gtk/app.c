@@ -1,8 +1,9 @@
+#include "box.h"
 #include "gtk/render.h"
 #include "render.h"
-#include "box.h"
 #include <gtk/gtk.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 static char *btn_label_one = "Label One";
 static char *btn_label_two = "Label Two";
@@ -26,6 +27,7 @@ static void on_button_clicked(GtkButton *btn, gpointer data) {
 
 // callback function which is called when application is first started
 static void on_app_activate(GApplication *app, gpointer data) {
+    printf("on_app_activate\n");
     btn_label = btn_label_one;
 
     // create a new application window for the application
@@ -62,7 +64,7 @@ static void on_app_activate(GApplication *app, gpointer data) {
     gtk_widget_show_all(GTK_WIDGET(window));
 }
 
-int new_app(int argc, char *argv[]) {
+int new_app_old(int argc, char *argv[]) {
     // create new GtkApplication with an unique application ID
     GtkApplication *app = gtk_application_new(
         "org.gtkmm.example.HelloApp",
@@ -80,3 +82,27 @@ int new_app(int argc, char *argv[]) {
     return status;
 }
 
+Node *new_app_node() {
+  return app(
+    children(
+      window(
+        children(
+          button(label("Hello"))
+        )
+      )
+    )
+  );
+}
+
+int new_app(int argc, char *argv[]) {
+  Node *node = new_app_node();
+
+  GtkRenderContext *c = malloc(sizeof(GtkRenderContext));
+  if (c == NULL) {
+    printf("Failed to initialize GtkRenderContext");
+    exit(1);
+  }
+
+  Rendered *r = render(node, c);
+  return application_run(c->application, argc, argv);
+}

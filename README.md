@@ -8,11 +8,21 @@ If you're curious about what it might do or be, check out [examples/*](examples)
 Also, check out the [blog](blog) for more info.
 
 # Getting Started
-I prefer to run cmake with an in-place build.
+Here's how I build and run for development and testing:
 
 ```bash
 cmake . && \
 make && \
 ./bin/cwaybeams-test && \
 valgrind ./bin/cwaybeams-test
+```
+
+# Debugging
+Here's how I build and run with GDB:
+
+```bash
+make clean && \
+cmake -DCMAKE_BUILD_TYPE=Debug . && \
+make && \
+gdb ./bin/cwaybeams-test
 ```

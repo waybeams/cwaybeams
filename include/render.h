@@ -9,6 +9,7 @@ typedef Node *(*AppRenderer)(BoxServices *s);
 typedef struct Rendered {
   Node *node;
   unsigned char *widget;
+  void *context;
 } Rendered;
 
 Rendered *render(Node *node, void *context);
