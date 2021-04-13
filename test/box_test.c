@@ -1,9 +1,7 @@
 #include "box.h"
 #include "minunit.h"
 #include "node.h"
-#include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 char *test_new_name_attr(void) {

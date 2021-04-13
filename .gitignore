@@ -29,18 +29,17 @@
 *.su
 *.x86_64
 .tmp_versions/
-cmake_install.cmake
 CMakeCache.txt
 CMakeFiles
+Makefile
 Mkfile.old
 Module.symvers
+cmake_install.cmake
+cwaybeams.cbp
 dist
 dkms.conf
-modules.order
-tags
-
-# Generated Files
 examples/gtk/Makefile
 include/version.h
+modules.order
+tags
 test/Makefile
-Makefile
