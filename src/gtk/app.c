@@ -82,7 +82,8 @@ int new_app_old(int argc, char *argv[]) {
     return status;
 }
 
-Node *new_app_node() {
+Node *new_app_node(void *c) {
+  // GtkRenderContext grc = (GtkRenderContext)c;
   return app(
     children(
       window(
@@ -95,14 +96,5 @@ Node *new_app_node() {
 }
 
 int new_app(int argc, char *argv[]) {
-  Node *node = new_app_node();
-
-  GtkRenderContext *c = malloc(sizeof(GtkRenderContext));
-  if (c == NULL) {
-    printf("Failed to initialize GtkRenderContext");
-    exit(1);
-  }
-
-  Rendered *r = render(node, c);
-  return application_run(c->application, argc, argv);
+  return run(argc, argv, &new_app_node);
 }

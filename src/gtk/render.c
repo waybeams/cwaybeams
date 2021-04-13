@@ -81,8 +81,25 @@ GtkWidget *render_app(Node *node, GtkRenderContext *c) {
   return (GtkWidget *)app;
 }
 
-int application_run(GtkApplication *app, int argc, char *argv[]) {
-  int status = g_application_run(G_APPLICATION(app), argc, argv);
+
+GtkRenderContext *new_render_context(int argc, char *argv[]) {
+  GtkRenderContext *c = malloc(sizeof(GtkRenderContext));
+  if (c == NULL) {
+    printf("Failed to initialize GtkRenderContext");
+  }
+  c->argc = argc;
+  memcpy(c->argv, *argv, strlen(*argv));
+  return c;
+}
+
+int run(int argc, char *argv[], new_nodes_t new_nodes) {
+  GtkRenderContext *c = new_render_context(argc, argv);
+  Node *n = new_nodes((void *)c);
+  Rendered *r = render(n, c);
+
+  GtkApplication *app = (GtkApplication *)r->widget;
+
+  int status = g_application_run(G_APPLICATION(app), c->argc, c->argv);
   g_object_unref(app);
   return status;
 }
