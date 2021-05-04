@@ -43,3 +43,4 @@ include/version.h
 modules.order
 tags
 test/Makefile
+cmake-build*
