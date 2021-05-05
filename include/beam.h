@@ -1,5 +1,5 @@
-#ifndef __box_h__
-#define __box_h__
+#ifndef __beam_h__
+#define __beam_h__
 
 #include "node.h"
 
@@ -79,4 +79,4 @@ typedef struct BoxServices {
 #define get_y(node) get_uint_attr_from_node(node, BoxAttrKeysY, DEFAULT_ZERO)
 #define get_z(node) get_uint_attr_from_node(node, BoxAttrKeysZ, DEFAULT_ZERO)
 
-#endif // __box_h__
+#endif // __beam_h__

@@ -2,7 +2,7 @@
 #define __render_h__
 
 #include "node.h"
-#include "box.h"
+#include "beam.h"
 
 typedef Node *(*AppRenderer)(BoxServices *s);
 

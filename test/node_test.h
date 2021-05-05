@@ -1,7 +1,7 @@
 #ifndef __node_test_h__
 #define __node_test_h__
 
-#include "box.h"
+#include "beam.h"
 
 typedef int (FakeAddFunc)(int a, int b);
 

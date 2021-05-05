@@ -1,7 +1,6 @@
-#include "box_test.h"
+#include "beam_test.h"
 #include "hash_test.h"
 #include "hfsm_test.h"
-#include "layout_test.h"
 #include "minunit.h"
 #include "node_test.h"
 #include "node_visitor_test.h"
@@ -27,14 +26,11 @@ char *allTests(void) {
   muRunTest(test_element_children);
 
   // hash_test.h
-  // muRunTest(test_new_hash);
+  muRunTest(test_new_hash);
 
   // hfsm_test.h
   muRunTest(test_hfsm_creation);
   muRunTest(test_default_signal);
-
-  // layout_test.h
-  muRunTest(testNewLayout);
 
   // node_test.h
   muRunTest(test_new_char_attr);
@@ -59,4 +55,3 @@ char *allTests(void) {
 }
 
 RUN_TESTS(allTests);
-

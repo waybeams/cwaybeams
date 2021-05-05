@@ -3,7 +3,6 @@
 #include "hfsm_test.h"
 #include "minunit.h"
 #include "node.h"
-#include <stdbool.h>
 
 char *test_hfsm_creation(void) {
   Node *machine = new_hfsm_keyboard();
@@ -33,11 +32,10 @@ char *test_default_signal(void) {
   result[index++] = buf[0];
 
   // Insert ending char.
-  result[index++] = 0;
+  result[index++] = '\0';
   muAssert(strcmp(result, "abcd") == 0, "Expected buffer to fill");
 
   free_node(machine);
   free(result);
   return NULL;
 }
-

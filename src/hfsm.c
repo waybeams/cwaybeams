@@ -10,4 +10,3 @@ Node *hfsm_get_state(Node *machine) {
   char *name = hfsm_get_state_name(machine);
   return find_element_with_matching_char_attr(machine, HfsmAttrKeyName, name);
 }
-

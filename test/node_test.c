@@ -1,11 +1,8 @@
-#include "box.h"
+#include "beam.h"
 #include "minunit.h"
 #include "node.h"
 #include "node_test.h"
-#include <inttypes.h>
-#include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 char *test_new_char_attr(void) {
@@ -135,4 +132,3 @@ char *test_str_kids(void) {
   free_node(root);
   return NULL;
 }
-

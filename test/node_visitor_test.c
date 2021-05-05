@@ -1,4 +1,4 @@
-#include "box.h"
+#include "beam.h"
 #include "minunit.h"
 #include "node.h"
 #include "node_visitor_test.h"
@@ -106,4 +106,3 @@ char *testDepthFirst(void) {
   free_node(root);
   return NULL;
 }
-

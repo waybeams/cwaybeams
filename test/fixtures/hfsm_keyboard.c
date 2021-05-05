@@ -1,9 +1,7 @@
 #include "hfsm_keyboard.h"
 #include "hfsm.h"
 #include <stddef.h>
-#include <stdio.h>
 #include <string.h>
-#include <inttypes.h>
 
 int kb_caps_signal(char *buf, char *signal) {
   return 0;

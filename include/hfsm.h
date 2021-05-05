@@ -1,8 +1,8 @@
 #ifndef __hfsm_h__
 #define __hfsm_h__
 
-#include <stdint.h>
 #include "node.h"
+#include <stdint.h>
 
 #define DEFAULT_STATE "default"
 

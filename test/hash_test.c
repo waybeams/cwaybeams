@@ -1,7 +1,6 @@
 #include "hash_test.h"
 #include "fast_hash.h"
 #include "minunit.h"
-#include <stdbool.h>
 #include <stdint.h>
 
 #define HASH_ABCD 3671636187
@@ -11,4 +10,3 @@ char *test_new_hash(void) {
   muAssert(h == HASH_ABCD, "Expected abcd hash");
   return NULL;
 }
-
