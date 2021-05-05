@@ -109,6 +109,9 @@ Attr *new_char_attr(AttrKey key, char *value) {
   if (attr == NULL) {
     return NULL;
   }
+  if (value == NULL) {
+    value = "";
+  }
   attr->key = key;
   attr->type = NodeAttrTypesChars;
   attr->data_size = strlen(value) + 1;
@@ -378,4 +381,3 @@ void print_node(Node *node) {
   node_to_str(dest, node);
   printf("%s\n", dest);
 }
-

@@ -18,6 +18,7 @@
  */
 #include <beam.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
 
 #define TASK_COUNT 50
@@ -41,6 +42,7 @@ app_model_t *new_model(void) {
   app_model_t *m = calloc(sizeof(app_model_t), 1);
   task_t *tasks = calloc(sizeof(task_t), TASK_COUNT);
   m->tasks = tasks;
+  m->title = "Hello World";
   return m;
 }
 
@@ -50,18 +52,29 @@ app_services_t *new_services(void) {
   return s;
 }
 
+Node *create_task_view(app_services_t *s, task_t *t) {
+  return hbox(
+    children(
+      label("one")
+      // checkbox(t->is_done),
+      // label(t->label)
+    )
+  );
+}
+
 Node *create_content(app_services_t *s) {
   app_model_t *m = s->model;
-  Node *tasks[];
+  Node *task_views[m->task_count];
   for (int i = 0; i < m->task_count; i++) {
-    tasks[i] = create_task_view(s, m->tasks[i]);
+    task_views[i] = create_task_view(s, &m->tasks[i]);
   }
 
   return vbox(
-      name(services->model->title),
+      name(s->model->title),
       width(800),
       height(600),
-      children(tasks, m->task_count)
+      children(task_views)
+      // children_count(m->task_count)
   );
 }
 
@@ -75,7 +88,7 @@ Node* create_projection(app_services_t *s) {
       children(
           window(
               name("main-window"),
-              title(services->model->title),
+              title(s->model->title),
               children(create_content(s))
           )
       )
@@ -95,18 +108,21 @@ void services_free(app_services_t *services) {
 }
 
 int main(void) {
+  printf("Starting\n");
   // Create app-specific service locator
-  app_services_t *services create_services();
-  Events *events;
+  app_services_t *services = new_services();
+  // Events *events;
   Node *node;
   int status;
   do {
-    events = gather_events();
+    // printf("Looping\n");
+    // events = gather_events();
     node = create_projection(services);
-    status = render(node, events);
+    // status = render(node, events);
   } while(node != NULL && status == 0);
 
   // Application is shutting down, free resources.
   services_free(services);
+  printf("Exiting\n");
   return 0;
 }

@@ -67,4 +67,9 @@ add_executable(cwaybeams-test test/main_test.c
 	${TestSources}
 	)
 
+add_executable(todo-example examples/todo/main_todo.c
+	${AppSources}
+	${AppHeaders}
+	)
+
 target_compile_definitions(cwaybeams-test PRIVATE TEST_MODE=1)
