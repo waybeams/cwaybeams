@@ -56,6 +56,10 @@ static int get_attr_index_by_key(Node *node, AttrKey key) {
  * may contain, including child Nodes.
  */
 void free_attr(Attr *attr) {
+  if (attr == NULL) {
+    return;
+  }
+
   if (attr->type == NodeAttrTypesChildren) {
     struct Node **kids = get_children_attr_data(attr);
     int count = attr->data_size / POINTER_SIZE;
@@ -65,7 +69,8 @@ void free_attr(Attr *attr) {
   }
 
   // Function pointers are allocated outside this library.
-  if (attr->type != NodeAttrTypesExtPtr) {
+  if (attr->type != NodeAttrTypesExtPtr &&
+      attr->type != NodeAttrTypesChars) {
     free(attr->data);
   }
 

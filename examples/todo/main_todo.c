@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <unistd.h>
 
 #define TASK_COUNT 50
 
@@ -72,8 +73,8 @@ Node *create_content(app_services_t *s) {
   return vbox(
       name(s->model->title),
       width(800),
-      height(600),
-      children(task_views)
+      height(600)
+      // children(task_views)
       // children_count(m->task_count)
   );
 }
@@ -112,14 +113,15 @@ int main(void) {
   // Create app-specific service locator
   app_services_t *services = new_services();
   // Events *events;
-  Node *node;
-  int status;
+  int status = 0;
   do {
     // printf("Looping\n");
     // events = gather_events();
-    node = create_projection(services);
+    Node *node = create_projection(services);
     // status = render(node, events);
-  } while(node != NULL && status == 0);
+    free_node(node);
+    usleep(10);
+  } while(status < 10000);
 
   // Application is shutting down, free resources.
   services_free(services);

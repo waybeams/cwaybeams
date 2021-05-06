@@ -167,5 +167,6 @@ char *test_element_children(void) {
   muAssert(strcmp(get_name(kids[2]), "three") == 0, "three");
   muAssert(strcmp(get_name(kids[3]), "four") == 0, "four");
   free_node(root);
+
   return NULL;
 }
