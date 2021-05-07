@@ -5,7 +5,13 @@
 #include <stdlib.h>
 #include <debug.h>
 
-int minunit_tests_run;
+#ifdef __GNUC__
+#define MINUNIT_ATTR_IS_USED __attribute__ ((unused))
+#else
+#define MINUNIT_ATTR_IS_USED
+#endif
+
+MINUNIT_ATTR_IS_USED static int minunit_tests_run = 0;
 
 #define muSuiteStart() char *message = NULL
 
@@ -15,7 +21,6 @@ int minunit_tests_run;
 #define muRunTest(test) message = test(); minunit_tests_run++; if (message) return message;
 
 #define RUN_TESTS(name) int main(int argc, char *argv[]) { \
-    static int minunit_tests_run = 0; \
     printf("\n----\nRUNNING: %d %s\n", argc, argv[0]);\
     char *result = name();\
     if (result != 0) {\
