@@ -24,21 +24,22 @@
 
 #define TASK_COUNT 50
 
-typedef struct task_t {
+typedef struct {
   char *label;
   bool is_done;
 }task_t;
 
-typedef struct app_model_t {
+typedef struct {
   char *title;
   int task_count;
   task_t *tasks;
 }app_model_t;
 
-typedef struct app_services_t {
-  app_model_t *model;
+typedef struct app_services_t  {
+  app_model_t model;
 }app_services_t;
 
+/*
 app_model_t *new_model(void) {
   app_model_t *m = calloc(sizeof(app_model_t), 1);
   task_t *tasks = calloc(sizeof(task_t), TASK_COUNT);
@@ -52,6 +53,7 @@ app_services_t *new_services(void) {
   s->model = calloc(sizeof(app_model_t), 1);
   return s;
 }
+*/
 
 Node *create_task_view(task_t *t) {
   return hbox(
@@ -63,17 +65,21 @@ Node *create_task_view(task_t *t) {
 }
 
 Node *create_content(app_services_t *s) {
-  app_model_t *m = s->model;
+  app_model_t *m = &s->model;
+
+  // Build a task view for each task record.
   Node *task_views[m->task_count];
   for (int i = 0; i < m->task_count; i++) {
     task_views[i] = create_task_view(&m->tasks[i]);
   }
 
   return vbox(
-      name(s->model->title),
-      width(800),
-      height(600),
-      children_list(m->task_count, task_views)
+      children(
+          label("Task List"),
+          vbox(
+              children_list(m->task_count, task_views)
+          )
+      )
   );
 }
 
@@ -87,42 +93,44 @@ Node* create_projection(app_services_t *s) {
       children(
           window(
               name("main-window"),
-              title(s->model->title),
-              children(create_content(s))
+              title(s->model.title),
+              width(800),
+              height(600),
+              children(
+                  create_content(s)
+              )
           )
       )
   );
 }
 
-void services_free(app_services_t *services) {
-  if (services != NULL) {
-    if (services->model != NULL) {
-      if (services->model->tasks != NULL) {
-        free(services->model->tasks);
-      }
-      free(services->model);
-    }
-    free(services);
-  }
-}
-
 int main(void) {
   printf("Starting\n");
-  // Create app-specific service locator
-  app_services_t *services = new_services();
+
+  task_t tasks[100] = {
+      {.label = "one", .is_done = false},
+      {.label = "two", .is_done = false}
+  };
+
+  app_services_t services = {
+      .model = {
+        .title = "Main Page",
+        .tasks = tasks,
+        .task_count = 2
+      }
+  };
+
   // Events *events;
   int status = 0;
   do {
     // printf("Looping\n");
     // events = gather_events();
-    Node *node = create_projection(services);
+    Node *node = create_projection(&services);
     // status = render(node, events);
     free_node(node);
     usleep(10);
   } while(status < 10000);
 
-  // Application is shutting down, free resources.
-  services_free(services);
   printf("Exiting\n");
   return 0;
 }
