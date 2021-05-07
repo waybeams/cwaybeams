@@ -13,7 +13,7 @@ configure_file(include/version.h.in include/version.h)
 if (MSVC)
     add_compile_options(/W3 /WX)
 else()
-	# add_compile_options(-W -Wall -Werror)
+	add_compile_options(-W -Wall -Werror)
 endif()
 
 set(AppSources
@@ -48,18 +48,8 @@ set(TestSources
 		test/test_helper.h
 		)
 
+# Shared library build
 add_library(cwaybeams SHARED
-		${AppSources}
-		${AppHeaders}
-		)
-
-add_executable(cwaybeams-test test/main_test.c
-		${AppSources}
-		${AppHeaders}
-		${TestSources}
-		)
-
-add_executable(todo-example examples/todo/main_todo.c
 		${AppSources}
 		${AppHeaders}
 		)
@@ -71,11 +61,24 @@ target_include_directories(cwaybeams PUBLIC include)
 target_include_directories(cwaybeams PRIVATE src)
 target_include_directories(cwaybeams PRIVATE vendor/hash)
 
+# Test executable
+add_executable(cwaybeams-test test/main_test.c
+		${AppSources}
+		${AppHeaders}
+		${TestSources}
+		)
+
 target_compile_definitions(cwaybeams-test PRIVATE TEST_MODE=1)
 target_include_directories(cwaybeams-test PRIVATE include)
 target_include_directories(cwaybeams-test PRIVATE src)
 target_include_directories(cwaybeams-test PRIVATE test)
 target_include_directories(cwaybeams-test PRIVATE vendor/hash)
+
+# Example executable
+add_executable(todo-example examples/todo/main_todo.c
+		${AppSources}
+		${AppHeaders}
+		)
 
 target_include_directories(todo-example PUBLIC include)
 target_include_directories(todo-example PRIVATE src)

@@ -53,12 +53,11 @@ app_services_t *new_services(void) {
   return s;
 }
 
-Node *create_task_view(app_services_t *s, task_t *t) {
+Node *create_task_view(task_t *t) {
   return hbox(
     children(
-      label("one")
+      label(t->label)
       // checkbox(t->is_done),
-      // label(t->label)
     )
   );
 }
@@ -67,15 +66,14 @@ Node *create_content(app_services_t *s) {
   app_model_t *m = s->model;
   Node *task_views[m->task_count];
   for (int i = 0; i < m->task_count; i++) {
-    task_views[i] = create_task_view(s, &m->tasks[i]);
+    task_views[i] = create_task_view(&m->tasks[i]);
   }
 
   return vbox(
       name(s->model->title),
       width(800),
-      height(600)
-      // children(task_views)
-      // children_count(m->task_count)
+      height(600),
+      children_list(m->task_count, task_views)
   );
 }
 

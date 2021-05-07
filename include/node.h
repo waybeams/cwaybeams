@@ -5,7 +5,6 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <stddef.h>
-#include "fast_hash.h"
 
 #define DEFAULT_ZERO 0
 #define DEFAULT_CHAR ""
@@ -96,6 +95,7 @@ typedef struct Node {
 Node *new_node(NodeType type, unsigned int count, ...);
 Attr *new_attr(void);
 Attr *new_children(unsigned int count, ...);
+Attr *children_list(unsigned int count, Node **children);
 
 // Attribute type factories
 Attr *new_char_attr(AttrKey key, char *value);
@@ -116,7 +116,7 @@ struct Node **get_children(Node *node);
 void print_node(Node *node);
 void node_to_str(char *dest, Node *node);
 bool is_root(Node *node);
-void emit_event(Node *node, AttrKey key, char *gesture_name);
+void emit_event(Node *node, AttrKey key);
 
 // Destructors
 void free_node(Node *node);

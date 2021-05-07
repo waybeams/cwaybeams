@@ -1,9 +1,9 @@
+#include "fast_hash.h"
 #include "node.h"
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <inttypes.h>
 
 /**
  * Global id for all instantiated Nodes.
@@ -42,7 +42,7 @@ static NodeId getNextId() {
  */
 static int get_attr_index_by_key(Node *node, AttrKey key) {
   Attr *attr;
-  for (int i = 0; i < node->attr_count; i++) {
+  for (unsigned int i = 0; i < node->attr_count; i++) {
     attr = node->attrs[i];
     if (attr->key == key) {
       return i;
@@ -82,7 +82,7 @@ void free_attr(Attr *attr) {
  * element to it's leaves.
  */
 void free_node(Node *node) {
-  for (int i = 0; i < node->attr_count; i++) {
+  for (unsigned int i = 0; i < node->attr_count; i++) {
     Attr *attr = node->attrs[i];
     free_attr(attr);
   }
@@ -244,13 +244,10 @@ Attr *new_children(unsigned int count, ...) {
   attr->data_size = count * POINTER_SIZE;
 
   struct Node *kids[attr->data_size];
-  if (kids == NULL) {
-    return NULL;
-  }
 
   va_list vargs;
   va_start(vargs, count);
-  for (int i = 0; i < count; i++) {
+  for (unsigned int i = 0; i < count; i++) {
     struct Node *kid = va_arg(vargs, struct Node *);
     kids[i] = kid;
   }
@@ -264,6 +261,26 @@ Attr *new_children(unsigned int count, ...) {
   return attr;
 }
 
+
+Attr *children_list(unsigned int count, Node **children) {
+  Attr *attr = new_attr();
+  if (attr == NULL) {
+    return NULL;
+  }
+
+  attr->type = NodeAttrTypesChildren;
+  attr->key = NodeAttrKeysChildren;
+  attr->data_size = count * POINTER_SIZE;
+
+  attr->data = (unsigned char *)malloc(attr->data_size);
+  if (attr->data == NULL) {
+    return NULL;
+  }
+  memcpy(attr->data, children, attr->data_size);
+  return attr;
+}
+
+
 /**
  * Get an array of Node pointers as Children data from the provided Attr.
  */
@@ -271,11 +288,13 @@ struct Node **get_children_attr_data(Attr *attr) {
   return (struct Node **)get_attr_data(attr);
 }
 
+/*
 static NodeHash hash_node(Node *node) {
   char node_str[1024] = {0};
   node_to_str(node_str, node);
   return fast_hash(node_str, strlen(node_str));
 }
+*/
 
 /**
  * Create a new Node with the provided attributes.
@@ -294,12 +313,12 @@ Node *new_node(NodeType type, unsigned int attr_count, ...) {
   // Process Attrs
   va_list vargs;
   va_start(vargs, attr_count);
-  for (int i = 0; i < attr_count; i++) {
+  for (unsigned int i = 0; i < attr_count; i++) {
     struct Attr *attr = va_arg(vargs, struct Attr *);
     if (attr->key == NodeAttrKeysChildren) {
         node->child_count += (attr->data_size / POINTER_SIZE);
         struct Node **kids = get_children_attr_data(attr);
-        for (int k = 0; k < node->child_count; k++) {
+        for (unsigned int k = 0; k < node->child_count; k++) {
             kids[k]->parent_id = node->id;
         }
     }
@@ -316,7 +335,7 @@ Node *new_node(NodeType type, unsigned int attr_count, ...) {
 /**
  * Call any handlers found for the provided gesture type.
  */
-void emit_event(Node *node, AttrKey key, char *gesture_name) {
+void emit_event(Node *node, AttrKey key) {
   int index = get_attr_index_by_key(node, key);
   if (index > -1) {
     Attr *attr = node->attrs[index];
@@ -332,38 +351,48 @@ bool is_root(Node *node) {
   return node->parent_id == 0;
 }
 
-static void attr_chars_to_str(char *dest, Attr *attr, char *indent) {
-  sprintf(dest, "%s attr_%d.%s=%s", dest, attr->key, NODE_ATTR_CHARS, attr->data);
+static void attr_chars_to_str(char *dest, Attr *attr) {
+  char *str = {0};
+  sprintf(str, "attr_%d.%s=%s", attr->key, NODE_ATTR_CHARS, attr->data);
+  strcat(dest, str);
 }
 
 static void attr_to_str(char *dest, Attr *attr, char *indent) {
-  sprintf(dest, "%s attr_%d.type=%d", dest, attr->key, attr->type);
+  char *str = {0};
+  sprintf(str, "%s attr_%d.type=%d", indent, attr->key, attr->type);
 
   switch (attr->type) {
     case NodeAttrTypesChars:
-      attr_chars_to_str(dest, attr, indent);
+      attr_chars_to_str(str, attr);
       break;
   }
+
+  strcat(dest, str);
 }
 
 static void node_children_to_str(char *dest, Node *node, char *indent) {
   struct Node **kids = get_children(node);
+  char *str = {0};
   if (kids != NULL) {
-    sprintf(indent, "%s\t", indent);
-    for (int i = 0; i < node->child_count; i++) {
-      node_to_str_indented(dest, kids[i], indent);
+    char *new_indent = {0};
+    strcat(new_indent, indent);
+    for (unsigned int i = 0; i < node->child_count; i++) {
+      node_to_str_indented(str, kids[i], indent);
     }
   }
+  strcat(dest, str);
 }
 
 static void node_to_str_indented(char *dest, Node *node, char *indent) {
-  sprintf(dest, "%s\n%snode.type=%d", dest, indent, node->type);
+  char *str = {0};
+  sprintf(str, "%s\nnode.type=%d", indent, node->type);
 
-  for (int i = 0; i < node->attr_count; i++) {
-    attr_to_str(dest, node->attrs[i], indent);
+  for (unsigned int i = 0; i < node->attr_count; i++) {
+    attr_to_str(str, node->attrs[i], indent);
   }
+  node_children_to_str(str, node, indent);
 
-  node_children_to_str(dest, node, indent);
+  strcat(dest, str);
 }
 
 void node_to_str(char *dest, Node *node) {

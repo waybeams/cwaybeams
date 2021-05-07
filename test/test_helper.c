@@ -20,7 +20,10 @@ void loadFixtureData(char *path, uint32_t *lines) {
   // Read file into array
   int len = 1024;
   for (i = 0; i < len; i++) {
-    fscanf(file, "%d,", (int*)&lines[i]);
+    int result = fscanf(file, "%d,", (int*)&lines[i]);
+    if (result != 0) {
+      fprintf(stderr, "fscanf failed with: %d\n", result);
+    }
 		if (lines[i] == '\0') {
 			// debug("loaded %d fixture lines from disk\n", i);
 			break;
