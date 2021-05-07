@@ -3,7 +3,7 @@
 
 #include "node.h"
 
-typedef enum BeamAttrKeysKeys {
+typedef enum beam_attr_keys_t {
   BeamAttrKeysNone = 100,
   BeamAttrKeysHeight,
   BeamAttrKeysLabel,
@@ -15,9 +15,9 @@ typedef enum BeamAttrKeysKeys {
   BeamAttrKeysX,
   BeamAttrKeysY,
   BeamAttrKeysZ,
-} BeamAttrKeysKeys;
+} beam_attr_keys_t;
 
-typedef enum BeamType {
+typedef enum beam_type_t {
   BeamTypeNone = 0,
   BeamTypeApp,
   BeamTypeBody,
@@ -29,14 +29,14 @@ typedef enum BeamType {
   BeamTypeStyle,
   BeamTypeVBox,
   BeamTypeWindow,
-} BeamType;
+} beam_type_t;
 
-typedef enum BeamLayout {
+typedef enum beam_layout_t {
   LayoutDefault = 0,
   LayoutStack,
   LayoutVertical,
   LayoutHorizontal,
-} BeamLayout;
+} beam_layout_t;
 
 /**
  * Wrap variadic macros with expected names.

@@ -8,10 +8,11 @@
  *
  * Does not recurse into child elements.
  */
-VisitStatus each_child(Node *node, VisitHandler visitHandler) {
-  struct Node **kids = get_children(node);
+visit_status_t each_child(node_t *node, visit_handler_t visit_handler) {
+  node_t **kids = get_children(node);
   for (unsigned int i = 0; i < node->child_count; i++) {
-    VisitStatus status = visitHandler(kids[i]);
+    node_t *kid = kids[i];
+    visit_status_t status = visit_handler(kid);
     if (status != VISIT_SUCCESS) {
       return status;
     }
@@ -26,9 +27,9 @@ VisitStatus each_child(Node *node, VisitHandler visitHandler) {
  * This is generally useful when searching for values that are known to exist on
  * leaf nodes.
  */
-VisitStatus depth_first(Node *node, VisitHandler visitHandler) {
-  VisitStatus status;
-  struct Node **kids = get_children(node);
+visit_status_t depth_first(node_t *node, visit_handler_t visitHandler) {
+  visit_status_t status;
+  node_t **kids = get_children(node);
   for (unsigned int i = 0; i < node->child_count; i++) {
     status = depth_first(kids[i], visitHandler);
     if (status != VISIT_SUCCESS) {
@@ -50,13 +51,13 @@ VisitStatus depth_first(Node *node, VisitHandler visitHandler) {
  * This is generally what people expect when searching the tree for elements
  * with a given attribute value.
  */
-VisitStatus breadth_first(Node *node, VisitHandler visitHandler) {
-  VisitStatus status = visitHandler(node);
+visit_status_t breadth_first(node_t *node, visit_handler_t visitHandler) {
+  visit_status_t status = visitHandler(node);
   if (status != VISIT_SUCCESS) {
     return status;
   }
 
-  struct Node **kids = get_children(node);
+  node_t **kids = get_children(node);
   for (unsigned int i = 0; i < node->child_count; i++) {
     status = breadth_first(kids[i], visitHandler);
     if (status != VISIT_SUCCESS) {
@@ -69,10 +70,10 @@ VisitStatus breadth_first(Node *node, VisitHandler visitHandler) {
 
 // TODO(lbayes): NOT thread safe, need to rework this feature to avoid global values.
 static char *matching_value;
-static AttrType matching_type;
-static Node *matched_node;
+static attr_type_t matching_type;
+static node_t *matched_node;
 
-static VisitStatus matching_char_visit_handler(Node *node) {
+static visit_status_t matching_char_visit_handler(node_t *node) {
   char *data = get_char_attr_from_node(node, matching_type, "");
   if (strcmp(data, matching_value) == 0) {
     matched_node = node;
@@ -82,12 +83,12 @@ static VisitStatus matching_char_visit_handler(Node *node) {
   return VISIT_SUCCESS;
 }
 
-Node *find_element_with_matching_char_attr(Node *node, AttrType type,
-    char *value) {
+node_t *find_element_with_matching_char_attr(node_t *node, attr_type_t type,
+                                             char *value) {
   matched_node = NULL;
   matching_type = type;
   matching_value = value;
-  VisitStatus status = breadth_first(node, matching_char_visit_handler);
+  visit_status_t status = breadth_first(node, matching_char_visit_handler);
 
   if (status == VISIT_MATCHED) {
     return matched_node;

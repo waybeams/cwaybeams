@@ -4,15 +4,15 @@
 #include "node_visitor_test.h"
 #include <node_visitor.h>
 
-Node *visited[13];
+node_t *visited[13];
 int visitedIndex = 0;
 
-VisitStatus node_handler(Node *node) {
+visit_status_t node_handler(node_t *node) {
   visited[visitedIndex++] = node;
   return VISIT_SUCCESS;
 }
 
-static Node *create_tree(void) {
+static node_t *create_tree(void) {
   visitedIndex = 0;
 
   return vbox(
@@ -47,13 +47,13 @@ static Node *create_tree(void) {
 }
 
 char *testFindElementWithMatchingAttr(void) {
-  Node *root = create_tree();
-  Node *missing = find_element_with_matching_char_attr(root, BeamAttrKeysName,
-                                                       "not-in-tree");
+  node_t *root = create_tree();
+  node_t *missing = find_element_with_matching_char_attr(root, BeamAttrKeysName,
+                                                         "not-in-tree");
   muAssert(missing == NULL, "Expected not found");
-  Node *body = find_element_with_matching_char_attr(root, BeamAttrKeysName, "body");
+  node_t *body = find_element_with_matching_char_attr(root, BeamAttrKeysName, "body");
   muAssert(body != NULL, "Expected to find body");
-  Node *title = find_element_with_matching_char_attr(root, BeamAttrKeysName, "title");
+  node_t *title = find_element_with_matching_char_attr(root, BeamAttrKeysName, "title");
   muAssert(title != NULL, "Expected to find title");
   muAssert(title->parent_id == body->id, "Expected child/parent relationship");
 
@@ -62,7 +62,7 @@ char *testFindElementWithMatchingAttr(void) {
 }
 
 char *testBreadthFirst(void) {
-  Node *root = create_tree();
+  node_t *root = create_tree();
   breadth_first(root, node_handler);
 
   muAssert(visitedIndex == 13, "Expected count");
@@ -85,7 +85,7 @@ char *testBreadthFirst(void) {
 }
 
 char *testDepthFirst(void) {
-  Node *root = create_tree();
+  node_t *root = create_tree();
   depth_first(root, node_handler);
 
   muAssert(visitedIndex == 13, "Expected count");

@@ -3,21 +3,21 @@
 
 #include "node.h"
 
-typedef enum VisitStatus {
+typedef enum {
   VISIT_SUCCESS = 0,
   VISIT_ABORT,
   VISIT_FAILURE,
 	VISIT_MATCHED,
-} VisitStatus;
+} visit_status_t;
 
-typedef VisitStatus (*VisitHandler)(Node *node);
+typedef visit_status_t (*visit_handler_t)(node_t *node);
 
-VisitStatus each_child(Node *node, VisitHandler handler);
-VisitStatus depth_first(Node *node, VisitHandler handler);
-VisitStatus breadth_first(Node *node, VisitHandler handler);
+visit_status_t each_child(node_t *node, visit_handler_t visit_handler);
+visit_status_t depth_first(node_t *node, visit_handler_t handler);
+visit_status_t breadth_first(node_t *node, visit_handler_t handler);
 
-Node *find_element_with_matching_char_attr(Node *node, AttrType type,
-		char *value);
+node_t *find_element_with_matching_char_attr(node_t *node, attr_type_t type,
+                                             char *value);
 
 #endif // __node_visitor_h__
 

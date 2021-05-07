@@ -55,7 +55,7 @@ app_services_t *new_services(void) {
 }
 */
 
-Node *create_task_view(task_t *t) {
+node_t *create_task_view(task_t *t) {
   return hbox(
     children(
       label(t->label)
@@ -64,11 +64,11 @@ Node *create_task_view(task_t *t) {
   );
 }
 
-Node *create_content(app_services_t *s) {
+node_t *create_content(app_services_t *s) {
   app_model_t *m = &s->model;
 
   // Build a task view for each task record.
-  Node *task_views[m->task_count];
+  node_t *task_views[m->task_count];
   for (int i = 0; i < m->task_count; i++) {
     task_views[i] = create_task_view(&m->tasks[i]);
   }
@@ -88,7 +88,7 @@ Node *create_content(app_services_t *s) {
  * @param app_services_t *s
  * @return
  */
-Node* create_projection(app_services_t *s) {
+node_t* create_projection(app_services_t *s) {
   return app(
       children(
           window(
@@ -125,7 +125,7 @@ int main(void) {
   do {
     // printf("Looping\n");
     // events = gather_events();
-    Node *node = create_projection(&services);
+    node_t *node = create_projection(&services);
     // status = render(node, events);
     free_node(node);
     usleep(10);

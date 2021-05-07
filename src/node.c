@@ -8,24 +8,19 @@
 /**
  * Global id for all instantiated Nodes.
  */
-static NodeId lastId = 1;
-
-/**
- * Simple pointer, used to determine pointer size.
- */
-static int *ptr;
+static node_id_t lastId = 1;
 
 /**
  * Size of a pointer on this compilation target.
  */
-static uint8_t POINTER_SIZE = sizeof(ptr);
+static uint8_t POINTER_SIZE = sizeof(void *);
 
-static void node_to_str_indented(char *dest, Node *node, char *indent);
+static void node_to_str_indented(char *dest, node_t *node, char *indent);
 
 /**
  * Get the next incremental identifier.
  */
-static NodeId getNextId() {
+static node_id_t getNextId() {
   return lastId++;
 }
 
@@ -40,8 +35,8 @@ static NodeId getNextId() {
  *  I'm deferring this work for the moment, as this does the job and also
  *  works with duplicate attribute entries without too much extra complexity.
  */
-static int get_attr_index_by_key(Node *node, AttrKey key) {
-  Attr *attr;
+static int get_attr_index_by_key(node_t *node, attr_key_t key) {
+  attr_t *attr;
   for (unsigned int i = 0; i < node->attr_count; i++) {
     attr = node->attrs[i];
     if (attr->key == key) {
@@ -55,13 +50,13 @@ static int get_attr_index_by_key(Node *node, AttrKey key) {
  * Free all malloc'd data from the provided attribute through any references it
  * may contain, including child Nodes.
  */
-void free_attr(Attr *attr) {
+void free_attr(attr_t *attr) {
   if (attr == NULL) {
     return;
   }
 
   if (attr->type == NodeAttrTypesChildren) {
-    struct Node **kids = get_children_attr_data(attr);
+    node_t **kids = get_children_attr_data(attr);
     int count = attr->data_size / POINTER_SIZE;
     for (int i = 0; i < count; i++) {
       free_node(kids[i]);
@@ -78,12 +73,12 @@ void free_attr(Attr *attr) {
 }
 
 /**
- * Recursively free all malloc'd data from the provided
+ * Recursively free all data from the provided
  * element to it's leaves.
  */
-void free_node(Node *node) {
+void free_node(node_t *node) {
   for (unsigned int i = 0; i < node->attr_count; i++) {
-    Attr *attr = node->attrs[i];
+    attr_t *attr = node->attrs[i];
     free_attr(attr);
   }
   free(node->attrs);
@@ -91,12 +86,12 @@ void free_node(Node *node) {
 }
 
 /**
- * Create and returne a new, empty attribute struct.
+ * Create and returns a new, empty attribute struct.
  *
  * These entities must be sent to 'free_attr' at some point in the future.
  */
-Attr *new_attr(void) {
-  Attr *attr = malloc(sizeof(struct Attr));
+attr_t *new_attr(void) {
+  attr_t *attr = malloc(sizeof(attr_t));
   if (attr == NULL) {
     return NULL;
   }
@@ -109,8 +104,8 @@ Attr *new_attr(void) {
 /**
  * Create a new Attr with the provided char value.
  */
-Attr *new_char_attr(AttrKey key, char *value) {
-  Attr *attr = new_attr();
+attr_t *new_char_attr(attr_key_t key, char *value) {
+  attr_t *attr = new_attr();
   if (attr == NULL) {
     return NULL;
   }
@@ -128,19 +123,19 @@ Attr *new_char_attr(AttrKey key, char *value) {
 /**
  * Get the data from a Char Attr as (char *).
  */
-char *get_char_attr_data(Attr *attr) {
+char *get_char_attr_data(attr_t *attr) {
   return (char *)get_attr_data(attr);
 }
 
-inline unsigned char *get_attr_data(Attr *attr) {
+unsigned char *get_attr_data(attr_t *attr) {
   return attr->data;
 }
 
 /**
  * Create a new Attr with the provided type and unsigned int data.
  */
-Attr *new_uint_attr(AttrKey key, unsigned int value) {
-  Attr *attr = new_attr();
+attr_t *new_uint_attr(attr_key_t key, unsigned int value) {
+  attr_t *attr = new_attr();
   if (attr == NULL) {
     return NULL;
   }
@@ -155,7 +150,7 @@ Attr *new_uint_attr(AttrKey key, unsigned int value) {
 /**
  * Get the provided Attribute data as an unsigned integer.
  */
-unsigned int get_uint_attr_data(Attr *attr) {
+unsigned int get_uint_attr_data(attr_t *attr) {
   return *(unsigned int *)get_attr_data(attr);
 }
 
@@ -163,8 +158,8 @@ unsigned int get_uint_attr_data(Attr *attr) {
  * Create a new attribute with an unsigned char * pointer value and
  * the provided type.
  */
-Attr *new_ptr_attr(AttrKey key, unsigned char *value) {
-  Attr *attr = new_attr();
+attr_t *new_ptr_attr(attr_key_t key, unsigned char *value) {
+  attr_t *attr = new_attr();
   if (attr == NULL) {
     return NULL;
   }
@@ -179,8 +174,8 @@ Attr *new_ptr_attr(AttrKey key, unsigned char *value) {
  * Just like a pointer attribute, but will not be freed
  * by our calls to free_attr().
  */
-Attr *new_ext_ptr_attr(AttrKey key, unsigned char *value) {
-  Attr *attr = new_ptr_attr(key, value);
+attr_t *new_ext_ptr_attr(attr_key_t key, unsigned char *value) {
+  attr_t *attr = new_ptr_attr(key, value);
   if (attr == NULL) {
     return NULL;
   }
@@ -192,7 +187,7 @@ Attr *new_ext_ptr_attr(AttrKey key, unsigned char *value) {
 /**
  * Get the provided Node children collection.
  */
-struct Node **get_children(Node *node) {
+node_t **get_children(node_t *node) {
   int index = get_attr_index_by_key(node, NodeAttrKeysChildren);
   if (index > -1) {
     return get_children_attr_data(node->attrs[index]);
@@ -201,7 +196,7 @@ struct Node **get_children(Node *node) {
   return NULL;
 }
 
-char *get_char_attr_from_node(Node *node, AttrKey key, char *default_value) {
+char *get_char_attr_from_node(node_t *node, attr_key_t key, char *default_value) {
   int index = get_attr_index_by_key(node, key);
   if (index > -1) {
     return get_char_attr_data(node->attrs[index]);
@@ -210,8 +205,8 @@ char *get_char_attr_from_node(Node *node, AttrKey key, char *default_value) {
   return default_value;
 }
 
-unsigned int get_uint_attr_from_node(Node *node, AttrKey key,
-    unsigned int default_value) {
+unsigned int get_uint_attr_from_node(node_t *node, attr_key_t key,
+                                     unsigned int default_value) {
   int index = get_attr_index_by_key(node, key);
   if (index > -1) {
     return get_uint_attr_data(node->attrs[index]);
@@ -220,10 +215,10 @@ unsigned int get_uint_attr_from_node(Node *node, AttrKey key,
   return default_value;
 }
 
-unsigned char *get_raw_attr_from_node(Node *node, AttrKey key) {
+unsigned char *get_raw_attr_from_node(node_t *node, attr_key_t key) {
   int index = get_attr_index_by_key(node, key);
   if (index > -1) {
-    Attr *attr = node->attrs[index];
+    attr_t *attr = node->attrs[index];
     return get_attr_data(attr);
   }
 
@@ -233,8 +228,8 @@ unsigned char *get_raw_attr_from_node(Node *node, AttrKey key) {
 /**
  * Create a children Attr.
  */
-Attr *new_children(unsigned int count, ...) {
-  Attr *attr = new_attr();
+attr_t *new_children(unsigned int count, ...) {
+  attr_t *attr = new_attr();
   if (attr == NULL) {
     return NULL;
   }
@@ -243,12 +238,12 @@ Attr *new_children(unsigned int count, ...) {
   attr->key = NodeAttrKeysChildren;
   attr->data_size = count * POINTER_SIZE;
 
-  struct Node *kids[attr->data_size];
+  node_t *kids[attr->data_size];
 
   va_list vargs;
   va_start(vargs, count);
   for (unsigned int i = 0; i < count; i++) {
-    struct Node *kid = va_arg(vargs, struct Node *);
+    node_t *kid = va_arg(vargs, node_t *);
     kids[i] = kid;
   }
   va_end(vargs);
@@ -262,8 +257,8 @@ Attr *new_children(unsigned int count, ...) {
 }
 
 
-Attr *children_list(unsigned int count, Node **children) {
-  Attr *attr = new_attr();
+attr_t *children_list(unsigned int count, node_t **children) {
+  attr_t *attr = new_attr();
   if (attr == NULL) {
     return NULL;
   }
@@ -284,8 +279,8 @@ Attr *children_list(unsigned int count, Node **children) {
 /**
  * Get an array of Node pointers as Children data from the provided Attr.
  */
-struct Node **get_children_attr_data(Attr *attr) {
-  return (struct Node **)get_attr_data(attr);
+node_t **get_children_attr_data(attr_t *attr) {
+  return (node_t **)get_attr_data(attr);
 }
 
 /*
@@ -299,12 +294,12 @@ static NodeHash hash_node(Node *node) {
 /**
  * Create a new Node with the provided attributes.
  */
-Node *new_node(NodeType type, unsigned int attr_count, ...) {
-  struct Attr **attrs = malloc(attr_count * POINTER_SIZE);
+node_t *new_node(node_type_t type, unsigned int attr_count, ...) {
+  attr_t **attrs = malloc(attr_count * POINTER_SIZE);
   if (attrs == NULL) {
     return NULL;
   }
-  Node *node = malloc(sizeof(struct Node));
+  node_t *node = malloc(sizeof(node_t));
   node->id = getNextId();
   node->type = type;
   node->parent_id = 0;
@@ -314,10 +309,10 @@ Node *new_node(NodeType type, unsigned int attr_count, ...) {
   va_list vargs;
   va_start(vargs, attr_count);
   for (unsigned int i = 0; i < attr_count; i++) {
-    struct Attr *attr = va_arg(vargs, struct Attr *);
+    attr_t *attr = va_arg(vargs, attr_t *);
     if (attr->key == NodeAttrKeysChildren) {
         node->child_count += (attr->data_size / POINTER_SIZE);
-        struct Node **kids = get_children_attr_data(attr);
+        node_t **kids = get_children_attr_data(attr);
         for (unsigned int k = 0; k < node->child_count; k++) {
             kids[k]->parent_id = node->id;
         }
@@ -335,11 +330,11 @@ Node *new_node(NodeType type, unsigned int attr_count, ...) {
 /**
  * Call any handlers found for the provided gesture type.
  */
-void emit_event(Node *node, AttrKey key) {
+void emit_event(node_t *node, attr_key_t key) {
   int index = get_attr_index_by_key(node, key);
   if (index > -1) {
-    Attr *attr = node->attrs[index];
-    GestureHandler gestureHandler = (GestureHandler)get_attr_data(attr);
+    attr_t *attr = node->attrs[index];
+    gesture_handler_t gestureHandler = (gesture_handler_t)get_attr_data(attr);
     gestureHandler();
   }
 }
@@ -347,17 +342,17 @@ void emit_event(Node *node, AttrKey key) {
 /**
  * Return true if the provided Node does not have an assigned parent_id.
  */
-bool is_root(Node *node) {
+bool is_root(node_t *node) {
   return node->parent_id == 0;
 }
 
-static void attr_chars_to_str(char *dest, Attr *attr) {
+static void attr_chars_to_str(char *dest, attr_t *attr) {
   char *str = {0};
   sprintf(str, "attr_%d.%s=%s", attr->key, NODE_ATTR_CHARS, attr->data);
   strcat(dest, str);
 }
 
-static void attr_to_str(char *dest, Attr *attr, char *indent) {
+static void attr_to_str(char *dest, attr_t *attr, char *indent) {
   char *str = {0};
   sprintf(str, "%s attr_%d.type=%d", indent, attr->key, attr->type);
 
@@ -370,8 +365,8 @@ static void attr_to_str(char *dest, Attr *attr, char *indent) {
   strcat(dest, str);
 }
 
-static void node_children_to_str(char *dest, Node *node, char *indent) {
-  struct Node **kids = get_children(node);
+static void node_children_to_str(char *dest, node_t *node, char *indent) {
+  node_t **kids = get_children(node);
   char *str = {0};
   if (kids != NULL) {
     char *new_indent = {0};
@@ -383,7 +378,7 @@ static void node_children_to_str(char *dest, Node *node, char *indent) {
   strcat(dest, str);
 }
 
-static void node_to_str_indented(char *dest, Node *node, char *indent) {
+static void node_to_str_indented(char *dest, node_t *node, char *indent) {
   char *str = {0};
   sprintf(str, "%s\nnode.type=%d", indent, node->type);
 
@@ -395,7 +390,7 @@ static void node_to_str_indented(char *dest, Node *node, char *indent) {
   strcat(dest, str);
 }
 
-void node_to_str(char *dest, Node *node) {
+void node_to_str(char *dest, node_t *node) {
   char indent[128] = {0};
   node_to_str_indented(dest, node, indent);
 }
@@ -410,7 +405,7 @@ static size_t node_to_char_len(Node *node) {
 /**
  * Print the provided node and attributes.
  */
-void print_node(Node *node) {
+void print_node(node_t *node) {
   char dest[512] = {0};
   node_to_str(dest, node);
   printf("%s\n", dest);

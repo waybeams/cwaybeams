@@ -4,15 +4,15 @@
 #include "node.h"
 #include "beam.h"
 
-typedef Node *(*AppRenderer)(BoxServices *s);
+typedef node_t *(*AppRenderer)(BoxServices *s);
 
 typedef struct Rendered {
-  Node *node;
+  node_t *node;
   unsigned char *widget;
   void *context;
 } Rendered;
 
-Rendered *render(Node *node, void *context);
+Rendered *render(node_t *node, void *context);
 int exec_app(AppRenderer r, BoxServices *s);
 
 #endif // __render_h__

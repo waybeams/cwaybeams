@@ -5,7 +5,7 @@
 #include <string.h>
 
 char *test_new_name_attr(void) {
-  Attr *attr = name("abcd");
+  attr_t *attr = name("abcd");
   char *data = get_char_attr_data(attr);
   muAssert(strcmp(data, "abcd") == 0, "Expected abcd");
   free_attr(attr);
@@ -13,7 +13,7 @@ char *test_new_name_attr(void) {
 }
 
 char *test_new_height(void) {
-  Attr *one = height(23);
+  attr_t *one = height(23);
   unsigned int data = get_uint_attr_data(one);
   muAssert(data == 23, "Expected data to be 23");
   free_attr(one);
@@ -21,7 +21,7 @@ char *test_new_height(void) {
 }
 
 char *test_new_width(void) {
-  Attr *one = width(20);
+  attr_t *one = width(20);
   unsigned int data = get_uint_attr_data(one);
   muAssert(data == 20, "Expected data to be 20");
   free_attr(one);
@@ -29,7 +29,7 @@ char *test_new_width(void) {
 }
 
 char *test_new_larger_width(void) {
-  Attr *attr = new_uint_attr(BeamAttrKeysWidth, 801);
+  attr_t *attr = new_uint_attr(BeamAttrKeysWidth, 801);
   unsigned int value = get_uint_attr_data(attr);
 
   muAssert(value == 801, "Expected matching value");
@@ -38,16 +38,16 @@ char *test_new_larger_width(void) {
 }
 
 char *test_new_box(void) {
-  Node *one = new_node(BeamTypeNone, 0);
+  node_t *one = new_node(BeamTypeNone, 0);
   muAssert(one->parent_id == 0, "Expected empty parent_id");
   free_node(one);
   return NULL;
 }
 
 char *test_new_box_with_name(void) {
-  Node *one = box(name("abcd"));
+  node_t *one = box(name("abcd"));
   muAssert(one->parent_id == 0, "Expected empty parent_id");
-  Attr *attr = one->attrs[0];
+  attr_t *attr = one->attrs[0];
   char *name = get_char_attr_data(attr);
   muAssert(strcmp(name, "abcd") == 0, "Expected name attr");
   free_node(one);
@@ -55,7 +55,7 @@ char *test_new_box_with_name(void) {
 }
 
 char *test_get_name(void) {
-  Node *elem = box(name("root"));
+  node_t *elem = box(name("root"));
   char *elemName = get_name(elem);
   muAssert(strcmp(elemName, "root") == 0, "Expected name root");
   free_node(elem);
@@ -63,23 +63,23 @@ char *test_get_name(void) {
 }
 
 char *test_layout(void) {
-  Node *root = vbox(name("root"));
-  BeamLayout layout = get_layout(root);
+  node_t *root = vbox(name("root"));
+  beam_layout_t layout = get_layout(root);
   muAssert(layout == LayoutVertical, "Expected VBox");
   free_node(root);
   return NULL;
 }
 
 char *test_default_layout(void) {
-  Node *root = box(name("root"));
-  BeamLayout layout = get_layout(root);
+  node_t *root = box(name("root"));
+  beam_layout_t layout = get_layout(root);
   muAssert(layout == LayoutDefault, "Expected default layout");
   free_node(root);
   return NULL;
 }
 
 char *test_default_attr_values(void) {
-  Node *root = box(name("root"));
+  node_t *root = box(name("root"));
   unsigned int w = get_width(root);
   unsigned int h = get_height(root);
   unsigned int x = get_x(root);
@@ -97,7 +97,7 @@ char *test_default_attr_values(void) {
 }
 
 char *test_configured_attr_values(void) {
-  Node *root = box(
+  node_t *root = box(
     name("root"),
     width(1001),
     height(2002),
@@ -123,7 +123,7 @@ char *test_configured_attr_values(void) {
 }
 
 char *test_attr_collection(void) {
-  Node *root = vbox(name("root"), width(3000));
+  node_t *root = vbox(name("root"), width(3000));
   char *n = get_name(root);
   muAssert(strcmp(n, "root") == 0, "Expected name");
   unsigned int w = get_width(root);
@@ -136,7 +136,7 @@ char *test_attr_collection(void) {
 }
 
 char *test_node_types(void) {
-  Node *elem;
+  node_t *elem;
 
   elem = box(name("box"));
   muAssert(elem->type == BeamTypeBox, "Expected Box");
@@ -153,7 +153,7 @@ char *test_node_types(void) {
 }
 
 char *test_element_children(void) {
-  Node *root = vbox(children(
+  node_t *root = vbox(children(
     box(name("one")),
     box(name("two")),
     box(name("three")),
@@ -161,7 +161,7 @@ char *test_element_children(void) {
   ));
 
   muAssert(root->child_count == 4, "child count");
-  struct Node **kids = get_children(root);
+  struct node_t **kids = get_children(root);
   muAssert(strcmp(get_name(kids[0]), "one") == 0, "one");
   muAssert(strcmp(get_name(kids[1]), "two") == 0, "two");
   muAssert(strcmp(get_name(kids[2]), "three") == 0, "three");

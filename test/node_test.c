@@ -6,7 +6,7 @@
 #include <string.h>
 
 char *test_new_char_attr(void) {
-  Attr *attr = new_char_attr(FakeNodeKeysName, "abcd");
+  attr_t *attr = new_char_attr(FakeNodeKeysName, "abcd");
   char *data = get_char_attr_data(attr);
   muAssert(strcmp(data, "abcd") == 0, "Expected abcd");
   free_attr(attr);
@@ -14,7 +14,7 @@ char *test_new_char_attr(void) {
 }
 
 char *test_new_uint_attr(void) {
-  Attr *attr = new_uint_attr(FakeNodeKeysSize, 1234);
+  attr_t *attr = new_uint_attr(FakeNodeKeysSize, 1234);
   unsigned int data = get_uint_attr_data(attr);
   muAssert(data == 1234, "Expected 1234");
   free_attr(attr);
@@ -22,10 +22,10 @@ char *test_new_uint_attr(void) {
 }
 
 char *test_new_children(void) {
-  Node *root = vbox(name("root"));
-  Attr *attr = new_children(1, root);
+  node_t *root = vbox(name("root"));
+  attr_t *attr = new_children(1, root);
 
-  struct Node **kids = get_children_attr_data(attr);
+  struct node_t **kids = get_children_attr_data(attr);
   char *name = get_name(kids[0]);
   muAssert(strcmp(name, "root") == 0, "Expected name root");
   free_attr(attr);
@@ -33,7 +33,7 @@ char *test_new_children(void) {
 }
 
 char *test_element_with_child(void) {
-  Node *root = box(
+  node_t *root = box(
     name("root"),
     children(
       box(name("child-1"))
@@ -45,7 +45,7 @@ char *test_element_with_child(void) {
 }
 
 char *test_is_root(void) {
-  Node *root = box(
+  node_t *root = box(
     name("root"),
     children(
       box(name("child-1")),
@@ -56,7 +56,7 @@ char *test_is_root(void) {
   );
 
   muAssert(is_root(root), "Expected root");
-  Node **kids = get_children(root);
+  node_t **kids = get_children(root);
   muAssert(!is_root(kids[0]), "Expected child to not be root");
   muAssert(!is_root(kids[1]), "Expected child to not be root");
   muAssert(!is_root(kids[2]), "Expected child to not be root");
@@ -75,7 +75,7 @@ int add_func(int a, int b) {
 }
 
 char *test_pointer_attr(void) {
-  Attr *attr = new_ext_ptr_attr(FakeNodeKeysFunc, (unsigned char *)add_func);
+  attr_t *attr = new_ext_ptr_attr(FakeNodeKeysFunc, (unsigned char *)add_func);
   FakeAddFunc *f = (FakeAddFunc *)get_attr_data(attr);
   // #include <inttypes.h>
   // printf("0x%" PRIXPTR "\n", (uintptr_t)f);
@@ -87,9 +87,9 @@ char *test_pointer_attr(void) {
 }
 
 char *test_leaf_hash(void) {
-  Node *one = box(name("abcd"));
-  Node *two = box(name("abcd"));
-  Node *three = box(name("efgh"));
+  node_t *one = box(name("abcd"));
+  node_t *two = box(name("abcd"));
+  node_t *three = box(name("efgh"));
 
   muAssert(one->hash == two->hash, "Expected one and two");
   muAssert(one->hash != three->hash, "Expected one and three");
@@ -103,7 +103,7 @@ char *test_leaf_hash(void) {
 
 char *test_str_one(void) {
   char result[256] = {0};
-  Node *root = node(name("abcd"));
+  node_t *root = node(name("abcd"));
   node_to_str(result, root);
   char *expected = "\nnode.type=0 attr_104.type=2 attr_104.chars=abcd";
   muAssert(strcmp(result, expected) == 0, "Expect string match");
@@ -113,7 +113,7 @@ char *test_str_one(void) {
 }
 
 char *test_str_kids(void) {
-  Node *root = node(
+  node_t *root = node(
     name("abcd"),
     children(
       node(name("efgh")),
