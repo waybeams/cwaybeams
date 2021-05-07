@@ -1,5 +1,5 @@
 #ifndef __beam_test_h__
-#define __box_test_h__
+#define __beam_test_h__
 
 #include "node.h"
 #include "beam.h"
