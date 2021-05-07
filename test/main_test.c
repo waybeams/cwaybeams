@@ -1,6 +1,5 @@
 #include "beam_test.h"
 #include "hash_test.h"
-#include "hfsm_test.h"
 #include "minunit.h"
 #include "node_test.h"
 #include "node_visitor_test.h"
@@ -27,10 +26,6 @@ char *allTests(void) {
 
   // hash_test.h
   muRunTest(test_new_hash);
-
-  // hfsm_test.h
-  muRunTest(test_hfsm_creation);
-  muRunTest(test_default_signal);
 
   // node_test.h
   muRunTest(test_new_char_attr);

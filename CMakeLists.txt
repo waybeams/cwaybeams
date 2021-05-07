@@ -10,66 +10,73 @@ project(cwaybeams LANGUAGES C VERSION 0.1)
 
 configure_file(include/version.h.in include/version.h)
 
-include_directories(include)
-include_directories(src)
-include_directories(test)
-include_directories(vendor/hash)
+if (MSVC)
+    add_compile_options(/W3 /WX)
+else()
+	# add_compile_options(-W -Wall -Werror)
+endif()
 
 set(AppSources
-	src/beam.c
-	src/hfsm.c
-	src/node.c
-	src/node_visitor.c
-	vendor/hash/fast_hash.c
-	)
+		src/beam.c
+		src/node.c
+		src/node_visitor.c
+		vendor/hash/fast_hash.c
+		)
 
 set(AppHeaders
-	include/beam.h
-	include/debug.h
-	include/hfsm.h
-	include/log.h
-	include/node.h
-	include/node_visitor.h
-	include/render.h
-	include/version.h
-	vendor/hash/fast_hash.h
-	)
+		include/beam.h
+		include/debug.h
+		include/log.h
+		include/node.h
+		include/node_visitor.h
+		include/render.h
+		include/version.h
+		vendor/hash/fast_hash.h
+		)
 
 set(TestSources
-	test/beam_test.c
-	test/beam_test.h
-	test/hash_test.c
-	test/hash_test.h
-	test/hfsm_test.c
-	test/hfsm_test.h
-	test/minunit.h
-	test/node_test.c
-	test/node_test.h
-	test/node_visitor_test.c
-	test/node_visitor_test.h
-	test/test_helper.c
-	test/test_helper.h
-	test/fixtures/hfsm_keyboard.c
-	test/fixtures/hfsm_keyboard.h
-	)
+		test/beam_test.c
+		test/beam_test.h
+		test/hash_test.c
+		test/hash_test.h
+		test/minunit.h
+		test/node_test.c
+		test/node_test.h
+		test/node_visitor_test.c
+		test/node_visitor_test.h
+		test/test_helper.c
+		test/test_helper.h
+		)
 
 add_library(cwaybeams SHARED
-	${AppSources}
-	${AppHeaders}
-	)
+		${AppSources}
+		${AppHeaders}
+		)
+
+add_executable(cwaybeams-test test/main_test.c
+		${AppSources}
+		${AppHeaders}
+		${TestSources}
+		)
+
+add_executable(todo-example examples/todo/main_todo.c
+		${AppSources}
+		${AppHeaders}
+		)
 
 set_target_properties(cwaybeams PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(cwaybeams PROPERTIES SOVERSION 0)
 
-add_executable(cwaybeams-test test/main_test.c
-	${AppSources}
-	${AppHeaders}
-	${TestSources}
-	)
-
-add_executable(todo-example examples/todo/main_todo.c
-	${AppSources}
-	${AppHeaders}
-	)
+target_include_directories(cwaybeams PUBLIC include)
+target_include_directories(cwaybeams PRIVATE src)
+target_include_directories(cwaybeams PRIVATE vendor/hash)
 
 target_compile_definitions(cwaybeams-test PRIVATE TEST_MODE=1)
+target_include_directories(cwaybeams-test PRIVATE include)
+target_include_directories(cwaybeams-test PRIVATE src)
+target_include_directories(cwaybeams-test PRIVATE test)
+target_include_directories(cwaybeams-test PRIVATE vendor/hash)
+
+target_include_directories(todo-example PUBLIC include)
+target_include_directories(todo-example PRIVATE src)
+target_include_directories(todo-example PRIVATE vendor/hash)
