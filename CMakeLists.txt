@@ -13,13 +13,11 @@ configure_file(include/version.h.in include/version.h)
 if (MSVC)
     add_compile_options(/W3 /WX)
 else()
-	# TODO(lbayes): Turn on these options and fix the mess...
 	# add_compile_options(-W -Wall -Werror)
 endif()
 
 set(AppSources
 		src/beam.c
-		src/hfsm.c
 		src/node.c
 		src/node_visitor.c
 		vendor/hash/fast_hash.c
@@ -28,7 +26,6 @@ set(AppSources
 set(AppHeaders
 		include/beam.h
 		include/debug.h
-		include/hfsm.h
 		include/log.h
 		include/node.h
 		include/node_visitor.h
@@ -42,8 +39,6 @@ set(TestSources
 		test/beam_test.h
 		test/hash_test.c
 		test/hash_test.h
-		test/hfsm_test.c
-		test/hfsm_test.h
 		test/minunit.h
 		test/node_test.c
 		test/node_test.h
@@ -51,8 +46,6 @@ set(TestSources
 		test/node_visitor_test.h
 		test/test_helper.c
 		test/test_helper.h
-		test/fixtures/hfsm_keyboard.c
-		test/fixtures/hfsm_keyboard.h
 		)
 
 add_library(cwaybeams SHARED
