@@ -88,7 +88,8 @@ node_t* create_projection(app_services_t *s) {
 int main(void) {
   printf("Starting\n");
 
-  task_t tasks[100] = {
+  int task_count = 8;
+  task_t tasks[8] = {
       {.label = "one", .is_done = false},
       {.label = "two", .is_done = false},
       {.label = "three", .is_done = false},
@@ -101,8 +102,8 @@ int main(void) {
   app_services_t services = {
       .model = {
         .title = "Main Page",
-        .tasks = tasks,
-        .task_count = 2
+        .task_count = task_count,
+        .tasks = tasks
       }
   };
 
