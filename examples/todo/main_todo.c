@@ -76,10 +76,10 @@ node_t* create_projection(app_services_t *s) {
               name("main-window"),
               title(s->model.title),
               width(800),
-              height(600),
-              children(
-                  create_content(s)
-              )
+              height(600)
+              // children(
+                  // create_content(s)
+              // )
           )
       )
   );
