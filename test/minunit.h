@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <debug.h>
+#include <log.h>
 
 #ifdef __GNUC__
 #define MINUNIT_ATTR_IS_USED __attribute__ ((unused))

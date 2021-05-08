@@ -1,7 +1,6 @@
 #include "beam.h"
 #include "minunit.h"
 #include "node.h"
-#include <stdio.h>
 #include <string.h>
 
 char *test_new_name_attr(void) {

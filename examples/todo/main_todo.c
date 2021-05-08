@@ -107,15 +107,16 @@ int main(void) {
       }
   };
 
+  beam_surface_t *s = beam_create_surface(BeamSurfaceGlfw);
   // Events *events;
   int status = 0;
   do {
     // printf("Looping\n");
     // events = gather_events();
     node_t *node = create_projection(&services);
-    // status = render(node, events);
+    render(s, node);
     free_node(node);
-    usleep(10);
+    sleep(1);
   } while(status < 10000);
 
   printf("Exiting\n");

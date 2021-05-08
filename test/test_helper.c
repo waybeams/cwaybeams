@@ -1,6 +1,6 @@
 #include <test_helper.h>
 #include <stdio.h>
-#include <debug.h>
+#include <log.h>
 #include <stdlib.h>
 
 /**

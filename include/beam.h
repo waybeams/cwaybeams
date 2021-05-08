@@ -3,6 +3,14 @@
 
 #include "node.h"
 
+typedef enum beam_surface_type {
+  BeamSurfaceGlfw = 1,
+}beam_surface_type;
+
+typedef struct beam_surface_t {
+  beam_surface_type type;
+}beam_surface_t;
+
 typedef enum beam_attr_keys_t {
   BeamAttrKeysNone = 100,
   BeamAttrKeysHeight,
@@ -75,5 +83,8 @@ typedef enum beam_layout_t {
 #define get_x(node) get_uint_attr_from_node(node, BeamAttrKeysX, DEFAULT_ZERO)
 #define get_y(node) get_uint_attr_from_node(node, BeamAttrKeysY, DEFAULT_ZERO)
 #define get_z(node) get_uint_attr_from_node(node, BeamAttrKeysZ, DEFAULT_ZERO)
+
+beam_surface_t *beam_create_surface(beam_surface_type t);
+void render(beam_surface_t *s, node_t *node);
 
 #endif // __beam_h__

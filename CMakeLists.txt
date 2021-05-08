@@ -10,6 +10,11 @@ project(cwaybeams LANGUAGES C VERSION 0.1)
 
 configure_file(include/version.h.in include/version.h)
 
+set(OpenGL_GL_PREFERENCE GLVND)
+
+find_package(glfw3 3.3 REQUIRED)
+find_package(OpenGL REQUIRED)
+
 if (MSVC)
     add_compile_options(/W3 /WX)
 else()
@@ -25,7 +30,6 @@ set(AppSources
 
 set(AppHeaders
 		include/beam.h
-		include/debug.h
 		include/log.h
 		include/node.h
 		include/node_visitor.h
@@ -60,6 +64,8 @@ set_target_properties(cwaybeams PROPERTIES SOVERSION 0)
 target_include_directories(cwaybeams PUBLIC include)
 target_include_directories(cwaybeams PRIVATE src)
 target_include_directories(cwaybeams PRIVATE vendor/hash)
+target_link_libraries(cwaybeams glfw)
+target_link_libraries(cwaybeams OpenGL::GL)
 
 # Test executable
 add_executable(cwaybeams-test test/main_test.c
@@ -73,6 +79,8 @@ target_include_directories(cwaybeams-test PRIVATE include)
 target_include_directories(cwaybeams-test PRIVATE src)
 target_include_directories(cwaybeams-test PRIVATE test)
 target_include_directories(cwaybeams-test PRIVATE vendor/hash)
+target_link_libraries(cwaybeams-test glfw)
+target_link_libraries(cwaybeams-test OpenGL::GL)
 
 # Example executable
 add_executable(todo-example examples/todo/main_todo.c
@@ -83,3 +91,5 @@ add_executable(todo-example examples/todo/main_todo.c
 target_include_directories(todo-example PUBLIC include)
 target_include_directories(todo-example PRIVATE src)
 target_include_directories(todo-example PRIVATE vendor/hash)
+target_link_libraries(todo-example glfw)
+target_link_libraries(todo-example OpenGL::GL)
