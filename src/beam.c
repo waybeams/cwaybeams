@@ -8,10 +8,12 @@ beam_surface_t *beam_create_surface(beam_surface_type t) {
   return s;
 }
 
-void beam_render(beam_surface_t *s, beam_signal_t *signals, node_t *node) {
-  printf("beam_render with: %d\n", s->type);
+void beam_render(beam_surface_t *surface, beam_signal_t **signals, node_t
+*node) {
+  beam_signal_t *s = *signals;
+  printf("beam_render with: %d\n", surface->type);
   printf("and node: %d\n", node->type);
-  printf("and signals: %d\n", signals->type);
+  printf("and signals: %d\n", s->type);
 }
 
 beam_signal_t **beam_signals_gather(beam_surface_t *s) {
