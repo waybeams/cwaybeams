@@ -1,5 +1,5 @@
 /**
- * This is currently an aspirational application definition that isbeing used
+ * This is currently an aspirational application definition that is being used
  * to provide clarity for next steps.
  *
  * An application (or game) developer would describe their application data
