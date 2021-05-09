@@ -52,7 +52,7 @@ typedef enum beam_signal_type {
   BeamSignalFrameCompleted,
 }beam_signal_type;
 
-typedef struct beam_signal_t {
+typedef struct {
   unsigned int type;
   unsigned char *source;
   unsigned char *payload;

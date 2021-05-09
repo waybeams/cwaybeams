@@ -114,7 +114,7 @@ int main(void) {
     // printf("Looping\n");
     signals = beam_signals_gather(s);
     node_t *node = create_projection(&services);
-    beam_render(s, signals, node);
+    beam_render(s, *signals, node);
     free_node(node);
     sleep(1);
   } while(status < 10000);
