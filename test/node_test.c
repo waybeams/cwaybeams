@@ -2,7 +2,6 @@
 #include "minunit.h"
 #include "node.h"
 #include "node_test.h"
-#include <stdio.h>
 #include <string.h>
 
 char *test_new_char_attr(void) {
