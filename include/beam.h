@@ -5,6 +5,10 @@
 
 typedef enum beam_surface_type {
   BeamSurfaceGlfw = 1,
+  BeamSurfaceGles,
+  BeamSurfaceDirectX,
+  BeamSurfaceMetal,
+  BeamSurfaceVulkan
 }beam_surface_type;
 
 typedef enum beam_signal_type {
@@ -132,6 +136,8 @@ typedef enum beam_layout_t {
 #define get_z(node) get_uint_attr_from_node(node, BeamAttrKeysZ, DEFAULT_ZERO)
 
 beam_surface_t *beam_create_surface(beam_surface_type t);
-void render(beam_surface_t *s, node_t *node);
+void beam_render(beam_surface_t *s, beam_signal_t *signals, node_t *node);
+
+beam_signal_t **beam_signals_gather(beam_surface_t *s);
 
 #endif // __beam_h__

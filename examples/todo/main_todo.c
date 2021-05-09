@@ -108,13 +108,13 @@ int main(void) {
   };
 
   beam_surface_t *s = beam_create_surface(BeamSurfaceGlfw);
-  // Events *events;
+  beam_signal_t **signals;
   int status = 0;
   do {
     // printf("Looping\n");
-    // events = gather_events();
+    signals = beam_signals_gather(s);
     node_t *node = create_projection(&services);
-    render(s, node);
+    beam_render(s, signals, node);
     free_node(node);
     sleep(1);
   } while(status < 10000);
