@@ -7,6 +7,53 @@ typedef enum beam_surface_type {
   BeamSurfaceGlfw = 1,
 }beam_surface_type;
 
+typedef enum beam_signal_type {
+  // User Gestures:
+  BeamSignalKeyPressed = 1,
+  BeamSignalKeyReleased,
+  BeamSignalMouseClicked,
+  BeamSignalMouseDoubleClicked,
+  BeamSignalMousePressed,
+  BeamSignalMouseReleased,
+  BeamSignalMouseMoved,
+
+  BeamSignalMouseHovered,
+  BeamSignalMouseEntered,
+  BeamSignalMouseExited,
+  BeamSignalWheelSpun,
+  BeamSignalContextMenuRequested,
+
+  BeamSignalTouchStarted,
+  BeamSignalTouchMoved,
+  BeamSignalTouchEnded,
+  BeamSignalTouchCancelled,
+
+  // Component Notifications:
+  BeamSignalFocused,
+  BeamSignalBlurred,
+  BeamSignalButtonClicked,
+  BeamSignalButtonPressed,
+  BeamSignalButtonReleased,
+  BeamSignalWindowResized,
+  BeamSignalWindowMoved,
+
+  // Lifecycle Notifications:
+  BeamSignalFrameStarted,
+  BeamSignalComposeStarted,
+  BeamSignalComposeCompleted,
+  BeamSignalLayoutStarted,
+  BeamSignalLayoutCompleted,
+  BeamSignalRenderStarted,
+  BeamSignalRenderCompleted,
+  BeamSignalFrameCompleted,
+}beam_signal_type;
+
+typedef struct beam_signal_t {
+  unsigned int type;
+  unsigned char *source;
+  unsigned char *payload;
+}beam_signal_t;
+
 typedef struct beam_surface_t {
   beam_surface_type type;
 }beam_surface_t;
