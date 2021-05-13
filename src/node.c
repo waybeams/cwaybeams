@@ -46,6 +46,12 @@ static int get_attr_index_by_key(node_t *node, attr_key_t key) {
   return -1;
 }
 
+static int attr_should_be_freed(attr_t *attr) {
+  return (attr->type == NodeAttrTypesChars &&
+          attr->data_size > 0) // is *char & len > 0
+       || attr->type != NodeAttrTypesExtPtr; // Is not a pointer.
+}
+
 /**
  * Free all malloc'd data from the provided attribute through any references it
  * may contain, including child Nodes.
@@ -64,8 +70,7 @@ void free_attr(attr_t *attr) {
   }
 
   // Function pointers are allocated outside this library.
-  if (attr->type != NodeAttrTypesExtPtr &&
-      attr->type != NodeAttrTypesChars) {
+  if (attr_should_be_freed(attr)) {
     free(attr->data);
   }
 

@@ -46,7 +46,7 @@ static node_t *create_tree(void) {
   );
 }
 
-char *testFindElementWithMatchingAttr(void) {
+char *test_find_element_with_matching_attr(void) {
   node_t *root = create_tree();
   node_t *missing = find_element_with_matching_char_attr(root, BeamAttrKeysName,
                                                          "not-in-tree");
@@ -61,7 +61,7 @@ char *testFindElementWithMatchingAttr(void) {
   return NULL;
 }
 
-char *testBreadthFirst(void) {
+char *test_breadth_first(void) {
   node_t *root = create_tree();
   breadth_first(root, node_handler);
 
@@ -84,7 +84,7 @@ char *testBreadthFirst(void) {
   return NULL;
 }
 
-char *testDepthFirst(void) {
+char *test_depth_first(void) {
   node_t *root = create_tree();
   depth_first(root, node_handler);
 

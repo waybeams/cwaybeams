@@ -38,9 +38,9 @@ char *allTests(void) {
   // muRunTest(test_leaf_hash);
 
   // node_visitor_test.h
-  muRunTest(testDepthFirst);
-  muRunTest(testBreadthFirst);
-  muRunTest(testFindElementWithMatchingAttr);
+  muRunTest(test_depth_first);
+  muRunTest(test_breadth_first);
+  muRunTest(test_find_element_with_matching_attr);
   printf("SKIPPED: test_str_one\n");
   // muRunTest(test_str_one);
   printf("SKIPPED: test_str_kids\n");
