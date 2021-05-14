@@ -99,6 +99,11 @@ static glfw_context_t *glfw_context_new() {
 void beam_surface_free(beam_surface_t *s) {
   if (s != NULL) {
     if (s->platform != NULL) {
+      glfw_context_t *c = s->platform;
+      if (c->main_window != NULL) {
+        log_info("terminating GLFW now");
+        glfwTerminate();
+      }
       free(s->platform);
     }
     free(s);
