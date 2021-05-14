@@ -76,8 +76,8 @@ node_t* create_projection(app_services_t *s) {
           window(
               name("main-window"),
               title(s->model.title),
-              width(800),
-              height(600)
+              width(1280),
+              height(1024)
               // children(
                   // create_content(s)
               // )
@@ -116,7 +116,7 @@ int main(void) {
     node_t *node = create_projection(&services);
     beam_render(surface, signals, node);
     free_node(node);
-    sleep(1);
+    usleep(16000); // 16 ms
   } while(!beam_window_should_close(surface));
 
   beam_surface_free(surface);
