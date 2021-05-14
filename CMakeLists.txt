@@ -25,6 +25,7 @@ set(AppSources
 		src/beam.c
 		src/node.c
 		src/node_visitor.c
+		src/render/glfw.c
 		vendor/hash/fast_hash.c
 		)
 
@@ -36,7 +37,7 @@ set(AppHeaders
 		include/render.h
 		include/version.h
 		vendor/hash/fast_hash.h
-		)
+		src/render/glfw.h include/shared.h)
 
 set(TestSources
 		test/beam_test.c

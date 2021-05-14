@@ -71,6 +71,7 @@ node_t *create_content(app_services_t *s) {
  */
 node_t* create_projection(app_services_t *s) {
   return app(
+      name("main-app"),
       children(
           window(
               name("main-window"),
@@ -109,7 +110,6 @@ int main(void) {
 
   beam_surface_t *surface = beam_create_surface(BeamSurfaceGlfw);
   beam_signal_t **signals;
-  int status = 0;
   do {
     // printf("Looping\n");
     signals = beam_signals_gather(surface);
@@ -117,8 +117,9 @@ int main(void) {
     beam_render(surface, signals, node);
     free_node(node);
     sleep(1);
-  } while(status < 10000);
+  } while(!beam_window_should_close(surface));
 
+  beam_surface_free(surface);
   printf("Exiting\n");
   return 0;
 }

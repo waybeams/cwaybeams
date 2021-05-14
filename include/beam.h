@@ -3,6 +3,11 @@
 
 #include "node.h"
 
+typedef enum {
+  BeamSuccess = 0,
+  BeamAllocationFailure,
+}beam_return_codes;
+
 typedef enum beam_surface_type {
   BeamSurfaceGlfw = 1,
   BeamSurfaceGles,
@@ -60,6 +65,7 @@ typedef struct {
 
 typedef struct beam_surface_t {
   beam_surface_type type;
+  void *platform;
 }beam_surface_t;
 
 typedef enum beam_attr_keys_t {
@@ -136,8 +142,11 @@ typedef enum beam_layout_t {
 #define get_z(node) get_uint_attr_from_node(node, BeamAttrKeysZ, DEFAULT_ZERO)
 
 beam_surface_t *beam_create_surface(beam_surface_type t);
-void beam_render(beam_surface_t *s, beam_signal_t **signals, node_t *node);
+int beam_render(beam_surface_t *s, beam_signal_t **signals, node_t *node);
 
 beam_signal_t **beam_signals_gather(beam_surface_t *s);
+int beam_window_should_close(beam_surface_t *s);
+
+void beam_surface_free(beam_surface_t *s);
 
 #endif // __beam_h__
