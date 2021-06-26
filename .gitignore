@@ -37,6 +37,7 @@ Mkfile.old
 Module.symvers
 cmake-build*
 cmake_install.cmake
+compile_commands.json
 cwaybeams.cbp
 dist
 dkms.conf

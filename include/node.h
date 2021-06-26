@@ -53,6 +53,9 @@ typedef struct attr_t {
   unsigned char *data;
 } attr_t;
 
+/**
+ * Base type for building a tree
+ */
 typedef struct node_t {
   node_id_t id;
   node_id_t parent_id;
@@ -113,7 +116,7 @@ struct node_t **get_children(node_t *node);
 
 // Node helpers
 void print_node(node_t *node);
-void node_to_str(char *dest, node_t *node);
+// void node_to_str(char *dest, node_t *node);
 bool is_root(node_t *node);
 void emit_event(node_t *node, attr_key_t key);
 
