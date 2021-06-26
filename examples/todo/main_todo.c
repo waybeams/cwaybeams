@@ -19,7 +19,7 @@
 #include <beam.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include <unistd.h>
+#include <time.h>
 
 typedef struct {
   char *label;
@@ -86,6 +86,9 @@ node_t* create_projection(app_services_t *s) {
   );
 }
 
+// Ridiculously complicated argument bullshit for nanosleep...
+// static struct timespec remaining, request = {(time_t)0.016, 16000000};
+
 int main(void) {
   printf("Starting\n");
 
@@ -116,7 +119,7 @@ int main(void) {
     node_t *node = create_projection(&services);
     beam_render(surface, signals, node);
     free_node(node);
-    usleep(16000); // 16 ms
+    // nanosleep(&remaining, &request);
   } while(!beam_window_should_close(surface));
 
   beam_surface_free(surface);

@@ -10,6 +10,9 @@ workspace "Beam"
 
 	buildoptions {
 		"-Iinclude",
+		"-Wall",
+		"-Werror",
+		"-std=c11",
 	}
 
 	libdirs {
@@ -34,7 +37,7 @@ project "beam"
 	kind "SharedLib"
 	targetdir "dist/%{cfg.buildcfg}"
 
-project "todo-glfw"
+project "beam-todo-glfw"
 	kind "ConsoleApp"
 	targetdir "dist/%{cfg.buildcfg}"
 
