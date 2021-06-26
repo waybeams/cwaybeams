@@ -3,6 +3,6 @@
 
 #include <stdint.h>
 
-uint32_t fast_hash(const char * data, int len);
+uint32_t fast_hash(const char *data, int len);
 
 #endif // __fast_hash_h__

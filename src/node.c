@@ -1,4 +1,3 @@
-#include "fast_hash.h"
 #include "node.h"
 #include <stdarg.h>
 #include <stdio.h>

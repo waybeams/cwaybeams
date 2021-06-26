@@ -10,27 +10,12 @@ workspace "Beam"
 
 	buildoptions {
 		"-Iinclude",
-		"-Ivendor/hash",
 	}
 
 	libdirs {
 		"vendor/gl/include",
 		"vendor/glfw/include",
-	}
-
-project "todo-glfw"
-	kind "ConsoleApp"
-	language "C"
-	targetdir "dist/%{cfg.buildcgf}"
-	cdialect "C11"
-
-	files {
-		"src/render/glfw.*",
-		"examples/todo/main_todo.c",
-	}
-
-	links {
-		"glfw",
+		"vendor/hash",
 	}
 
 	filter "configurations:Debug"
@@ -44,4 +29,29 @@ project "todo-glfw"
 	filter "configurations:Release"
 		defines { "NDEBUG" }
 		optimize "On"
+
+project "beam"
+	kind "SharedLib"
+	targetdir "dist/%{cfg.buildcfg}"
+
+project "todo-glfw"
+	kind "ConsoleApp"
+	targetdir "dist/%{cfg.buildcfg}"
+
+	files {
+		"src/render/glfw.*",
+		"examples/todo/main_todo.c",
+	}
+
+	links {
+		"glfw",
+	}
+
+project "beam-test"
+	kind "ConsoleApp"
+	targetdir "dist/%{cfg.buildcfg}"
+
+	files {
+		"test/*"
+	}
 

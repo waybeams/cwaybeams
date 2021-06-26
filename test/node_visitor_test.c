@@ -7,7 +7,7 @@
 node_t *visited[13];
 int visitedIndex = 0;
 
-visit_status_t node_handler(node_t *node) {
+visit_status_t node_handler(node_t *node, void *userdata) {
   visited[visitedIndex++] = node;
   return VISIT_SUCCESS;
 }
@@ -49,11 +49,12 @@ static node_t *create_tree(void) {
 char *test_find_element_with_matching_attr(void) {
   node_t *root = create_tree();
   node_t *missing = find_element_with_matching_char_attr(root, BeamAttrKeysName,
-                                                         "not-in-tree");
+                                                         "not-in-tree", NULL);
+
   muAssert(missing == NULL, "Expected not found");
-  node_t *body = find_element_with_matching_char_attr(root, BeamAttrKeysName, "body");
+  node_t *body = find_element_with_matching_char_attr(root, BeamAttrKeysName, "body", NULL);
   muAssert(body != NULL, "Expected to find body");
-  node_t *title = find_element_with_matching_char_attr(root, BeamAttrKeysName, "title");
+  node_t *title = find_element_with_matching_char_attr(root, BeamAttrKeysName, "title", NULL);
   muAssert(title != NULL, "Expected to find title");
   muAssert(title->parent_id == body->id, "Expected child/parent relationship");
 
@@ -63,7 +64,7 @@ char *test_find_element_with_matching_attr(void) {
 
 char *test_breadth_first(void) {
   node_t *root = create_tree();
-  breadth_first(root, node_handler);
+  breadth_first(root, node_handler, NULL);
 
   muAssert(visitedIndex == 13, "Expected count");
   muAssert(strcmp(get_name(visited[0]), "root") == 0, "root");
@@ -86,7 +87,7 @@ char *test_breadth_first(void) {
 
 char *test_depth_first(void) {
   node_t *root = create_tree();
-  depth_first(root, node_handler);
+  depth_first(root, node_handler, NULL);
 
   muAssert(visitedIndex == 13, "Expected count");
   muAssert(strcmp(get_name(visited[0]), "logo") == 0, "logo");
