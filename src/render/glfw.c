@@ -150,7 +150,8 @@ int beam_render(beam_surface_t *surface, beam_signal_t **signals,
 
   glfw_process_tree(surface, node);
 
-  glClear(GL_COLOR_BUFFER_BIT);
+  // Undefined symbol...
+  // glClear(GL_COLOR_BUFFER_BIT);
 
   glfw_context_t *c = surface->platform;
   glfwSwapBuffers(c->main_window);

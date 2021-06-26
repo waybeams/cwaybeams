@@ -1,8 +1,8 @@
-#include "log.h"
 #include "beam.h"
+#include "log.h"
 #include "shared.h"
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 /*
 beam_surface_t *beam_create_surface(beam_surface_type t) {
