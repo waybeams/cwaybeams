@@ -14,6 +14,9 @@ workspace "Beam"
 		"-Wall",
 		"-Werror",
 		"-std=c11",
+    -- NOTE(lbayes): -pedantic causes a failure with __VA_ARGS__ GCC only
+    -- extension.
+    -- "-pedantic",
 	}
 
 	libdirs {

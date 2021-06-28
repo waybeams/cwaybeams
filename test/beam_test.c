@@ -61,7 +61,7 @@ char *test_get_name(void) {
   return NULL;
 }
 
-char *test_layout(void) {
+char *test_default_vbox_layout(void) {
   node_t *root = vbox(name("root"));
   beam_layout_t layout = get_layout(root);
   muAssert(layout == LayoutVertical, "Expected VBox");
@@ -69,7 +69,7 @@ char *test_layout(void) {
   return NULL;
 }
 
-char *test_default_layout(void) {
+char *test_default_box_layout(void) {
   node_t *root = box(name("root"));
   beam_layout_t layout = get_layout(root);
   muAssert(layout == LayoutDefault, "Expected default layout");

@@ -16,8 +16,8 @@ char *allTests(void) {
   muRunTest(test_new_box);
   muRunTest(test_new_box_with_name);
   muRunTest(test_get_name);
-  muRunTest(test_layout);
-  muRunTest(test_default_layout);
+  muRunTest(test_default_vbox_layout);
+  muRunTest(test_default_box_layout);
   muRunTest(test_default_attr_values);
   muRunTest(test_configured_attr_values);
   muRunTest(test_attr_collection);

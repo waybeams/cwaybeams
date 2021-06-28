@@ -1,10 +1,11 @@
 #ifndef __node_h__
 #define __node_h__
 
-#include <stdint.h>
 #include <limits.h>
+#include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdint.h>
 
 #define DEFAULT_ZERO 0
 #define DEFAULT_CHAR ""
