@@ -159,7 +159,7 @@ char *test_element_children(void) {
     box(name("four"))
   ));
 
-  muAssert(root->child_count == 4, "child count");
+  muAssert(get_child_count(root) == 4, "child count");
   struct node_t **kids = get_children(root);
   muAssert(strcmp(get_name(kids[0]), "one") == 0, "one");
   muAssert(strcmp(get_name(kids[1]), "two") == 0, "two");
@@ -185,13 +185,14 @@ char *test_element_children_itr(void) {
     box(name("four"))
   ));
 
-  muAssert(root->child_count == 4, "child count");
+  int child_count = get_child_count(root);
+  muAssert(child_count == 4, "child count");
 
   struct node_t **kids = get_children(root);
   bool went_inside = false;
-  for (int i = 0; i < root->child_count; i++) {
+  for (int i = 0; i < child_count; i++) {
     if (i == 2) {
-      muAssert(kids[i]->child_count == 3, "Expected grandchildren");
+      muAssert(get_child_count(kids[i]) == 3, "Expected grandchildren");
 
       struct node_t **g_kids = get_children(kids[i]);
       muAssert(strcmp(get_name(g_kids[0]), "three-a") == 0, "aye");

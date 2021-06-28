@@ -135,6 +135,10 @@ unsigned char *get_attr_data(attr_t *attr) {
   return attr->data;
 }
 
+int get_child_count(node_t *node) {
+  return node->child_count;
+}
+
 /**
  * Create a new Attr with the provided type and unsigned int data.
  */

@@ -107,6 +107,7 @@ attr_t *new_ptr_attr(attr_key_t key, unsigned char *value);
 attr_t *new_ext_ptr_attr(attr_key_t key, unsigned char *value);
 
 // Attribute type getters
+int get_child_count(node_t *node);
 unsigned char *get_attr_data(attr_t *attr);
 struct node_t **get_children_attr_data(attr_t *attr);
 unsigned int get_uint_attr_data(attr_t *attr);
