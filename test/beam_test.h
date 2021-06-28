@@ -18,5 +18,6 @@ char *test_configured_attr_values(void);
 char *test_attr_collection(void);
 char *test_node_types(void);
 char *test_element_children(void);
+char *test_element_children_itr(void);
 
 #endif // __beam_test_h__

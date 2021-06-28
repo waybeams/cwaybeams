@@ -23,6 +23,7 @@ char *allTests(void) {
   muRunTest(test_attr_collection);
   muRunTest(test_node_types);
   muRunTest(test_element_children);
+  muRunTest(test_element_children_itr);
 
   // hash_test.h
   muRunTest(test_new_hash);

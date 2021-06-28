@@ -169,3 +169,39 @@ char *test_element_children(void) {
 
   return NULL;
 }
+
+char *test_element_children_itr(void) {
+  node_t *root = vbox(children(
+    box(name("one")),
+    box(name("two")),
+    box(
+      name("three"),
+      children(
+        box(name("three-a")),
+        box(name("three-b")),
+        box(name("three-c"))
+      )
+    ),
+    box(name("four"))
+  ));
+
+  muAssert(root->child_count == 4, "child count");
+
+  struct node_t **kids = get_children(root);
+  bool went_inside = false;
+  for (int i = 0; i < root->child_count; i++) {
+    if (i == 2) {
+      muAssert(kids[i]->child_count == 3, "Expected grandchildren");
+
+      struct node_t **g_kids = get_children(kids[i]);
+      muAssert(strcmp(get_name(g_kids[0]), "three-a") == 0, "aye");
+      muAssert(strcmp(get_name(g_kids[1]), "three-b") == 0, "aye");
+      muAssert(strcmp(get_name(g_kids[2]), "three-c") == 0, "aye");
+      went_inside = true;
+    }
+  }
+
+  muAssert(went_inside, "Expected loop inside");
+  free_node(root);
+  return NULL;
+}
