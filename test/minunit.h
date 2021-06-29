@@ -18,6 +18,12 @@ MINUNIT_ATTR_IS_USED static int minunit_tests_run = 0;
 #define muAssert(test, message) if (!(test)) {\
     log_err(message); return message; }
 
+#define muAssertIntEq(a, b, message) if (a != b) {\
+    log_err("%s [%d != %d]", message, a, b); return message; }
+
+#define muAssertStrEq(a, b, message) if (strcmp(a, b) != 0) {\
+    log_err("%s \"%s\" != \"%s\"", message, a, b); return message; }
+
 #define muRunTest(test) message = test(); minunit_tests_run++; if (message) return message;
 
 #define RUN_TESTS(name) int main(int argc, char *argv[]) { \
