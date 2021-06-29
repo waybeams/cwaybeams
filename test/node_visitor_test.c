@@ -3,18 +3,21 @@
 #include "node.h"
 #include "node_visitor_test.h"
 #include <node_visitor.h>
+#include <stdio.h>
 
-node_t *visited[13];
-int visitedIndex = 0;
+typedef struct {
+  node_t *nodes[20];
+  int visited_index;
+}visited_context_t;
 
 visit_status_t node_handler(node_t *node, void *userdata) {
-  visited[visitedIndex++] = node;
+  visited_context_t *c = userdata;
+  c->nodes[c->visited_index] = node;
+  c->visited_index++;
   return VISIT_SUCCESS;
 }
 
 static node_t *create_tree(void) {
-  visitedIndex = 0;
-
   return vbox(
     name("root"),
     children(
@@ -48,13 +51,15 @@ static node_t *create_tree(void) {
 
 char *test_find_element_with_matching_attr(void) {
   node_t *root = create_tree();
-  node_t *missing = find_element_with_matching_char_attr(root, BeamAttrKeysName,
-                                                         "not-in-tree", NULL);
+  node_t *missing = find_element_with_matching_char_attr(root,
+      BeamAttrKeysName, "not-in-tree", NULL);
 
   muAssert(missing == NULL, "Expected not found");
-  node_t *body = find_element_with_matching_char_attr(root, BeamAttrKeysName, "body", NULL);
+  node_t *body = find_element_with_matching_char_attr(root, BeamAttrKeysName,
+      "body", NULL);
   muAssert(body != NULL, "Expected to find body");
-  node_t *title = find_element_with_matching_char_attr(root, BeamAttrKeysName, "title", NULL);
+  node_t *title = find_element_with_matching_char_attr(root, BeamAttrKeysName,
+      "title", NULL);
   muAssert(title != NULL, "Expected to find title");
   muAssert(title->parent_id == body->id, "Expected child/parent relationship");
 
@@ -64,46 +69,50 @@ char *test_find_element_with_matching_attr(void) {
 
 char *test_breadth_first(void) {
   node_t *root = create_tree();
-  breadth_first(root, node_handler, NULL);
+  visited_context_t *c = calloc(sizeof(visited_context_t), 1);
+  breadth_first(root, node_handler, c);
 
-  muAssert(visitedIndex == 13, "Expected count");
-  muAssert(strcmp(get_name(visited[0]), "root") == 0, "root");
-  muAssert(strcmp(get_name(visited[1]), "head") == 0, "head");
-  muAssert(strcmp(get_name(visited[2]), "logo") == 0, "logo");
-  muAssert(strcmp(get_name(visited[3]), "page-title") == 0, "page-title");
-  muAssert(strcmp(get_name(visited[4]), "account") == 0, "account");
-  muAssert(strcmp(get_name(visited[5]), "body") == 0, "body");
-  muAssert(strcmp(get_name(visited[6]), "title") == 0, "title");
-  muAssert(strcmp(get_name(visited[7]), "content") == 0, "content");
-  muAssert(strcmp(get_name(visited[8]), "footer") == 0, "footer");
-  muAssert(strcmp(get_name(visited[9]), "foot") == 0, "foot");
-  muAssert(strcmp(get_name(visited[10]), "contact") == 0, "contact");
-  muAssert(strcmp(get_name(visited[11]), "about") == 0, "about");
-  muAssert(strcmp(get_name(visited[12]), "press") == 0, "press");
+  muAssertIntEq(c->visited_index, 13, "Expected count");
+  muAssertStrEq(get_name(c->nodes[0]), "root", "root");
+  muAssertStrEq(get_name(c->nodes[1]), "head", "head");
+  muAssertStrEq(get_name(c->nodes[2]), "logo", "logo");
+  muAssertStrEq(get_name(c->nodes[3]), "page-title", "page-title");
+  muAssertStrEq(get_name(c->nodes[4]), "account", "account");
+  muAssertStrEq(get_name(c->nodes[5]), "body", "body");
+  muAssertStrEq(get_name(c->nodes[6]), "title", "title");
+  muAssertStrEq(get_name(c->nodes[7]), "content", "content");
+  muAssertStrEq(get_name(c->nodes[8]), "footer", "footer");
+  muAssertStrEq(get_name(c->nodes[9]), "foot", "foot");
+  muAssertStrEq(get_name(c->nodes[10]), "contact", "contact");
+  muAssertStrEq(get_name(c->nodes[11]), "about", "about");
+  muAssertStrEq(get_name(c->nodes[12]), "press", "press");
 
   free_node(root);
+  free(c);
   return NULL;
 }
 
 char *test_depth_first(void) {
   node_t *root = create_tree();
-  depth_first(root, node_handler, NULL);
+  visited_context_t *c = calloc(sizeof(visited_context_t), 1);
+  depth_first(root, node_handler, c);
 
-  muAssert(visitedIndex == 13, "Expected count");
-  muAssert(strcmp(get_name(visited[0]), "logo") == 0, "logo");
-  muAssert(strcmp(get_name(visited[1]), "page-title") == 0, "page-title");
-  muAssert(strcmp(get_name(visited[2]), "account") == 0, "account");
-  muAssert(strcmp(get_name(visited[3]), "head") == 0, "head");
-  muAssert(strcmp(get_name(visited[4]), "title") == 0, "title");
-  muAssert(strcmp(get_name(visited[5]), "content") == 0, "content");
-  muAssert(strcmp(get_name(visited[6]), "footer") == 0, "footer");
-  muAssert(strcmp(get_name(visited[7]), "body") == 0, "body");
-  muAssert(strcmp(get_name(visited[8]), "contact") == 0, "contact");
-  muAssert(strcmp(get_name(visited[9]), "about") == 0, "about");
-  muAssert(strcmp(get_name(visited[10]), "press") == 0, "press");
-  muAssert(strcmp(get_name(visited[11]), "foot") == 0, "foot");
-  muAssert(strcmp(get_name(visited[12]), "root") == 0, "root");
+  muAssertIntEq(c->visited_index, 13, "Expected count");
+  muAssertStrEq(get_name(c->nodes[0]), "logo", "logo");
+  muAssertStrEq(get_name(c->nodes[1]), "page-title", "page-title");
+  muAssertStrEq(get_name(c->nodes[2]), "account", "account");
+  muAssertStrEq(get_name(c->nodes[3]), "head", "head");
+  muAssertStrEq(get_name(c->nodes[4]), "title", "title");
+  muAssertStrEq(get_name(c->nodes[5]), "content", "content");
+  muAssertStrEq(get_name(c->nodes[6]), "footer", "footer");
+  muAssertStrEq(get_name(c->nodes[7]), "body", "body");
+  muAssertStrEq(get_name(c->nodes[8]), "contact", "contact");
+  muAssertStrEq(get_name(c->nodes[9]), "about", "about");
+  muAssertStrEq(get_name(c->nodes[10]), "press", "press");
+  muAssertStrEq(get_name(c->nodes[11]), "foot", "foot");
+  muAssertStrEq(get_name(c->nodes[12]), "root", "root");
 
   free_node(root);
+  free(c);
   return NULL;
 }
