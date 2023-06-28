@@ -123,8 +123,8 @@ char *test_leaf_hash(void) {
 //   char result[256] = {0};
 //   node_to_str(result, root);
 //
-//   char *expected = "\nnode.type=0 attr_104.type=2 attr_104.chars=abcd attr_1.type=1\n\
-// \tnode.type=0 attr_104.type=2 attr_104.chars=efgh\n\
+//   char *expected = "\nnode.type=0 attr_104.type=2 attr_104.chars=abcd attr_1.type=1\n
+// \tnode.type=0 attr_104.type=2 attr_104.chars=efgh\n
 // \tnode.type=0 attr_104.type=2 attr_104.chars=ijkl";
 //   muAssert(strcmp(result, expected) == 0, "Expect string match");
 //

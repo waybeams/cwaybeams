@@ -2,7 +2,7 @@ workspace "Beam"
 	configurations { "Debug", "Test", "Release" }
 	language "C"
 	cdialect "C11"
-	toolset "clang"
+	toolset "gcc"
 
 	files {
 		"include/*.h",
