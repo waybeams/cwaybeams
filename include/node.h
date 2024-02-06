@@ -10,17 +10,35 @@
 #define DEFAULT_ZERO 0
 #define DEFAULT_CHAR ""
 
-typedef uint16_t attr_type_t;
-typedef uint16_t attr_key_t;
-typedef uint16_t node_type_t;
+#ifndef u8_t
+typedef uint8_t u8_t;
+typedef uint16_t u16_t;
+typedef uint32_t u32_t;
+typedef uint64_t u64_t;
+typedef int8_t s8_t;
+typedef int16_t s16_t;
+typedef int32_t s32_t;
+typedef int64_t s64_t;
+typedef float f32_t;
+typedef double f64_t;
+typedef s8_t q7_t;
+typedef s16_t q15_t;
+typedef s32_t q31_t;
+typedef s64_t q63_t;
+#endif
+
+typedef u16_t attr_type_t;
+typedef u16_t attr_key_t;
+typedef u16_t node_type_t;
 typedef unsigned long node_id_t;
-typedef uint32_t node_hash_t;
+typedef u32_t node_hash_t;
 typedef void (*gesture_handler_t)(void);
 
 #define NODE_ATTR_CHILDREN "children"
 #define NODE_ATTR_CHARS "chars"
 #define NODE_ATTR_CHARS_LEN strlen(NODE_ATTR_CHARS)
-#define NODE_ATTR_UINT "uint"
+#define NODE_ATTR_U32 "u32"
+#define NODE_ATTR_S32 "s32"
 #define NODE_ATTR_PTR "ptr"
 #define NODE_ATTR_EXT_PTR "extptr"
 
@@ -28,7 +46,8 @@ typedef enum node_attr_types {
   NodeAttrTypeNone = 0,
   NodeAttrTypesChildren,
   NodeAttrTypesChars,
-  NodeAttrTypesUint,
+  NodeAttrTypesU32,
+  NodeAttrTypesS32,
   NodeAttrTypesPtr,
   NodeAttrTypesExtPtr,
 } node_attr_types;
@@ -50,7 +69,7 @@ typedef enum node_types {
 typedef struct attr_t {
   attr_key_t key;
   attr_type_t type;
-  uint16_t data_size;
+  u16_t data_size;
   unsigned char *data;
 } attr_t;
 
@@ -102,15 +121,17 @@ attr_t *children_list(unsigned int count, node_t **children);
 
 // Attribute type factories
 attr_t *new_char_attr(attr_key_t key, char *value);
-attr_t *new_uint_attr(attr_key_t key, unsigned value);
+attr_t *new_u32_attr(attr_key_t key, u32_t value);
+attr_t *new_s32_attr(attr_key_t key, s32_t value);
 attr_t *new_ptr_attr(attr_key_t key, unsigned char *value);
 attr_t *new_ext_ptr_attr(attr_key_t key, unsigned char *value);
 
 // Attribute type getters
-int get_child_count(node_t *node);
+s32_t get_child_count(node_t *node);
 unsigned char *get_attr_data(attr_t *attr);
 struct node_t **get_children_attr_data(attr_t *attr);
-unsigned int get_uint_attr_data(attr_t *attr);
+u32_t get_u32_attr_data(attr_t *attr);
+s32_t get_s32_attr_data(attr_t *attr);
 char *get_char_attr_data(attr_t *attr);
 
 // Node Attribute getters
@@ -127,9 +148,12 @@ void free_node(node_t *node);
 void free_attr(attr_t *attr);
 
 // Used by Macros only
-char *get_char_attr_from_node(node_t *node, attr_type_t type, char *default_value);
-unsigned int get_uint_attr_from_node(node_t *node, attr_type_t type,
-                                     unsigned int default_value);
+char *get_char_attr_from_node(node_t *node, attr_type_t type,
+    char *default_value);
+u32_t get_u32_attr_from_node(node_t *node, attr_type_t type,
+    u32_t default_value);
+s32_t get_s32_attr_from_node(node_t *node, attr_type_t type,
+    s32_t default_value);
 unsigned char *get_raw_attr_from_node(node_t *node, attr_type_t type);
 
 #endif // __node_h__

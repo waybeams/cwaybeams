@@ -13,8 +13,8 @@ char *test_new_char_attr(void) {
 }
 
 char *test_new_uint_attr(void) {
-  attr_t *attr = new_uint_attr(FakeNodeKeysSize, 1234);
-  unsigned int data = get_uint_attr_data(attr);
+  attr_t *attr = new_u32_attr(FakeNodeKeysSize, 1234);
+  unsigned int data = get_u32_attr_data(attr);
   muAssert(data == 1234, "Expected 1234");
   free_attr(attr);
   return NULL;

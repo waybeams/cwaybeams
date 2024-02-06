@@ -12,7 +12,7 @@ static node_id_t lastId = 1;
 /**
  * Size of a pointer on this compilation target.
  */
-static uint8_t POINTER_SIZE = sizeof(void *);
+static u8_t POINTER_SIZE = sizeof(void *);
 
 // static void node_to_str_indented(char *dest, node_t *node, char *indent);
 
@@ -36,7 +36,7 @@ static node_id_t getNextId() {
  */
 static int get_attr_index_by_key(node_t *node, attr_key_t key) {
   attr_t *attr;
-  for (unsigned int i = 0; i < node->attr_count; i++) {
+  for (u32_t i = 0; i < node->attr_count; i++) {
     attr = node->attrs[i];
     if (attr->key == key) {
       return i;
@@ -81,7 +81,7 @@ void free_attr(attr_t *attr) {
  * element to it's leaves.
  */
 void free_node(node_t *node) {
-  for (unsigned int i = 0; i < node->attr_count; i++) {
+  for (u32_t i = 0; i < node->attr_count; i++) {
     attr_t *attr = node->attrs[i];
     free_attr(attr);
   }
@@ -119,7 +119,7 @@ attr_t *new_char_attr(attr_key_t key, char *value) {
   attr->key = key;
   attr->type = NodeAttrTypesChars;
   attr->data_size = strlen(value) + 1;
-  attr->data = (unsigned char *)malloc(attr->data_size);
+  attr->data = (u8_t *)malloc(attr->data_size);
   memcpy(attr->data, value, attr->data_size);
   return attr;
 }
@@ -131,24 +131,24 @@ char *get_char_attr_data(attr_t *attr) {
   return (char *)get_attr_data(attr);
 }
 
-unsigned char *get_attr_data(attr_t *attr) {
+u8_t *get_attr_data(attr_t *attr) {
   return attr->data;
 }
 
-int get_child_count(node_t *node) {
+s32_t get_child_count(node_t *node) {
   return node->child_count;
 }
 
 /**
- * Create a new Attr with the provided type and unsigned int data.
+ * Create a new Attr with the provided type and s32_t data.
  */
-attr_t *new_uint_attr(attr_key_t key, unsigned int value) {
+attr_t *new_s32_attr(attr_key_t key, s32_t value) {
   attr_t *attr = new_attr();
   if (attr == NULL) {
     return NULL;
   }
   attr->key = key;
-  attr->type = NodeAttrTypesUint;
+  attr->type = NodeAttrTypesS32;
   attr->data_size = sizeof(unsigned int);
   attr->data = malloc(attr->data_size);
   memcpy(attr->data, &value, attr->data_size);
@@ -158,15 +158,48 @@ attr_t *new_uint_attr(attr_key_t key, unsigned int value) {
 /**
  * Get the provided Attribute data as an unsigned integer.
  */
-unsigned int get_uint_attr_data(attr_t *attr) {
-  return *(unsigned int *)get_attr_data(attr);
+s32_t get_s32_attr_data(attr_t *attr) {
+  return *(s32_t *)get_attr_data(attr);
+}
+
+s32_t get_s32_attr_from_node(node_t *node, attr_key_t key,
+                                     s32_t default_value) {
+  int index = get_attr_index_by_key(node, key);
+  if (index > -1) {
+    return get_s32_attr_data(node->attrs[index]);
+  }
+
+  return default_value;
 }
 
 /**
- * Create a new attribute with an unsigned char * pointer value and
+ * Create a new Attr with the provided type and u32_t data.
+ */
+attr_t *new_u32_attr(attr_key_t key, u32_t value) {
+  attr_t *attr = new_attr();
+  if (attr == NULL) {
+    return NULL;
+  }
+  attr->key = key;
+  attr->type = NodeAttrTypesU32;
+  attr->data_size = sizeof(unsigned int);
+  attr->data = malloc(attr->data_size);
+  memcpy(attr->data, &value, attr->data_size);
+  return attr;
+}
+
+/**
+ * Get the provided Attribute data as an unsigned integer.
+ */
+u32_t get_u32_attr_data(attr_t *attr) {
+  return *(u32_t *)get_attr_data(attr);
+}
+
+/**
+ * Create a new attribute with an u8_t * pointer value and
  * the provided type.
  */
-attr_t *new_ptr_attr(attr_key_t key, unsigned char *value) {
+attr_t *new_ptr_attr(attr_key_t key, u8_t *value) {
   attr_t *attr = new_attr();
   if (attr == NULL) {
     return NULL;
@@ -182,7 +215,7 @@ attr_t *new_ptr_attr(attr_key_t key, unsigned char *value) {
  * Just like a pointer attribute, but will not be freed
  * by our calls to free_attr().
  */
-attr_t *new_ext_ptr_attr(attr_key_t key, unsigned char *value) {
+attr_t *new_ext_ptr_attr(attr_key_t key, u8_t *value) {
   attr_t *attr = new_ptr_attr(key, value);
   if (attr == NULL) {
     return NULL;
@@ -213,17 +246,17 @@ char *get_char_attr_from_node(node_t *node, attr_key_t key, char *default_value)
   return default_value;
 }
 
-unsigned int get_uint_attr_from_node(node_t *node, attr_key_t key,
-                                     unsigned int default_value) {
+u32_t get_u32_attr_from_node(node_t *node, attr_key_t key,
+                                     u32_t default_value) {
   int index = get_attr_index_by_key(node, key);
   if (index > -1) {
-    return get_uint_attr_data(node->attrs[index]);
+    return get_u32_attr_data(node->attrs[index]);
   }
 
   return default_value;
 }
 
-unsigned char *get_raw_attr_from_node(node_t *node, attr_key_t key) {
+u8_t *get_raw_attr_from_node(node_t *node, attr_key_t key) {
   int index = get_attr_index_by_key(node, key);
   if (index > -1) {
     attr_t *attr = node->attrs[index];
@@ -236,7 +269,7 @@ unsigned char *get_raw_attr_from_node(node_t *node, attr_key_t key) {
 /**
  * Create a children Attr.
  */
-attr_t *new_children(unsigned int count, ...) {
+attr_t *new_children(u32_t count, ...) {
   attr_t *attr = new_attr();
   if (NULL == attr) {
     return NULL;
@@ -250,13 +283,13 @@ attr_t *new_children(unsigned int count, ...) {
 
   va_list vargs;
   va_start(vargs, count);
-  for (unsigned int i = 0; i < count; i++) {
+  for (u32_t i = 0; i < count; i++) {
     node_t *kid = va_arg(vargs, node_t *);
     kids[i] = kid;
   }
   va_end(vargs);
 
-  attr->data = (unsigned char *)malloc(attr->data_size);
+  attr->data = (u8_t *)malloc(attr->data_size);
   if (attr->data == NULL) {
     return NULL;
   }
@@ -264,7 +297,7 @@ attr_t *new_children(unsigned int count, ...) {
   return attr;
 }
 
-attr_t *children_list(unsigned int count, node_t **children) {
+attr_t *children_list(u32_t count, node_t **children) {
   attr_t *attr = new_attr();
   if (attr == NULL) {
     return NULL;
@@ -274,7 +307,7 @@ attr_t *children_list(unsigned int count, node_t **children) {
   attr->key = NodeAttrKeysChildren;
   attr->data_size = count * POINTER_SIZE;
 
-  attr->data = (unsigned char *)malloc(attr->data_size);
+  attr->data = (u8_t *)malloc(attr->data_size);
   if (attr->data == NULL) {
     free(attr);
     return NULL;
@@ -301,7 +334,7 @@ static NodeHash hash_node(Node *node) {
 /**
  * Create a new Node with the provided attributes.
  */
-node_t *new_node(node_type_t type, unsigned int attr_count, ...) {
+node_t *new_node(node_type_t type, u32_t attr_count, ...) {
   attr_t **attrs = malloc(attr_count * POINTER_SIZE);
   if (NULL == attrs) {
     return NULL;
@@ -315,12 +348,12 @@ node_t *new_node(node_type_t type, unsigned int attr_count, ...) {
   // Process Attrs
   va_list vargs;
   va_start(vargs, attr_count);
-  for (unsigned int i = 0; i < attr_count; ++i) {
+  for (u32_t i = 0; i < attr_count; ++i) {
     attr_t *attr = va_arg(vargs, attr_t *);
     if (attr->key == NodeAttrKeysChildren) {
         node->child_count += (attr->data_size / POINTER_SIZE);
         node_t **kids = get_children_attr_data(attr);
-        for (unsigned int k = 0; k < node->child_count; k++) {
+        for (u32_t k = 0; k < node->child_count; k++) {
             kids[k]->parent_id = node->id;
         }
     }
@@ -378,7 +411,7 @@ bool is_root(node_t *node) {
 //   if (kids != NULL) {
 //     char *new_indent = {0};
 //     strcat(new_indent, indent);
-//     for (unsigned int i = 0; i < node->child_count; i++) {
+//     for (u32_t i = 0; i < node->child_count; i++) {
 //       node_to_str_indented(str, kids[i], indent);
 //     }
 //   }
@@ -389,7 +422,7 @@ bool is_root(node_t *node) {
 //   char *str = {0};
 //   sprintf(str, "%s\nnode.type=%d", indent, node->type);
 //
-//   for (unsigned int i = 0; i < node->attr_count; i++) {
+//   for (u32_t i = 0; i < node->attr_count; i++) {
 //     attr_to_str(str, node->attrs[i], indent);
 //   }
 //   node_children_to_str(str, node, indent);

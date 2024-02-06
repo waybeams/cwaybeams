@@ -58,9 +58,9 @@ typedef enum beam_signal_type {
 }beam_signal_type;
 
 typedef struct {
-  unsigned int type;
-  unsigned char *source;
-  unsigned char *payload;
+  u32_t type;
+  u8_t *source;
+  u8_t *payload;
 }beam_signal_t;
 
 typedef struct beam_surface_t {
@@ -121,25 +121,25 @@ typedef enum beam_layout_t {
 #define text(value) new_char_attr(BeamAttrKeysText, value)
 #define title(value) new_char_attr(BeamAttrKeysTitle, value)
 #define label(value) new_char_attr(BeamAttrKeysLabel, value)
-#define layout(value) new_uint_attr(BeamAttrKeysLayout, value)
-#define width(value) new_uint_attr(BeamAttrKeysWidth, value)
+#define layout(value) new_u32_attr(BeamAttrKeysLayout, value)
+#define width(value) new_u32_attr(BeamAttrKeysWidth, value)
 // #define handler(value) new_ext_ptr_attr(GestureHandlerAttr, value)
-#define height(value) new_uint_attr(BeamAttrKeysHeight, value)
-#define x(value) new_uint_attr(BeamAttrKeysX, value)
-#define y(value) new_uint_attr(BeamAttrKeysY, value)
-#define z(value) new_uint_attr(BeamAttrKeysZ, value)
+#define height(value) new_u32_attr(BeamAttrKeysHeight, value)
+#define x(value) new_s32_attr(BeamAttrKeysX, value)
+#define y(value) new_s32_attr(BeamAttrKeysY, value)
+#define z(value) new_s32_attr(BeamAttrKeysZ, value)
 
 // Attribute getter macros
 #define get_name(node) get_char_attr_from_node(node, BeamAttrKeysName, DEFAULT_CHAR)
 #define get_text(node) get_char_attr_from_node(node, BeamAttrKeysText, DEFAULT_CHAR)
 #define get_label(node) get_char_attr_from_node(node, BeamAttrKeysLabel, DEFAULT_CHAR)
 
-#define get_layout(node) get_uint_attr_from_node(node, BeamAttrKeysLayout, LayoutDefault)
-#define get_width(node) get_uint_attr_from_node(node, BeamAttrKeysWidth, DEFAULT_ZERO)
-#define get_height(node) get_uint_attr_from_node(node, BeamAttrKeysHeight, DEFAULT_ZERO)
-#define get_x(node) get_uint_attr_from_node(node, BeamAttrKeysX, DEFAULT_ZERO)
-#define get_y(node) get_uint_attr_from_node(node, BeamAttrKeysY, DEFAULT_ZERO)
-#define get_z(node) get_uint_attr_from_node(node, BeamAttrKeysZ, DEFAULT_ZERO)
+#define get_layout(node) get_u32_attr_from_node(node, BeamAttrKeysLayout, LayoutDefault)
+#define get_width(node) get_u32_attr_from_node(node, BeamAttrKeysWidth, DEFAULT_ZERO)
+#define get_height(node) get_u32_attr_from_node(node, BeamAttrKeysHeight, DEFAULT_ZERO)
+#define get_x(node) get_s32_attr_from_node(node, BeamAttrKeysX, DEFAULT_ZERO)
+#define get_y(node) get_s32_attr_from_node(node, BeamAttrKeysY, DEFAULT_ZERO)
+#define get_z(node) get_s32_attr_from_node(node, BeamAttrKeysZ, DEFAULT_ZERO)
 
 beam_surface_t *beam_create_surface(beam_surface_type t);
 int beam_render(beam_surface_t *s, beam_signal_t **signals, node_t *node);

@@ -13,7 +13,7 @@ char *test_new_name_attr(void) {
 
 char *test_new_height(void) {
   attr_t *one = height(23);
-  unsigned int data = get_uint_attr_data(one);
+  unsigned int data = get_u32_attr_data(one);
   muAssert(data == 23, "Expected data to be 23");
   free_attr(one);
   return NULL;
@@ -21,15 +21,15 @@ char *test_new_height(void) {
 
 char *test_new_width(void) {
   attr_t *one = width(20);
-  unsigned int data = get_uint_attr_data(one);
+  unsigned int data = get_u32_attr_data(one);
   muAssert(data == 20, "Expected data to be 20");
   free_attr(one);
   return NULL;
 }
 
 char *test_new_larger_width(void) {
-  attr_t *attr = new_uint_attr(BeamAttrKeysWidth, 801);
-  unsigned int value = get_uint_attr_data(attr);
+  attr_t *attr = new_u32_attr(BeamAttrKeysWidth, 801);
+  unsigned int value = get_u32_attr_data(attr);
 
   muAssert(value == 801, "Expected matching value");
   free_attr(attr);
