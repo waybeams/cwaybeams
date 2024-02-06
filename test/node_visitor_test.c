@@ -7,7 +7,7 @@
 
 typedef struct {
   node_t *nodes[20];
-  int visited_index;
+  s32_t visited_index;
 }visited_context_t;
 
 visit_status_t node_handler(node_t *node, void *userdata) {

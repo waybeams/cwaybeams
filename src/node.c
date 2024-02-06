@@ -34,7 +34,7 @@ static node_id_t getNextId() {
  *  I'm deferring this work for the moment, as this does the job and also
  *  works with duplicate attribute entries without too much extra complexity.
  */
-static int get_attr_index_by_key(node_t *node, attr_key_t key) {
+static s32_t get_attr_index_by_key(node_t *node, attr_key_t key) {
   attr_t *attr;
   for (u32_t i = 0; i < node->attr_count; i++) {
     attr = node->attrs[i];
@@ -149,14 +149,14 @@ attr_t *new_s32_attr(attr_key_t key, s32_t value) {
   }
   attr->key = key;
   attr->type = NodeAttrTypesS32;
-  attr->data_size = sizeof(unsigned int);
+  attr->data_size = sizeof(s32_t);
   attr->data = malloc(attr->data_size);
   memcpy(attr->data, &value, attr->data_size);
   return attr;
 }
 
 /**
- * Get the provided Attribute data as an unsigned integer.
+ * Get the provided Attribute data as a signed integer.
  */
 s32_t get_s32_attr_data(attr_t *attr) {
   return *(s32_t *)get_attr_data(attr);
@@ -164,7 +164,7 @@ s32_t get_s32_attr_data(attr_t *attr) {
 
 s32_t get_s32_attr_from_node(node_t *node, attr_key_t key,
                                      s32_t default_value) {
-  int index = get_attr_index_by_key(node, key);
+  s32_t index = get_attr_index_by_key(node, key);
   if (index > -1) {
     return get_s32_attr_data(node->attrs[index]);
   }
@@ -182,7 +182,7 @@ attr_t *new_u32_attr(attr_key_t key, u32_t value) {
   }
   attr->key = key;
   attr->type = NodeAttrTypesU32;
-  attr->data_size = sizeof(unsigned int);
+  attr->data_size = sizeof(u32_t);
   attr->data = malloc(attr->data_size);
   memcpy(attr->data, &value, attr->data_size);
   return attr;
@@ -229,7 +229,7 @@ attr_t *new_ext_ptr_attr(attr_key_t key, u8_t *value) {
  * Get the provided Node children collection.
  */
 node_t **get_children(node_t *node) {
-  int index = get_attr_index_by_key(node, NodeAttrKeysChildren);
+  s32_t index = get_attr_index_by_key(node, NodeAttrKeysChildren);
   if (index > -1) {
     return get_children_attr_data(node->attrs[index]);
   }
@@ -237,8 +237,9 @@ node_t **get_children(node_t *node) {
   return NULL;
 }
 
-char *get_char_attr_from_node(node_t *node, attr_key_t key, char *default_value) {
-  int index = get_attr_index_by_key(node, key);
+char *get_char_attr_from_node(node_t *node, attr_key_t key,
+    char *default_value) {
+  s32_t index = get_attr_index_by_key(node, key);
   if (index > -1) {
     return get_char_attr_data(node->attrs[index]);
   }
@@ -248,7 +249,7 @@ char *get_char_attr_from_node(node_t *node, attr_key_t key, char *default_value)
 
 u32_t get_u32_attr_from_node(node_t *node, attr_key_t key,
                                      u32_t default_value) {
-  int index = get_attr_index_by_key(node, key);
+  s32_t index = get_attr_index_by_key(node, key);
   if (index > -1) {
     return get_u32_attr_data(node->attrs[index]);
   }
@@ -257,7 +258,7 @@ u32_t get_u32_attr_from_node(node_t *node, attr_key_t key,
 }
 
 u8_t *get_raw_attr_from_node(node_t *node, attr_key_t key) {
-  int index = get_attr_index_by_key(node, key);
+  s32_t index = get_attr_index_by_key(node, key);
   if (index > -1) {
     attr_t *attr = node->attrs[index];
     return get_attr_data(attr);
@@ -371,7 +372,7 @@ node_t *new_node(node_type_t type, u32_t attr_count, ...) {
  * Call any handlers found for the provided gesture type.
  */
 void emit_event(node_t *node, attr_key_t key) {
-  int index = get_attr_index_by_key(node, key);
+  s32_t index = get_attr_index_by_key(node, key);
   if (index > -1) {
     attr_t *attr = node->attrs[index];
     gesture_handler_t gestureHandler = (gesture_handler_t)get_attr_data(attr);

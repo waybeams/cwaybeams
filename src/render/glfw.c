@@ -25,7 +25,7 @@ beam_surface_t *beam_create_surface(beam_surface_type t) {
   return s;
 }
 
-int beam_window_should_close(beam_surface_t *s) {
+s32_t beam_window_should_close(beam_surface_t *s) {
   if (s != NULL) {
     glfw_context_t *c = s->platform;
     if (c->main_window != NULL) {
@@ -42,8 +42,8 @@ static void render_window(UNUSED beam_surface_t *s, UNUSED node_t *node) {
     if (c->main_window == NULL) {
       // This is the first window we've encountered.
       GLFWwindow *window;
-      int w = get_width(node);
-      int h = get_height(node);
+      s32_t w = get_width(node);
+      s32_t h = get_height(node);
       if (0 == w) {
         w = DEFAULT_WIDTH;
       }
@@ -69,7 +69,7 @@ static void render_window(UNUSED beam_surface_t *s, UNUSED node_t *node) {
 
 static visit_status_t visit_handler(node_t *node, void *userdata) {
   beam_surface_t *s = userdata;
-  int status = BeamSuccess;
+  s32_t status = BeamSuccess;
   // log_info("visit node: %s", get_name(node));
   switch (node->type) {
     case BeamTypeWindow:
@@ -78,8 +78,8 @@ static visit_status_t visit_handler(node_t *node, void *userdata) {
   return status;
 }
 
-static int glfw_process_tree(beam_surface_t *t, node_t *node) {
-  int status = BeamSuccess;
+static s32_t glfw_process_tree(beam_surface_t *t, node_t *node) {
+  s32_t status = BeamSuccess;
   // log_info("glfw_process_tree with: %d", t->type);
 
   breadth_first(node, visit_handler, t);
@@ -110,7 +110,7 @@ void beam_surface_free(beam_surface_t *s) {
   }
 }
 
-int beam_render(beam_surface_t *surface, beam_signal_t **signals,
+s32_t beam_render(beam_surface_t *surface, beam_signal_t **signals,
                  node_t *node) {
   if (signals != NULL) {
     // beam_signal_t *s = *signals;
@@ -136,7 +136,7 @@ int beam_render(beam_surface_t *surface, beam_signal_t **signals,
 
   glfw_context_t *gc = surface->platform;
 
-  int status = BeamSuccess;
+  s32_t status = BeamSuccess;
 
   if (gc->init_status == -1) {
     status = glfwInit();

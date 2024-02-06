@@ -14,7 +14,7 @@ char *test_new_char_attr(void) {
 
 char *test_new_uint_attr(void) {
   attr_t *attr = new_u32_attr(FakeNodeKeysSize, 1234);
-  unsigned int data = get_u32_attr_data(attr);
+  u32_t data = get_u32_attr_data(attr);
   muAssert(data == 1234, "Expected 1234");
   free_attr(attr);
   return NULL;
@@ -69,7 +69,7 @@ char *test_is_root(void) {
  * Function that is being used to test the pointer_attr creation
  * and retrieval.
  */
-int add_func(int a, int b) {
+s32_t add_func(s32_t a, s32_t b) {
   return a + b;
 }
 
@@ -78,7 +78,7 @@ char *test_pointer_attr(void) {
   FakeAddFunc *f = (FakeAddFunc *)get_attr_data(attr);
   // #include <inttypes.h>
   // printf("0x%" PRIXPTR "\n", (uintptr_t)f);
-  int result = f(2, 3);
+  s32_t result = f(2, 3);
   muAssert(result == 5, "Expected function to work");
 
   free_attr(attr);

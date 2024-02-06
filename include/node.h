@@ -81,8 +81,8 @@ typedef struct node_t {
   node_id_t parent_id;
   node_hash_t hash;
   node_type_t type;
-  unsigned int child_count;
-  unsigned int attr_count;
+  u32_t child_count;
+  u32_t attr_count;
   struct attr_t **attrs;
 } node_t;
 
@@ -114,10 +114,10 @@ typedef struct node_t {
 #define children(...) new_children(PP_NARG(__VA_ARGS__), __VA_ARGS__)
 
 // Attribute custom factories
-node_t *new_node(node_type_t type, unsigned int count, ...);
+node_t *new_node(node_type_t type, u32_t count, ...);
 attr_t *new_attr(void);
-attr_t *new_children(unsigned int count, ...);
-attr_t *children_list(unsigned int count, node_t **children);
+attr_t *new_children(u32_t count, ...);
+attr_t *children_list(u32_t count, node_t **children);
 
 // Attribute type factories
 attr_t *new_char_attr(attr_key_t key, char *value);
