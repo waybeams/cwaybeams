@@ -28,7 +28,7 @@ typedef struct {
 
 typedef struct {
   char *title;
-  int task_count;
+  u32_t task_count;
   task_t *tasks;
 }app_model_t;
 
@@ -50,7 +50,7 @@ node_t *create_content(app_services_t *s) {
 
   // Build a task view for each task record.
   node_t *task_views[m->task_count];
-  for (int i = 0; i < m->task_count; i++) {
+  for (size_t i = 0; i < m->task_count; i++) {
     task_views[i] = create_task_view(&m->tasks[i]);
   }
 
@@ -79,7 +79,7 @@ node_t* create_projection(app_services_t *s) {
           width(1280),
           height(1024)
           // children(
-          // create_content(s)
+          //   create_content(s)
           // )
           )
         )
@@ -92,7 +92,7 @@ node_t* create_projection(app_services_t *s) {
 int main(void) {
   printf("Starting\n");
 
-  int task_count = 8;
+  u32_t task_count = 8;
   task_t tasks[8] = {
     {.label = "one", .is_done = false},
     {.label = "two", .is_done = false},
@@ -113,6 +113,7 @@ int main(void) {
 
   beam_surface_t *surface = beam_create_surface(BeamSurfaceGlfw);
   beam_signal_t **signals;
+
   do {
     // printf("Looping\n");
     signals = beam_signals_gather(surface);
