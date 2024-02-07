@@ -6,7 +6,7 @@
 char *test_new_name_attr(void) {
   attr_t *attr = name("abcd");
   char *data = get_char_attr_data(attr);
-  muAssert(strcmp(data, "abcd") == 0, "Expected abcd");
+  muAssertStrEq(data, "abcd", "Expected abcd");
   free_attr(attr);
   return NULL;
 }
@@ -14,7 +14,7 @@ char *test_new_name_attr(void) {
 char *test_new_height(void) {
   attr_t *one = height(23);
   u32_t data = get_u32_attr_data(one);
-  muAssert(data == 23, "Expected data to be 23");
+  muAssertIntEq(data, 23, "Expected data to be 23");
   free_attr(one);
   return NULL;
 }
@@ -22,7 +22,7 @@ char *test_new_height(void) {
 char *test_new_width(void) {
   attr_t *one = width(20);
   s32_t data = get_s32_attr_data(one);
-  muAssert(data == 20, "Expected data to be 20");
+  muAssertIntEq(data, 20, "Expected data to be 20");
   free_attr(one);
   return NULL;
 }
@@ -48,7 +48,7 @@ char *test_new_box_with_name(void) {
   muAssert(one->parent_id == 0, "Expected empty parent_id");
   attr_t *attr = one->attrs[0];
   char *name = get_char_attr_data(attr);
-  muAssert(strcmp(name, "abcd") == 0, "Expected name attr");
+  muAssertStrEq(name, "abcd", "Expected name attr");
   free_node(one);
   return NULL;
 }
@@ -56,7 +56,7 @@ char *test_new_box_with_name(void) {
 char *test_get_name(void) {
   node_t *elem = box(name("root"));
   char *elemName = get_name(elem);
-  muAssert(strcmp(elemName, "root") == 0, "Expected name root");
+  muAssertStrEq(elemName, "root", "Expected name root");
   free_node(elem);
   return NULL;
 }
@@ -85,11 +85,11 @@ char *test_default_attr_values(void) {
   s32_t y = get_y(root);
   s32_t z = get_z(root);
 
-  muAssert(w == 0, "Expected width 0");
-  muAssert(h == 0, "Expected height 0");
-  muAssert(x == 0, "Expected x 0");
-  muAssert(y == 0, "Expected y 0");
-  muAssert(z == 0, "Expected z 0");
+  muAssertIntEq(w, 0, "Expected width 0");
+  muAssertIntEq(h, 0, "Expected height 0");
+  muAssertIntEq(x, 0, "Expected x 0");
+  muAssertIntEq(y, 0, "Expected y 0");
+  muAssertIntEq(z, 0, "Expected z 0");
 
   free_node(root);
   return NULL;
@@ -112,10 +112,10 @@ char *test_configured_attr_values(void) {
   s32_t z = get_z(root);
 
   muAssertIntEq(w, -1001, "Expected width 1001");
-  muAssert(h == -2002, "Expected height 2002");
-  muAssert(x == -3003, "Expected x 3003");
-  muAssert(y == -4004, "Expected y 4004");
-  muAssert(z == -5005, "Expected z 5005");
+  muAssertIntEq(h, -2002, "Expected height 2002");
+  muAssertIntEq(x, -3003, "Expected x 3003");
+  muAssertIntEq(y, -4004, "Expected y 4004");
+  muAssertIntEq(z, -5005, "Expected z 5005");
 
   free_node(root);
   return NULL;
@@ -124,7 +124,7 @@ char *test_configured_attr_values(void) {
 char *test_attr_collection(void) {
   node_t *root = vbox(name("root"), width(3000));
   char *n = get_name(root);
-  muAssert(strcmp(n, "root") == 0, "Expected name");
+  muAssertStrEq(n, "root", "Expected name");
   s32_t w = get_width(root);
   muAssert(w == 3000, "Expected width");
   s32_t h = get_height(root);
@@ -161,10 +161,10 @@ char *test_element_children(void) {
 
   muAssert(get_child_count(root) == 4, "child count");
   struct node_t **kids = get_children(root);
-  muAssert(strcmp(get_name(kids[0]), "one") == 0, "one");
-  muAssert(strcmp(get_name(kids[1]), "two") == 0, "two");
-  muAssert(strcmp(get_name(kids[2]), "three") == 0, "three");
-  muAssert(strcmp(get_name(kids[3]), "four") == 0, "four");
+  muAssertStrEq(get_name(kids[0]), "one", "one");
+  muAssertStrEq(get_name(kids[1]), "two", "two");
+  muAssertStrEq(get_name(kids[2]), "three", "three");
+  muAssertStrEq(get_name(kids[3]), "four", "four");
   free_node(root);
 
   return NULL;
@@ -195,9 +195,9 @@ char *test_element_children_itr(void) {
       muAssert(get_child_count(kids[i]) == 3, "Expected grandchildren");
 
       struct node_t **g_kids = get_children(kids[i]);
-      muAssert(strcmp(get_name(g_kids[0]), "three-a") == 0, "aye");
-      muAssert(strcmp(get_name(g_kids[1]), "three-b") == 0, "aye");
-      muAssert(strcmp(get_name(g_kids[2]), "three-c") == 0, "aye");
+      muAssertStrEq(get_name(g_kids[0]), "three-a", "aye");
+      muAssertStrEq(get_name(g_kids[1]), "three-b", "aye");
+      muAssertStrEq(get_name(g_kids[2]), "three-c", "aye");
       went_inside = true;
     }
   }

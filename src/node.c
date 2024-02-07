@@ -196,10 +196,10 @@ u32_t get_u32_attr_data(attr_t *attr) {
 }
 
 /**
- * Create a new attribute with an u8_t * pointer value and
+ * Create a new attribute with an void * pointer value and
  * the provided type.
  */
-attr_t *new_ptr_attr(attr_key_t key, u8_t *value) {
+attr_t *new_ptr_attr(attr_key_t key, void *value) {
   attr_t *attr = new_attr();
   if (attr == NULL) {
     return NULL;
@@ -215,7 +215,7 @@ attr_t *new_ptr_attr(attr_key_t key, u8_t *value) {
  * Just like a pointer attribute, but will not be freed
  * by our calls to free_attr().
  */
-attr_t *new_ext_ptr_attr(attr_key_t key, u8_t *value) {
+attr_t *new_ext_ptr_attr(attr_key_t key, void *value) {
   attr_t *attr = new_ptr_attr(key, value);
   if (attr == NULL) {
     return NULL;

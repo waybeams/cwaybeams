@@ -7,7 +7,7 @@
 char *test_new_char_attr(void) {
   attr_t *attr = new_char_attr(FakeNodeKeysName, "abcd");
   char *data = get_char_attr_data(attr);
-  muAssert(strcmp(data, "abcd") == 0, "Expected abcd");
+  muAssertStrEq(data, "abcd", "Expected abcd");
   free_attr(attr);
   return NULL;
 }
@@ -15,7 +15,7 @@ char *test_new_char_attr(void) {
 char *test_new_uint_attr(void) {
   attr_t *attr = new_u32_attr(FakeNodeKeysSize, 1234);
   u32_t data = get_u32_attr_data(attr);
-  muAssert(data == 1234, "Expected 1234");
+  muAssertIntEq(data, 1234, "Expected 1234");
   free_attr(attr);
   return NULL;
 }
@@ -26,7 +26,7 @@ char *test_new_children(void) {
 
   struct node_t **kids = get_children_attr_data(attr);
   char *name = get_name(kids[0]);
-  muAssert(strcmp(name, "root") == 0, "Expected name root");
+  muAssertStrEq(name, "root", "Expected name root");
   free_attr(attr);
   return NULL;
 }
@@ -79,7 +79,7 @@ char *test_pointer_attr(void) {
   // #include <inttypes.h>
   // printf("0x%" PRIXPTR "\n", (uintptr_t)f);
   s32_t result = f(2, 3);
-  muAssert(result == 5, "Expected function to work");
+  muAssertIntEq(result, 5, "Expected function to work");
 
   free_attr(attr);
   return NULL;
@@ -105,7 +105,7 @@ char *test_leaf_hash(void) {
 //   node_t *root = node(name("abcd"));
 //   node_to_str(result, root);
 //   char *expected = "\nnode.type=0 attr_104.type=2 attr_104.chars=abcd";
-//   muAssert(strcmp(result, expected) == 0, "Expect string match");
+//   muAssertStrEq(result, expected, "Expect string match");
 //
 //   free_node(root);
 //   return NULL;
@@ -126,7 +126,7 @@ char *test_leaf_hash(void) {
 //   char *expected = "\nnode.type=0 attr_104.type=2 attr_104.chars=abcd attr_1.type=1\n
 // \tnode.type=0 attr_104.type=2 attr_104.chars=efgh\n
 // \tnode.type=0 attr_104.type=2 attr_104.chars=ijkl";
-//   muAssert(strcmp(result, expected) == 0, "Expect string match");
+//   muAssertStrEq(result, expected, "Expect string match");
 //
 //   free_node(root);
 //   return NULL;

@@ -38,11 +38,11 @@ typedef struct app_services_t  {
 
 node_t *create_task_view(task_t *t) {
   return hbox(
-    children(
-      label(t->label)
-      // checkbox(t->is_done),
-    )
-  );
+      children(
+        label(t->label)
+        // checkbox(t->is_done),
+        )
+      );
 }
 
 node_t *create_content(app_services_t *s) {
@@ -56,12 +56,12 @@ node_t *create_content(app_services_t *s) {
 
   return vbox(
       children(
-          label("Task List"),
-          vbox(
-              children_list(m->task_count, task_views)
+        label("Task List"),
+        vbox(
+          children_list(m->task_count, task_views)
           )
-      )
-  );
+        )
+      );
 }
 
 /**
@@ -73,17 +73,17 @@ node_t* create_projection(app_services_t *s) {
   return app(
       name("main-app"),
       children(
-          window(
-              name("main-window"),
-              title(s->model.title),
-              width(1280),
-              height(1024)
-              // children(
-                  // create_content(s)
-              // )
+        window(
+          name("main-window"),
+          title(s->model.title),
+          width(1280),
+          height(1024)
+          // children(
+          // create_content(s)
+          // )
           )
-      )
-  );
+        )
+      );
 }
 
 // Ridiculously complicated argument bullshit for nanosleep...
@@ -94,21 +94,21 @@ int main(void) {
 
   int task_count = 8;
   task_t tasks[8] = {
-      {.label = "one", .is_done = false},
-      {.label = "two", .is_done = false},
-      {.label = "three", .is_done = false},
-      {.label = "four", .is_done = false},
-      {.label = "five", .is_done = false},
-      {.label = "six", .is_done = false},
-      {.label = "seven", .is_done = false}
+    {.label = "one", .is_done = false},
+    {.label = "two", .is_done = false},
+    {.label = "three", .is_done = false},
+    {.label = "four", .is_done = false},
+    {.label = "five", .is_done = false},
+    {.label = "six", .is_done = false},
+    {.label = "seven", .is_done = false}
   };
 
   app_services_t services = {
-      .model = {
-        .title = "Main Page",
-        .task_count = task_count,
-        .tasks = tasks
-      }
+    .model = {
+      .title = "Main Page",
+      .task_count = task_count,
+      .tasks = tasks
+    }
   };
 
   beam_surface_t *surface = beam_create_surface(BeamSurfaceGlfw);

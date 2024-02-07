@@ -70,7 +70,7 @@ typedef struct attr_t {
   attr_key_t key;
   attr_type_t type;
   u16_t data_size;
-  unsigned char *data;
+  void *data;
 } attr_t;
 
 /**
@@ -123,8 +123,8 @@ attr_t *children_list(u32_t count, node_t **children);
 attr_t *new_char_attr(attr_key_t key, char *value);
 attr_t *new_u32_attr(attr_key_t key, u32_t value);
 attr_t *new_s32_attr(attr_key_t key, s32_t value);
-attr_t *new_ptr_attr(attr_key_t key, unsigned char *value);
-attr_t *new_ext_ptr_attr(attr_key_t key, unsigned char *value);
+attr_t *new_ptr_attr(attr_key_t key, void *value);
+attr_t *new_ext_ptr_attr(attr_key_t key, void *value);
 
 // Attribute type getters
 s32_t get_child_count(node_t *node);
