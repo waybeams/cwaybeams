@@ -16,10 +16,14 @@
  * functions and then provide the resulting tree to a concrete or magical
  * renderer of their choosing.
  */
+// NOTE(lbayes): Required for time.h to provide nanosleep
+#define _POSIX_C_SOURCE 199309L
+
 #include <beam.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <time.h>
+#include <errno.h>
 
 typedef struct {
   char *label;
@@ -86,9 +90,6 @@ node_t* create_projection(app_services_t *s) {
       );
 }
 
-// Ridiculously complicated argument bullshit for nanosleep...
-// static struct timespec remaining, request = {(time_t)0.016, 16000000};
-
 int main(void) {
   printf("Starting\n");
 
@@ -114,13 +115,25 @@ int main(void) {
   beam_surface_t *surface = beam_create_surface(BeamSurfaceGlfw);
   beam_signal_t **signals;
 
+  struct timespec req, rem = {0};
+  req.tv_sec = 5;
+  req.tv_nsec = 1000000000 / 60;
+
   do {
     // printf("Looping\n");
+    if (nanosleep(&req, &rem) == -1) {
+      printf("nanosleep failed\n");
+      if (errno == EINTR) {
+        printf("Interrupted\n");
+        req = rem;
+        continue;
+      }
+    }
+
     signals = beam_signals_gather(surface);
     node_t *node = create_projection(&services);
     beam_render(surface, signals, node);
     free_node(node);
-    // nanosleep(&remaining, &request);
   } while(!beam_window_should_close(surface));
 
   beam_surface_free(surface);

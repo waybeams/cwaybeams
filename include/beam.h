@@ -57,17 +57,6 @@ typedef enum beam_signal_type {
   BeamSignalFrameCompleted,
 }beam_signal_type;
 
-typedef struct {
-  u32_t type;
-  u8_t *source;
-  u8_t *payload;
-}beam_signal_t;
-
-typedef struct beam_surface_t {
-  beam_surface_type type;
-  void *platform;
-}beam_surface_t;
-
 typedef enum beam_attr_keys_t {
   BeamAttrKeysNone = 100,
   BeamAttrKeysHandler,
@@ -104,8 +93,20 @@ typedef enum beam_layout_t {
   LayoutHorizontal,
 } beam_layout_t;
 
+
+typedef struct {
+  u32_t type;
+  u8_t *source;
+  u8_t *payload;
+}beam_signal_t;
+
+typedef struct beam_surface_t {
+  beam_surface_type type;
+  void *platform;
+}beam_surface_t;
+
 /**
- * Wrap variadic macros with expected names.
+ * Variadic macros for node creation
  */
 #define app(...) new_node(BeamTypeApp, PP_NARG(__VA_ARGS__), __VA_ARGS__)
 #define window(...) new_node(BeamTypeWindow, PP_NARG(__VA_ARGS__), __VA_ARGS__)
