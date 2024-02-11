@@ -10,6 +10,12 @@
 #define DEFAULT_ZERO 0
 #define DEFAULT_CHAR ""
 
+/**
+ * Node is the central composable and configurable type for constructing trees
+ * that represent a variety of data structures, including user interface
+ * elements.
+ */
+
 #ifndef u8_t
 typedef uint8_t u8_t;
 typedef uint16_t u16_t;

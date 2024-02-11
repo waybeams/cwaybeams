@@ -69,12 +69,12 @@ char *test_is_root(void) {
  * Function that is being used to test the pointer_attr creation
  * and retrieval.
  */
-s32_t add_func(s32_t a, s32_t b) {
+s32_t sum_func(s32_t a, s32_t b) {
   return a + b;
 }
 
 char *test_pointer_attr(void) {
-  attr_t *attr = new_ext_ptr_attr(FakeNodeKeysFunc, (unsigned char *)add_func);
+  attr_t *attr = new_ext_ptr_attr(FakeNodeKeysFunc, (unsigned char *)sum_func);
   FakeAddFunc *f = (FakeAddFunc *)get_attr_data(attr);
   // #include <inttypes.h>
   // printf("0x%" PRIXPTR "\n", (uintptr_t)f);

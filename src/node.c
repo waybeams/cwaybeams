@@ -36,10 +36,11 @@ static node_id_t getNextId() {
  */
 static s32_t get_attr_index_by_key(node_t *node, attr_key_t key) {
   attr_t *attr;
-  for (u32_t i = 0; i < node->attr_count; i++) {
+  for (s32_t i = 0; i < node->attr_count; i++) {
     attr = node->attrs[i];
     if (attr->key == key) {
-      return i;
+      // Prevent index overflow across signed and unsigned integers.
+      return i > INT32_MAX ? -1 : i;
     }
   }
   return -1;
@@ -136,7 +137,7 @@ u8_t *get_attr_data(attr_t *attr) {
 }
 
 s32_t get_child_count(node_t *node) {
-  return node->child_count;
+  return (s32_t)node->child_count;
 }
 
 /**

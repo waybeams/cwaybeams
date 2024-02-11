@@ -3,6 +3,11 @@
 
 #include "node.h"
 
+/**
+ * Beam composes and configures node elements to create user interface controls
+ * that can be serialized into any number of rendering backends.
+ */
+
 typedef enum {
   BeamSuccess = 0,
   BeamAllocationFailure,
