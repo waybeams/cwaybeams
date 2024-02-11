@@ -4,6 +4,7 @@
 #include "node.h"
 #include "beam.h"
 
+char *test_leaf_hash(void);
 char *test_new_name_attr(void);
 char *test_new_height(void);
 char *test_new_width(void);

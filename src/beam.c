@@ -25,47 +25,47 @@ beam_signal_t **beam_signals_gather(UNUSED beam_surface_t *s) {
   return NULL;
 }
 
-attr_t *name(char *value) {
+attr_t name(char *value) {
   return new_char_attr(BeamAttrKeysName, value);
 }
 
-attr_t *text(char *value) {
+attr_t text(char *value) {
   return new_char_attr(BeamAttrKeysText, value);
 }
 
-attr_t *title(char *value) {
+attr_t title(char *value) {
   return new_char_attr(BeamAttrKeysTitle, value);
 }
 
-attr_t *label(char *value) {
+attr_t label(char *value) {
   return new_char_attr(BeamAttrKeysLabel, value);
 }
 
-attr_t *layout(beam_layout_t value) {
+attr_t layout(beam_layout_t value) {
   return new_u32_attr(BeamAttrKeysLayout, value);
 }
 
-attr_t *width(s32_t value) {
+attr_t width(s32_t value) {
   return new_s32_attr(BeamAttrKeysWidth, value);
 }
 
-attr_t *height(s32_t value) {
+attr_t height(s32_t value) {
   return new_s32_attr(BeamAttrKeysHeight, value);
 }
 
-attr_t *x(s32_t value) {
+attr_t x(s32_t value) {
   return new_s32_attr(BeamAttrKeysX, value);
 }
 
-attr_t *y(s32_t value) {
+attr_t y(s32_t value) {
   return new_s32_attr(BeamAttrKeysY, value);
 }
 
-attr_t *z(s32_t value) {
+attr_t z(s32_t value) {
   return new_s32_attr(BeamAttrKeysZ, value);
 }
 
-attr_t *handler(void *value) {
+attr_t handler(void *value) {
   return new_ext_ptr_attr(BeamAttrKeysHandler, value);
 }
 

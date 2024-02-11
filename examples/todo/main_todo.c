@@ -40,7 +40,7 @@ typedef struct app_services_t  {
   app_model_t model;
 }app_services_t;
 
-node_t *create_task_view(task_t *t) {
+node_t create_task_view(task_t *t) {
   return hbox(
       children(
         label(t->label)
@@ -49,11 +49,11 @@ node_t *create_task_view(task_t *t) {
       );
 }
 
-node_t *create_content(app_services_t *s) {
+node_t create_content(app_services_t *s) {
   app_model_t *m = &s->model;
 
   // Build a task view for each task record.
-  node_t *task_views[m->task_count];
+  node_t task_views[m->task_count];
   for (size_t i = 0; i < m->task_count; i++) {
     task_views[i] = create_task_view(&m->tasks[i]);
   }
@@ -73,7 +73,7 @@ node_t *create_content(app_services_t *s) {
  * @param app_services_t *s
  * @return
  */
-node_t* create_projection(app_services_t *s) {
+node_t create_projection(app_services_t *s) {
   return app(
       name("main-app"),
       children(
@@ -131,9 +131,9 @@ int main(void) {
     }
 
     signals = beam_signals_gather(surface);
-    node_t *node = create_projection(&services);
-    beam_render(surface, signals, node);
-    free_node(node);
+    node_t node = create_projection(&services);
+    beam_render(surface, signals, &node);
+    // free_node(node);
   } while(!beam_window_should_close(surface));
 
   beam_surface_free(surface);

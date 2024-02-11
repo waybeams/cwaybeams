@@ -61,7 +61,7 @@ typedef enum node_attr_types {
 typedef enum node_attr_keys {
   NodeAttrKeysNone = 0,
   NodeAttrKeysChildren,
-  NodeAttrKeysLast,
+  NodeAttrKeysLast = 100,
 } node_attr_keys;
 
 typedef enum node_types {
@@ -89,7 +89,7 @@ typedef struct node_t {
   node_type_t type;
   u32_t child_count;
   u32_t attr_count;
-  struct attr_t **attrs;
+  attr_t *attrs;
 } node_t;
 
 #define PP_ARG_N( \
@@ -120,38 +120,35 @@ typedef struct node_t {
 #define children(...) new_children(PP_NARG(__VA_ARGS__), __VA_ARGS__)
 
 // Attribute custom factories
-node_t *new_node(node_type_t type, u32_t count, ...);
-attr_t *new_attr(void);
-attr_t *new_children(u32_t count, ...);
-attr_t *children_list(u32_t count, node_t **children);
+node_t new_node(node_type_t type, u32_t count, ...);
+attr_t new_children(u32_t count, ...);
+attr_t children_list(u32_t count, node_t *children);
 
 // Attribute type factories
-attr_t *new_char_attr(attr_key_t key, char *value);
-attr_t *new_u32_attr(attr_key_t key, u32_t value);
-attr_t *new_s32_attr(attr_key_t key, s32_t value);
-attr_t *new_ptr_attr(attr_key_t key, void *value);
-attr_t *new_ext_ptr_attr(attr_key_t key, void *value);
+attr_t new_char_attr(attr_key_t key, char *value);
+attr_t new_u32_attr(attr_key_t key, u32_t value);
+attr_t new_s32_attr(attr_key_t key, s32_t value);
+attr_t new_ptr_attr(attr_key_t key, void *value);
+attr_t new_ext_ptr_attr(attr_key_t key, void *value);
 
 // Attribute type getters
 s32_t get_child_count(node_t *node);
-unsigned char *get_attr_data(attr_t *attr);
-struct node_t **get_children_attr_data(attr_t *attr);
 u32_t get_u32_attr_data(attr_t *attr);
 s32_t get_s32_attr_data(attr_t *attr);
+
+void *get_attr_data(attr_t *attr);
+node_t *get_children_attr_data(attr_t *attr);
 char *get_char_attr_data(attr_t *attr);
 
 // Node Attribute getters
-struct node_t **get_children(node_t *node);
+node_t *get_children(node_t *node);
 
 // Node helpers
 void print_node(node_t *node);
 // void node_to_str(char *dest, node_t *node);
 bool is_root(node_t *node);
 void emit_event(node_t *node, attr_key_t key);
-
-// Destructors
-void free_node(node_t *node);
-void free_attr(attr_t *attr);
+attr_t *get_attr(node_t *node, attr_key_t key);
 
 // Used by Macros only
 char *get_char_attr_from_node(node_t *node, attr_type_t type,
@@ -160,6 +157,6 @@ u32_t get_u32_attr_from_node(node_t *node, attr_type_t type,
     u32_t default_value);
 s32_t get_s32_attr_from_node(node_t *node, attr_type_t type,
     s32_t default_value);
-unsigned char *get_raw_attr_from_node(node_t *node, attr_type_t type);
+void *get_raw_attr_data_from_node(node_t *node, attr_type_t type);
 
 #endif // __node_h__

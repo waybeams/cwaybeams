@@ -63,7 +63,7 @@ typedef enum beam_signal_type {
 }beam_signal_type;
 
 typedef enum beam_attr_keys_t {
-  BeamAttrKeysNone = 100,
+  BeamAttrKeysNone = NodeAttrKeysLast,
   BeamAttrKeysHandler,
   BeamAttrKeysHeight,
   BeamAttrKeysLabel,
@@ -98,7 +98,6 @@ typedef enum beam_layout_t {
   LayoutHorizontal,
 } beam_layout_t;
 
-
 typedef struct {
   u32_t type;
   u8_t *source;
@@ -124,17 +123,17 @@ typedef struct beam_surface_t {
 #define hbox(...) new_node(BeamTypeHBox, PP_NARG(__VA_ARGS__) + 1, layout(LayoutHorizontal), __VA_ARGS__)
 
 // Attribute setter macros
-attr_t *name(char *value);
-attr_t *text(char *value);
-attr_t *title(char *value);
-attr_t *label(char *value);
-attr_t *layout(beam_layout_t value);
+attr_t name(char *value);
+attr_t text(char *value);
+attr_t title(char *value);
+attr_t label(char *value);
+attr_t layout(beam_layout_t value);
 
-attr_t *width(s32_t value);
-attr_t *height(s32_t value);
-attr_t *x(s32_t value);
-attr_t *y(s32_t value);
-attr_t *z(s32_t value);
+attr_t width(s32_t value);
+attr_t height(s32_t value);
+attr_t x(s32_t value);
+attr_t y(s32_t value);
+attr_t z(s32_t value);
 
 // Attribute getter macros
 char *get_name(node_t *node);

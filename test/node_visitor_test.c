@@ -17,7 +17,7 @@ visit_status_t node_handler(node_t *node, void *userdata) {
   return VISIT_SUCCESS;
 }
 
-static node_t *create_tree(void) {
+static node_t create_tree(void) {
   return vbox(
     name("root"),
     children(
@@ -50,27 +50,25 @@ static node_t *create_tree(void) {
 }
 
 char *test_find_element_with_matching_attr(void) {
-  node_t *root = create_tree();
-  node_t *missing = find_element_with_matching_char_attr(root,
+  node_t root = create_tree();
+  node_t *missing = find_element_with_matching_char_attr(&root,
       BeamAttrKeysName, "not-in-tree", NULL);
 
   muAssert(missing == NULL, "Expected not found");
-  node_t *body = find_element_with_matching_char_attr(root, BeamAttrKeysName,
+  node_t *body = find_element_with_matching_char_attr(&root, BeamAttrKeysName,
       "body", NULL);
   muAssert(body != NULL, "Expected to find body");
-  node_t *title = find_element_with_matching_char_attr(root, BeamAttrKeysName,
+  node_t *title = find_element_with_matching_char_attr(&root, BeamAttrKeysName,
       "title", NULL);
   muAssert(title != NULL, "Expected to find title");
   muAssert(title->parent_id == body->id, "Expected child/parent relationship");
-
-  free_node(root);
   return NULL;
 }
 
 char *test_breadth_first(void) {
-  node_t *root = create_tree();
+  node_t root = create_tree();
   visited_context_t *c = calloc(sizeof(visited_context_t), 1);
-  breadth_first(root, node_handler, c);
+  breadth_first(&root, node_handler, c);
 
   muAssertIntEq(c->visited_index, 13, "Expected count");
   muAssertStrEq(get_name(c->nodes[0]), "root", "root");
@@ -86,16 +84,13 @@ char *test_breadth_first(void) {
   muAssertStrEq(get_name(c->nodes[10]), "contact", "contact");
   muAssertStrEq(get_name(c->nodes[11]), "about", "about");
   muAssertStrEq(get_name(c->nodes[12]), "press", "press");
-
-  free_node(root);
-  free(c);
   return NULL;
 }
 
 char *test_depth_first(void) {
-  node_t *root = create_tree();
+  node_t root = create_tree();
   visited_context_t *c = calloc(sizeof(visited_context_t), 1);
-  depth_first(root, node_handler, c);
+  depth_first(&root, node_handler, c);
 
   muAssertIntEq(c->visited_index, 13, "Expected count");
   muAssertStrEq(get_name(c->nodes[0]), "logo", "logo");
@@ -111,8 +106,5 @@ char *test_depth_first(void) {
   muAssertStrEq(get_name(c->nodes[10]), "press", "press");
   muAssertStrEq(get_name(c->nodes[11]), "foot", "foot");
   muAssertStrEq(get_name(c->nodes[12]), "root", "root");
-
-  free_node(root);
-  free(c);
   return NULL;
 }

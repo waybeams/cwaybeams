@@ -5,9 +5,9 @@
 
 visit_status_t each_child(node_t *node, visit_handler_t visit_handler,
     void *payload) {
-  node_t **kids = get_children(node);
+  node_t *kids = get_children(node);
   for (u32_t i = 0; i < node->child_count; i++) {
-    node_t *kid = kids[i];
+    node_t *kid = &kids[i];
     visit_status_t status = visit_handler(kid, payload);
     if (status != VISIT_SUCCESS) {
       return status;
@@ -19,9 +19,9 @@ visit_status_t each_child(node_t *node, visit_handler_t visit_handler,
 visit_status_t depth_first(node_t *node, visit_handler_t visitHandler,
     void *payload) {
   visit_status_t status;
-  node_t **kids = get_children(node);
+  node_t *kids = get_children(node);
   for (u32_t i = 0; i < node->child_count; i++) {
-    status = depth_first(kids[i], visitHandler, payload);
+    status = depth_first(&kids[i], visitHandler, payload);
     if (status != VISIT_SUCCESS) {
       return status;
     }
@@ -41,9 +41,9 @@ visit_status_t breadth_first(node_t *node, visit_handler_t visitHandler,
     return status;
   }
 
-  node_t **kids = get_children(node);
+  node_t *kids = get_children(node);
   for (u32_t i = 0; i < node->child_count; i++) {
-    status = breadth_first(kids[i], visitHandler, payload);
+    status = breadth_first(&kids[i], visitHandler, payload);
     if (status != VISIT_SUCCESS) {
       return status;
     }

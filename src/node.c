@@ -37,7 +37,7 @@ static node_id_t getNextId() {
 static s32_t get_attr_index_by_key(node_t *node, attr_key_t key) {
   attr_t *attr;
   for (s32_t i = 0; i < node->attr_count; i++) {
-    attr = node->attrs[i];
+    attr = &node->attrs[i];
     if (attr->key == key) {
       // Prevent index overflow across signed and unsigned integers.
       return i > INT32_MAX ? -1 : i;
@@ -46,94 +46,29 @@ static s32_t get_attr_index_by_key(node_t *node, attr_key_t key) {
   return -1;
 }
 
-static int attr_should_be_freed(attr_t *attr) {
-  return (attr->type == NodeAttrTypesChars &&
-          attr->data_size > 0) // is *char & len > 0
-       || attr->type != NodeAttrTypesExtPtr; // Is not a pointer.
-}
-
-/**
- * Free all malloc'd data from the provided attribute through any references it
- * may contain, including child Nodes.
- */
-void free_attr(attr_t *attr) {
-  if (attr == NULL) {
-    return;
-  }
-
-  if (attr->type == NodeAttrTypesChildren) {
-    node_t **kids = get_children_attr_data(attr);
-    int count = attr->data_size / POINTER_SIZE;
-    for (int i = 0; i < count; i++) {
-      free_node(kids[i]);
-    }
-  }
-
-  // Function pointers are allocated outside this library.
-  if (attr_should_be_freed(attr)) {
-    free(attr->data);
-  }
-
-  free(attr);
-}
-
-/**
- * Recursively free all data from the provided
- * element to it's leaves.
- */
-void free_node(node_t *node) {
-  for (u32_t i = 0; i < node->attr_count; i++) {
-    attr_t *attr = node->attrs[i];
-    free_attr(attr);
-  }
-  free(node->attrs);
-  free(node);
-}
-
-/**
- * Create and returns a new, empty attribute struct.
- *
- * These entities must be sent to 'free_attr' at some point in the future.
- */
-attr_t *new_attr(void) {
-  attr_t *attr = malloc(sizeof(attr_t));
-  if (attr == NULL) {
-    return NULL;
-  }
-  attr->type = NodeAttrTypeNone;
-  attr->key = NodeAttrKeysNone;
-  attr->data_size = 0;
-  return attr;
+void *get_attr_data(attr_t *attr) {
+  return attr->data;
 }
 
 /**
  * Create a new Attr with the provided char value.
  */
-attr_t *new_char_attr(attr_key_t key, char *value) {
-  attr_t *attr = new_attr();
-  if (attr == NULL) {
-    return NULL;
-  }
-  if (value == NULL) {
-    value = "";
-  }
-  attr->key = key;
-  attr->type = NodeAttrTypesChars;
-  attr->data_size = strlen(value) + 1;
-  attr->data = (u8_t *)malloc(attr->data_size);
-  memcpy(attr->data, value, attr->data_size);
-  return attr;
+attr_t new_char_attr(attr_key_t key, char *value) {
+  printf("NEW CHAR ATTR: %d\n", key);
+  return (attr_t) {
+    .key = key,
+    .type = NodeAttrTypesChars,
+    .data_size = strlen(value) + 1,
+    .data = value,
+  };
 }
 
 /**
  * Get the data from a Char Attr as (char *).
  */
 char *get_char_attr_data(attr_t *attr) {
-  return (char *)get_attr_data(attr);
-}
-
-u8_t *get_attr_data(attr_t *attr) {
   return attr->data;
+  // return (char *)attr->data;
 }
 
 s32_t get_child_count(node_t *node) {
@@ -143,16 +78,13 @@ s32_t get_child_count(node_t *node) {
 /**
  * Create a new Attr with the provided type and s32_t data.
  */
-attr_t *new_s32_attr(attr_key_t key, s32_t value) {
-  attr_t *attr = new_attr();
-  if (attr == NULL) {
-    return NULL;
-  }
-  attr->key = key;
-  attr->type = NodeAttrTypesS32;
-  attr->data_size = sizeof(s32_t);
-  attr->data = malloc(attr->data_size);
-  memcpy(attr->data, &value, attr->data_size);
+attr_t new_s32_attr(attr_key_t key, s32_t value) {
+  attr_t attr = {
+    .key = key,
+    .type = NodeAttrTypesS32,
+    .data_size = sizeof(s32_t),
+    .data = (void *)(intptr_t)value
+  };
   return attr;
 }
 
@@ -160,14 +92,14 @@ attr_t *new_s32_attr(attr_key_t key, s32_t value) {
  * Get the provided Attribute data as a signed integer.
  */
 s32_t get_s32_attr_data(attr_t *attr) {
-  return *(s32_t *)get_attr_data(attr);
+  return (s32_t)(intptr_t)attr->data;
 }
 
 s32_t get_s32_attr_from_node(node_t *node, attr_key_t key,
-                                     s32_t default_value) {
+    s32_t default_value) {
   s32_t index = get_attr_index_by_key(node, key);
   if (index > -1) {
-    return get_s32_attr_data(node->attrs[index]);
+    return get_s32_attr_data(&node->attrs[index]);
   }
 
   return default_value;
@@ -176,16 +108,13 @@ s32_t get_s32_attr_from_node(node_t *node, attr_key_t key,
 /**
  * Create a new Attr with the provided type and u32_t data.
  */
-attr_t *new_u32_attr(attr_key_t key, u32_t value) {
-  attr_t *attr = new_attr();
-  if (attr == NULL) {
-    return NULL;
-  }
-  attr->key = key;
-  attr->type = NodeAttrTypesU32;
-  attr->data_size = sizeof(u32_t);
-  attr->data = malloc(attr->data_size);
-  memcpy(attr->data, &value, attr->data_size);
+attr_t new_u32_attr(attr_key_t key, u32_t value) {
+  attr_t attr = {
+    .key = key,
+    .type = NodeAttrTypesU32,
+    .data_size = sizeof(u32_t),
+    .data = (void *)(uintptr_t)value,
+  };
   return attr;
 }
 
@@ -193,22 +122,20 @@ attr_t *new_u32_attr(attr_key_t key, u32_t value) {
  * Get the provided Attribute data as an unsigned integer.
  */
 u32_t get_u32_attr_data(attr_t *attr) {
-  return *(u32_t *)get_attr_data(attr);
+  return (u32_t)(intptr_t)attr->data;
 }
 
 /**
  * Create a new attribute with an void * pointer value and
  * the provided type.
  */
-attr_t *new_ptr_attr(attr_key_t key, void *value) {
-  attr_t *attr = new_attr();
-  if (attr == NULL) {
-    return NULL;
-  }
-  attr->key = key;
-  attr->type = NodeAttrTypesPtr;
-  attr->data_size = POINTER_SIZE;
-  attr->data = value;
+attr_t new_ptr_attr(attr_key_t key, void *value) {
+  attr_t attr = {
+    .key = key,
+    .type = NodeAttrTypesPtr,
+    .data_size = POINTER_SIZE,
+    .data = value,
+  };
   return attr;
 }
 
@@ -216,23 +143,20 @@ attr_t *new_ptr_attr(attr_key_t key, void *value) {
  * Just like a pointer attribute, but will not be freed
  * by our calls to free_attr().
  */
-attr_t *new_ext_ptr_attr(attr_key_t key, void *value) {
-  attr_t *attr = new_ptr_attr(key, value);
-  if (attr == NULL) {
-    return NULL;
-  }
+attr_t new_ext_ptr_attr(attr_key_t key, void *value) {
+  attr_t attr = new_ptr_attr(key, value);
   // Replace the type to avoid automatic free calls.
-  attr->type = NodeAttrTypesExtPtr;
+  attr.type = NodeAttrTypesExtPtr;
   return attr;
 }
 
 /**
  * Get the provided Node children collection.
  */
-node_t **get_children(node_t *node) {
+node_t *get_children(node_t *node) {
   s32_t index = get_attr_index_by_key(node, NodeAttrKeysChildren);
   if (index > -1) {
-    return get_children_attr_data(node->attrs[index]);
+    return get_children_attr_data(&node->attrs[index]);
   }
 
   return NULL;
@@ -242,7 +166,7 @@ char *get_char_attr_from_node(node_t *node, attr_key_t key,
     char *default_value) {
   s32_t index = get_attr_index_by_key(node, key);
   if (index > -1) {
-    return get_char_attr_data(node->attrs[index]);
+    return get_char_attr_data(&node->attrs[index]);
   }
 
   return default_value;
@@ -252,17 +176,25 @@ u32_t get_u32_attr_from_node(node_t *node, attr_key_t key,
                                      u32_t default_value) {
   s32_t index = get_attr_index_by_key(node, key);
   if (index > -1) {
-    return get_u32_attr_data(node->attrs[index]);
+    return get_u32_attr_data(&node->attrs[index]);
   }
 
   return default_value;
 }
 
-u8_t *get_raw_attr_from_node(node_t *node, attr_key_t key) {
+attr_t *get_attr(node_t *node, attr_key_t key) {
   s32_t index = get_attr_index_by_key(node, key);
   if (index > -1) {
-    attr_t *attr = node->attrs[index];
-    return get_attr_data(attr);
+    return &node->attrs[index];
+  }
+
+  return NULL;
+}
+
+void *get_raw_attr_data_from_node(node_t *node, attr_key_t key) {
+  attr_t *attr = get_attr(node, key);
+  if (attr != NULL) {
+    return attr->data;
   }
 
   return NULL;
@@ -271,58 +203,47 @@ u8_t *get_raw_attr_from_node(node_t *node, attr_key_t key) {
 /**
  * Create a children Attr.
  */
-attr_t *new_children(u32_t count, ...) {
-  attr_t *attr = new_attr();
-  if (NULL == attr) {
-    return NULL;
-  }
+attr_t new_children(u32_t count, ...) {
+  attr_t attr = {
+    .type = NodeAttrTypesChildren,
+    .key = NodeAttrKeysChildren,
+    .data_size = count * POINTER_SIZE,
+    .data = NULL,
+  };
 
-  attr->type = NodeAttrTypesChildren;
-  attr->key = NodeAttrKeysChildren;
-  attr->data_size = count * POINTER_SIZE;
-
-  node_t *kids[attr->data_size];
-
+  // node_t *kids[attr->data_size];
   va_list vargs;
   va_start(vargs, count);
-  for (u32_t i = 0; i < count; i++) {
-    node_t *kid = va_arg(vargs, node_t *);
-    kids[i] = kid;
-  }
+  // for (u32_t i = 0; i < count; i++) {
+  //   node_t *kid = va_arg(vargs, node_t *);
+  //   kids[i] = kid;
+  // }
+  attr.data = (void *)vargs;
   va_end(vargs);
 
-  attr->data = (u8_t *)malloc(attr->data_size);
-  if (attr->data == NULL) {
-    return NULL;
-  }
-  memcpy(attr->data, kids, attr->data_size);
+  // attr->data = (u8_t *)malloc(attr->data_size);
+  // if (attr->data == NULL) {
+  //   return NULL;
+  // }
+  // memcpy(attr->data, kids, attr->data_size);
   return attr;
 }
 
-attr_t *children_list(u32_t count, node_t **children) {
-  attr_t *attr = new_attr();
-  if (attr == NULL) {
-    return NULL;
-  }
-
-  attr->type = NodeAttrTypesChildren;
-  attr->key = NodeAttrKeysChildren;
-  attr->data_size = count * POINTER_SIZE;
-
-  attr->data = (u8_t *)malloc(attr->data_size);
-  if (attr->data == NULL) {
-    free(attr);
-    return NULL;
-  }
-  memcpy(attr->data, children, attr->data_size);
+attr_t children_list(u32_t count, node_t *children) {
+  attr_t attr = {
+    .type = NodeAttrTypesChildren,
+    .key = NodeAttrKeysChildren,
+    .data_size = count * POINTER_SIZE,
+    .data = (void *)children,
+  };
   return attr;
 }
 
 /**
  * Get an array of Node pointers as Children data from the provided Attr.
  */
-node_t **get_children_attr_data(attr_t *attr) {
-  return (node_t **)get_attr_data(attr);
+node_t *get_children_attr_data(attr_t *attr) {
+  return (node_t *)attr->data;
 }
 
 /*
@@ -336,35 +257,34 @@ static NodeHash hash_node(Node *node) {
 /**
  * Create a new Node with the provided attributes.
  */
-node_t *new_node(node_type_t type, u32_t attr_count, ...) {
-  attr_t **attrs = malloc(attr_count * POINTER_SIZE);
-  if (NULL == attrs) {
-    return NULL;
-  }
-  node_t *node = malloc(sizeof(node_t));
-  node->id = getNextId();
-  node->type = type;
-  node->parent_id = 0;
-  node->child_count = 0;
+node_t new_node(node_type_t type, u32_t attr_count, ...) {
+  attr_t *attrs = calloc(0, attr_count * POINTER_SIZE);
+
+  node_t node = {
+    .id = getNextId(),
+    .type = type,
+    .attrs = attrs,
+  };
 
   // Process Attrs
   va_list vargs;
   va_start(vargs, attr_count);
   for (u32_t i = 0; i < attr_count; ++i) {
-    attr_t *attr = va_arg(vargs, attr_t *);
-    if (attr->key == NodeAttrKeysChildren) {
-        node->child_count += (attr->data_size / POINTER_SIZE);
-        node_t **kids = get_children_attr_data(attr);
-        for (u32_t k = 0; k < node->child_count; k++) {
-            kids[k]->parent_id = node->id;
-        }
-    }
-    attrs[i] = attr;
+     attr_t *attr = va_arg(vargs, attr_t *);
+     printf(">>>>>>>>> ATTR: %d\n", attr->key);
+     // if (attr->key == NodeAttrKeysChildren) {
+     //     node.child_count += (attr->data_size / POINTER_SIZE);
+     //     node_t *kids = get_children_attr_data(attr);
+     //     for (u32_t k = 0; k < node.child_count; k++) {
+     //         kids[k].parent_id = node.id;
+     //     }
+     // }
   }
   va_end(vargs);
 
-  node->attr_count = attr_count;
-  node->attrs = attrs;
+  // node.attr_count = attr_count;
+  // memcpy(node.attrs, attrs, attr_count * POINTER_SIZE);
+
   // node->hash = hash_node(node);
   return node;
 }
@@ -375,7 +295,7 @@ node_t *new_node(node_type_t type, u32_t attr_count, ...) {
 void emit_event(node_t *node, attr_key_t key) {
   s32_t index = get_attr_index_by_key(node, key);
   if (index > -1) {
-    attr_t *attr = node->attrs[index];
+    attr_t *attr = &node->attrs[index];
     gesture_handler_t gestureHandler = (gesture_handler_t)get_attr_data(attr);
     gestureHandler();
   }
