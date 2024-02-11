@@ -12,7 +12,7 @@ typedef enum FakeNodeKeys {
   FakeNodeKeysFunc,
 } FakeNodeKeys;
 
-#define get_name(node) get_char_attr_from_node(node, BeamAttrKeysName, DEFAULT_CHAR)
+#define fake_get_name(node) get_char_attr_from_node(node, BeamAttrKeysName, DEFAULT_CHAR)
 
 char *test_new_char_attr(void);
 char *test_new_uint_attr(void);

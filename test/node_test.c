@@ -25,7 +25,7 @@ char *test_new_children(void) {
   attr_t *attr = new_children(1, root);
 
   struct node_t **kids = get_children_attr_data(attr);
-  char *name = get_name(kids[0]);
+  char *name = fake_get_name(kids[0]);
   muAssertStrEq(name, "root", "Expected name root");
   free_attr(attr);
   return NULL;
