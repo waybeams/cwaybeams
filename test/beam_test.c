@@ -50,21 +50,21 @@ char *test_new_box(void) {
 }
 
 char *test_new_box_with_name(void) {
-  char *foo = "abcd";
-  node_t one = box(name(foo));
+  node_t one = box(name("abcd"));
   muAssertIntEq(one.attr_count, 1, "Expected one attr");
 
-  // muAssert(one.parent_id == 0, "Expected empty parent_id");
-  // attr_t *attr = get_attr(&one, BeamAttrKeysName);
-  // muAssert(attr != NULL, "Expected name attr");
+  muAssert(one.parent_id == 0, "Expected empty parent_id");
+  attr_t *attr = get_attr(&one, BeamAttrKeysName);
+  muAssert(attr != NULL, "Expected name attr");
 
-  //char *name = get_char_attr_data(attr);
-
+  // char *name = get_char_attr_data(attr);
   // // attr_t *attr = &one.attrs[0];
   // char *name = get_char_attr_data(attr);
   // printf(">>>>>>>>>>>>>>>> ATTR: %s\n", (char *)attr->data);
   // printf(">>>>>>>>>>>>>>>> NAME: %s\n", name);
   // muAssertStrEq(name, "abcd", "Expected name attr");
+
+  free_node(&one);
   return NULL;
 }
 

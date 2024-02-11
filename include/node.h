@@ -36,7 +36,7 @@ typedef s64_t q63_t;
 typedef u16_t attr_type_t;
 typedef u16_t attr_key_t;
 typedef u16_t node_type_t;
-typedef unsigned long node_id_t;
+typedef u32_t node_id_t;
 typedef u32_t node_hash_t;
 typedef void (*gesture_handler_t)(void);
 
@@ -149,6 +149,8 @@ void print_node(node_t *node);
 bool is_root(node_t *node);
 void emit_event(node_t *node, attr_key_t key);
 attr_t *get_attr(node_t *node, attr_key_t key);
+
+void free_node(node_t *node);
 
 // Used by Macros only
 char *get_char_attr_from_node(node_t *node, attr_type_t type,

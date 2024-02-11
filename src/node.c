@@ -258,20 +258,22 @@ static NodeHash hash_node(Node *node) {
  * Create a new Node with the provided attributes.
  */
 node_t new_node(node_type_t type, u32_t attr_count, ...) {
-  attr_t *attrs = calloc(0, attr_count * POINTER_SIZE);
+  attr_t *attrs = calloc(0, attr_count * sizeof(attr_t));
 
   node_t node = {
     .id = getNextId(),
     .type = type,
+    .attr_count = attr_count,
     .attrs = attrs,
   };
 
   // Process Attrs
   va_list vargs;
   va_start(vargs, attr_count);
+  // node.attrs = (attr_t *)vargs;
   for (u32_t i = 0; i < attr_count; ++i) {
-     attr_t *attr = va_arg(vargs, attr_t *);
-     printf(">>>>>>>>> ATTR: %d\n", attr->key);
+     attr_t attr = va_arg(vargs, attr_t);
+
      // if (attr->key == NodeAttrKeysChildren) {
      //     node.child_count += (attr->data_size / POINTER_SIZE);
      //     node_t *kids = get_children_attr_data(attr);
@@ -279,13 +281,11 @@ node_t new_node(node_type_t type, u32_t attr_count, ...) {
      //         kids[k].parent_id = node.id;
      //     }
      // }
+     memcpy(&node.attrs[i], &attr, sizeof(attr_t));
   }
   va_end(vargs);
-
-  // node.attr_count = attr_count;
-  // memcpy(node.attrs, attrs, attr_count * POINTER_SIZE);
-
-  // node->hash = hash_node(node);
+  // node.hash = hash_node(node);
+  printf("-----------------------------\n");
   return node;
 }
 
@@ -306,6 +306,11 @@ void emit_event(node_t *node, attr_key_t key) {
  */
 bool is_root(node_t *node) {
   return node->parent_id == 0;
+}
+
+void free_node(node_t *node) {
+  free(node->attrs);
+  // free(node);
 }
 
 // static void attr_chars_to_str(char *dest, attr_t *attr) {
