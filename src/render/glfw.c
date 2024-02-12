@@ -110,7 +110,7 @@ void beam_surface_free(beam_surface_t *s) {
   }
 }
 
-s32_t beam_render(beam_surface_t *surface, beam_signal_t **signals,
+s32_t beam_render(beam_surface_t *surface, beam_signal_t *signals,
                  node_t *node) {
   if (signals != NULL) {
     // beam_signal_t *s = *signals;

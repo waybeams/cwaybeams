@@ -20,7 +20,7 @@ void beam_render(beam_surface_t *surface, beam_signal_t **signals, node_t
 }
 */
 
-beam_signal_t **beam_signals_gather(UNUSED beam_surface_t *s) {
+beam_signal_t *beam_signals_gather(UNUSED beam_surface_t *s) {
   // log_info("beam_signals_gather with type: %d", s->type);
   return NULL;
 }

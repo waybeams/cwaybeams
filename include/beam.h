@@ -150,9 +150,9 @@ s32_t get_y(node_t *node);
 s32_t get_z(node_t *node);
 
 beam_surface_t *beam_create_surface(beam_surface_type t);
-int beam_render(beam_surface_t *s, beam_signal_t **signals, node_t *node);
+int beam_render(beam_surface_t *s, beam_signal_t *signals, node_t *node);
 
-beam_signal_t **beam_signals_gather(beam_surface_t *s);
+beam_signal_t *beam_signals_gather(beam_surface_t *s);
 int beam_window_should_close(beam_surface_t *s);
 
 void beam_surface_free(beam_surface_t *s);

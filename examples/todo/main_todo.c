@@ -120,13 +120,13 @@ int main(void) {
   };
 
   beam_surface_t *surface = beam_create_surface(BeamSurfaceGlfw);
-  beam_signal_t **signals;
+  beam_signal_t *signals;
 
   struct timespec req, rem = {0};
   req.tv_sec = 5;
   req.tv_nsec = 1000000000 / 60;
 
-  do {
+  while (!beam_window_should_close(surface)) {
     // printf("Looping\n");
     if (nanosleep(&req, &rem) == -1) {
       printf("nanosleep failed\n");
@@ -141,7 +141,7 @@ int main(void) {
     node_t *node = create_projection(&services);
     beam_render(surface, signals, node);
     arena_reset();
-  } while(!beam_window_should_close(surface));
+  }
 
   arena_free();
   beam_surface_free(surface);
