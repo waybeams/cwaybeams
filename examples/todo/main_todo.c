@@ -105,7 +105,8 @@ int main(void) {
     {.label = "seven", .is_done = false}
   };
 
-  s8_t status = arena_init(sizeof(node_t) * 250 + sizeof(attr_t) * 1000);
+  u32_t node_count = 250;
+  s8_t status = arena_init(sizeof(node_t) * node_count + sizeof(attr_t) * node_count * 4);
   if (status != 0) {
     printf("arena_init failed\n");
     return -1;
@@ -126,7 +127,7 @@ int main(void) {
   req.tv_sec = 5;
   req.tv_nsec = 1000000000 / 60;
 
-  while (!beam_window_should_close(surface)) {
+  do {
     // printf("Looping\n");
     if (nanosleep(&req, &rem) == -1) {
       printf("nanosleep failed\n");
@@ -141,7 +142,7 @@ int main(void) {
     node_t *node = create_projection(&services);
     beam_render(surface, signals, node);
     arena_reset();
-  }
+  } while (!beam_window_should_close(surface));
 
   arena_free();
   beam_surface_free(surface);

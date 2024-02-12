@@ -15,10 +15,10 @@
 #define DEFAULT_HEIGHT 768
 
 beam_surface_t *beam_create_surface(beam_surface_type t) {
-  beam_surface_t *s = calloc(sizeof(beam_surface_t), 1);
+  beam_surface_t *s = calloc(1, sizeof(beam_surface_t));
   if (s == NULL) {
     log_err("failed to allocate beam_surface_t");
-    return s;
+    return NULL;
   }
 
   s->type = t;
@@ -26,44 +26,48 @@ beam_surface_t *beam_create_surface(beam_surface_type t) {
 }
 
 s32_t beam_window_should_close(beam_surface_t *s) {
-  if (s != NULL) {
-    glfw_context_t *c = s->platform;
-    if (c->main_window != NULL) {
-      return glfwWindowShouldClose(c->main_window);
-    }
+  if (s == NULL) {
+    return -1;
   }
-  return 0;
+
+  glfw_context_t *c = s->platform;
+  if (c->main_window == NULL) {
+    return -1;
+  }
+
+  return glfwWindowShouldClose(c->main_window);
 }
 
 static void render_window(UNUSED beam_surface_t *s, UNUSED node_t *node) {
+  if (s == NULL) {
+    return;
+  }
   // log_info("render_window with: %s", get_name(node));
-  if (s != NULL) {
-    glfw_context_t *c = s->platform;
-    if (c->main_window == NULL) {
-      // This is the first window we've encountered.
-      GLFWwindow *window;
-      s32_t w = get_width(node);
-      s32_t h = get_height(node);
-      if (0 == w) {
-        w = DEFAULT_WIDTH;
-      }
-      if (0 == h) {
-        h = DEFAULT_HEIGHT;
-      }
-
-      log_info("Creating window at %d x %d", w, h);
-
-      window = glfwCreateWindow(w, h, "Hello World", NULL, NULL);
-      if (window == NULL) {
-        log_err("failed to create main window");
-        return;
-      }
-
-      log_info("main window created!");
-      c->main_window = window;
-
-      glfwMakeContextCurrent(window);
+  glfw_context_t *c = s->platform;
+  if (c->main_window == NULL) {
+    // This is the first window we've encountered.
+    GLFWwindow *window;
+    s32_t w = get_width(node);
+    s32_t h = get_height(node);
+    if (0 == w) {
+      w = DEFAULT_WIDTH;
     }
+    if (0 == h) {
+      h = DEFAULT_HEIGHT;
+    }
+
+    log_info("Creating window at %d x %d", w, h);
+
+    window = glfwCreateWindow(w, h, "Hello World", NULL, NULL);
+    if (window == NULL) {
+      log_err("failed to create main window");
+      return;
+    }
+
+    log_info("main window created!");
+    c->main_window = window;
+
+    glfwMakeContextCurrent(window);
   }
 }
 
@@ -88,26 +92,30 @@ static s32_t glfw_process_tree(beam_surface_t *t, node_t *node) {
 }
 
 static glfw_context_t *glfw_context_new() {
-  glfw_context_t *c = calloc(sizeof(glfw_context_t), 1);
+  glfw_context_t *c = calloc(1, sizeof(glfw_context_t));
   if (c == NULL) {
     log_err("failed to allocate glfw_context_t");
+    return NULL;
   }
   c->init_status = -1;
   return c;
 }
 
 void beam_surface_free(beam_surface_t *s) {
-  if (s != NULL) {
-    if (s->platform != NULL) {
-      glfw_context_t *c = s->platform;
-      if (c->main_window != NULL) {
-        log_info("terminating GLFW now");
-        glfwTerminate();
-      }
-      free(s->platform);
-    }
-    free(s);
+  if (s == NULL) {
+    return;
   }
+
+  if (s->platform != NULL) {
+    glfw_context_t *c = s->platform;
+    if (c->main_window != NULL) {
+      log_info("terminating GLFW now");
+      glfwTerminate();
+    }
+    free(s->platform);
+  }
+
+  free(s);
 }
 
 s32_t beam_render(beam_surface_t *surface, beam_signal_t *signals,
