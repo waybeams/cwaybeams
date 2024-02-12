@@ -30,17 +30,6 @@ set(AppSources
 		vendor/hash/fast_hash.c
 		)
 
-set(AppHeaders
-    include/arena.h
-		include/beam.h
-		include/log.h
-		include/node.h
-		include/node_visitor.h
-		include/render.h
-		include/version.h
-		vendor/hash/fast_hash.h
-		src/render/glfw.h include/shared.h)
-
 set(TestSources
     test/arena_test.c
 		test/beam_test.c
@@ -54,7 +43,6 @@ set(TestSources
 # Shared library build
 add_library(cwaybeams SHARED
 		${AppSources}
-		${AppHeaders}
 		)
 
 set_target_properties(cwaybeams PROPERTIES VERSION ${PROJECT_VERSION})
@@ -69,7 +57,6 @@ target_link_libraries(cwaybeams OpenGL::GL)
 # Test executable
 add_executable(cwaybeams-test test/main_test.c
 		${AppSources}
-		${AppHeaders}
 		${TestSources}
 		)
 
@@ -84,7 +71,6 @@ target_link_libraries(cwaybeams-test OpenGL::GL)
 # Example executable
 add_executable(todo-example examples/todo/main_todo.c
 		${AppSources}
-		${AppHeaders}
 		)
 
 target_include_directories(todo-example PUBLIC include)

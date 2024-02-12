@@ -37,11 +37,11 @@ static node_id_t getNextId() {
  */
 static s32_t get_attr_index_by_key(node_t *node, attr_key_t key) {
   attr_t *attr;
-  for (s32_t i = 0; i < node->attr_count; i++) {
+  for (u32_t i = 0; i < node->attr_count; i++) {
     attr = node->attrs[i];
     if (attr->key == key) {
       // Prevent index overflow across signed and unsigned integers.
-      return i > INT32_MAX ? -1 : i;
+      return i > INT32_MAX ? -1 : (s32_t)i;
     }
   }
   return -1;
