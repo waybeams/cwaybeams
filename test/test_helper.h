@@ -9,4 +9,6 @@
  */
 void loadFixtureData(char *path, uint32_t *lines);
 
+void init_arena(void);
+
 #endif // __test_helper_h__

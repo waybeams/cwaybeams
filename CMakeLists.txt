@@ -22,6 +22,7 @@ else()
 endif()
 
 set(AppSources
+    src/arena.c
 		src/beam.c
 		src/node.c
 		src/node_visitor.c
@@ -30,6 +31,7 @@ set(AppSources
 		)
 
 set(AppHeaders
+    include/arena.h
 		include/beam.h
 		include/log.h
 		include/node.h
@@ -40,17 +42,13 @@ set(AppHeaders
 		src/render/glfw.h include/shared.h)
 
 set(TestSources
+    test/arena_test.c
 		test/beam_test.c
-		test/beam_test.h
 		test/hash_test.c
-		test/hash_test.h
 		test/minunit.h
 		test/node_test.c
-		test/node_test.h
 		test/node_visitor_test.c
-		test/node_visitor_test.h
 		test/test_helper.c
-		test/test_helper.h
 		)
 
 # Shared library build

@@ -19,7 +19,8 @@
 // NOTE(lbayes): Required for time.h to provide nanosleep
 #define _POSIX_C_SOURCE 199309L
 
-#include <beam.h>
+#include "arena.h"
+#include "beam.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <time.h>
@@ -104,6 +105,12 @@ int main(void) {
     {.label = "seven", .is_done = false}
   };
 
+  s8_t status = arena_init(sizeof(node_t) * 250 + sizeof(attr_t) * 1000);
+  if (status != 0) {
+    printf("arena_init failed\n");
+    return -1;
+  }
+
   app_services_t services = {
     .model = {
       .title = "Main Page",
@@ -133,9 +140,10 @@ int main(void) {
     signals = beam_signals_gather(surface);
     node_t *node = create_projection(&services);
     beam_render(surface, signals, node);
-    free_node(node);
+    arena_reset();
   } while(!beam_window_should_close(surface));
 
+  arena_free();
   beam_surface_free(surface);
   printf("Exiting\n");
   return 0;

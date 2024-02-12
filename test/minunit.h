@@ -1,9 +1,12 @@
-#ifndef __MINUNIT_H__
-#define __MINUNIT_H__
+#ifndef ANGLES_MINUNIT_H_
+#define ANGLES_MINUNIT_H_
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <log.h>
+#include <math.h>
+#include "test_log.h"
+
+#define MINUNIT_DBL_EPSILON 0.000001
 
 #ifdef __GNUC__
 #define MINUNIT_ATTR_IS_USED __attribute__ ((unused))
@@ -16,13 +19,40 @@ MINUNIT_ATTR_IS_USED static int minunit_tests_run = 0;
 #define muSuiteStart() char *message = NULL
 
 #define muAssert(test, message) if (!(test)) {\
-    log_err(message); return message; }
+    test_log_err(message); return message; }
 
-#define muAssertIntEq(a, b, message) if (a != b) {\
-    log_err("%s [%d != %d]", message, a, b); return message; }
+#define muAssertNull(a, message) if ((a) != NULL) {\
+    test_log_err("%s [%p != NULL]", message, &(a)); return message; }
 
-#define muAssertStrEq(a, b, message) if (strcmp(a, b) != 0) {\
-    log_err("%s \"%s\" != \"%s\"", message, a, b); return message; }
+#define muAssertDoubleEqToDec(a, b, dec, message) if (fabs((a) - (b)) > (dec)) {\
+    test_log_err("%s [%.16lf != %.16lf]", message, (a), (b)); return message; }
+
+#define muAssertFloatEq(a, b, message) if (fabs((a) - (b)) > MINUNIT_DBL_EPSILON) {\
+    test_log_err("%s [%.8f != %.8f]", message, (a), (b)); return message; }
+
+#define muAssertDoubleEq(a, b, message) if (abs((a) - (b)) > MINUNIT_DBL_EPSILON) {\
+    test_log_err("%s [%.16lf != %.16lf]", message, (a), (b)); return message; }
+
+#define muAssertIntEq(a, b, message) if ((a) != (b)) {\
+    test_log_err("%s [%d != %d] or [0x%x != 0x%x]", message, (a), (b), (a), (b)); return message; }
+
+#define muAssertSizeEq(a, b, message) if ((a) != (b)) {\
+    test_log_err("%s [%zu != %zu]", message, (a), (b)); return message; }
+
+#define muAssertLongEq(a, b, message) if ((a) != (b)) {\
+    test_log_err("%s [%ld != %ld]", message, (a), (b)); return message; }
+
+#define muAssertLongLongEq(a, b, message) if ((a) != (b)) {\
+    test_log_err("%s [%lu != %lu]", message, (a), (b)); return message; }
+
+#define muAssertStrEq(a, b, message) if (strcmp((char *)(a), (char *)(b)) != 0) {\
+    test_log_err("%s \"%s\" != \"%s\"", message, (a), (b)); return message; }
+
+#define muAssertSubstrEq(a, b, len, message) if (strncmp((char *)(a), (char *)(b), (len)) != 0) {\
+    test_log_err("%s \"%s\" != \"%s\"", message, (a), (b)); return message; }
+
+#define muAssertCharEq(a, b, message) if ((a) != (b)) {\
+    test_log_err("%s \"%c\" != \"%c\"", message, (a), (b)); return message; }
 
 #define muRunTest(test) message = test(); minunit_tests_run++; if (message) return message;
 
@@ -39,4 +69,4 @@ MINUNIT_ATTR_IS_USED static int minunit_tests_run = 0;
     exit(result != 0);\
 }
 
-#endif // __minunit_h__
+#endif // ANGLES_MINUNIT_H_

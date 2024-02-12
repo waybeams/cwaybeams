@@ -1,5 +1,6 @@
-#include "test_helper.h"
+#include "arena.h"
 #include "node.h"
+#include "test_helper.h"
 #include <stdio.h>
 #include <log.h>
 #include <stdlib.h>
@@ -32,5 +33,9 @@ void loadFixtureData(char *path, u32_t *lines) {
   }
 
   fclose(file);
+}
+
+void init_arena(void) {
+  arena_init(sizeof(node_t) * 100);
 }
 

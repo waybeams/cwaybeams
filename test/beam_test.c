@@ -1,83 +1,95 @@
+#include "arena.h"
 #include "beam.h"
 #include "minunit.h"
 #include "node.h"
+#include "test_helper.h"
 #include <string.h>
 
 char *test_new_name_attr(void) {
+  init_arena();
   attr_t *attr = name("abcd");
   char *data = get_char_attr_data(attr);
   muAssertStrEq(data, "abcd", "Expected abcd");
-  free_attr(attr);
+  arena_free();
   return NULL;
 }
 
 char *test_new_height(void) {
+  init_arena();
   attr_t *one = height(23);
   u32_t data = get_u32_attr_data(one);
   muAssertIntEq(data, 23, "Expected data to be 23");
-  free_attr(one);
+  arena_free();
   return NULL;
 }
 
 char *test_new_width(void) {
+  init_arena();
   attr_t *one = width(20);
   s32_t data = get_s32_attr_data(one);
   muAssertIntEq(data, 20, "Expected data to be 20");
-  free_attr(one);
+  arena_free();
   return NULL;
 }
 
 char *test_new_larger_width(void) {
+  init_arena();
   attr_t *attr = new_s32_attr(BeamAttrKeysWidth, 801);
   s32_t value = get_s32_attr_data(attr);
 
   muAssertIntEq(value, 801, "Expected matching value");
-  free_attr(attr);
+  arena_free();
   return NULL;
 }
 
 char *test_new_box(void) {
+  init_arena();
   node_t *one = new_node(BeamTypeNone, 0);
   muAssert(one->parent_id == 0, "Expected empty parent_id");
-  free_node(one);
+  arena_free();
   return NULL;
 }
 
 char *test_new_box_with_name(void) {
+  init_arena();
   node_t *one = box(name("abcd"));
   muAssert(one->parent_id == 0, "Expected empty parent_id");
   attr_t *attr = one->attrs[0];
   char *name = get_char_attr_data(attr);
   muAssertStrEq(name, "abcd", "Expected name attr");
-  free_node(one);
+  arena_free();
   return NULL;
 }
 
 char *test_get_name(void) {
+  init_arena();
   node_t *elem = box(name("root"));
   char *elemName = get_name(elem);
   muAssertStrEq(elemName, "root", "Expected name root");
-  free_node(elem);
+  arena_free();
   return NULL;
 }
 
 char *test_default_vbox_layout(void) {
+  init_arena();
   node_t *root = vbox(name("root"));
   beam_layout_t layout = get_layout(root);
   muAssert(layout == LayoutVertical, "Expected VBox");
-  free_node(root);
+  arena_free();
   return NULL;
 }
 
 char *test_default_box_layout(void) {
+  init_arena();
   node_t *root = box(name("root"));
   beam_layout_t layout = get_layout(root);
   muAssert(layout == LayoutDefault, "Expected default layout");
-  free_node(root);
+  arena_free();
   return NULL;
 }
 
 char *test_default_attr_values(void) {
+  init_arena();
   node_t *root = box(name("root"));
   s32_t w = get_width(root);
   s32_t h = get_height(root);
@@ -91,11 +103,12 @@ char *test_default_attr_values(void) {
   muAssertIntEq(y, 0, "Expected y 0");
   muAssertIntEq(z, 0, "Expected z 0");
 
-  free_node(root);
+  arena_free();
   return NULL;
 }
 
 char *test_configured_attr_values(void) {
+  init_arena();
   node_t *root = box(
     name("root"),
     width(-1001),
@@ -117,11 +130,12 @@ char *test_configured_attr_values(void) {
   muAssertIntEq(y, -4004, "Expected y 4004");
   muAssertIntEq(z, -5005, "Expected z 5005");
 
-  free_node(root);
+  arena_free();
   return NULL;
 }
 
 char *test_attr_collection(void) {
+  init_arena();
   node_t *root = vbox(name("root"), width(3000));
   char *n = get_name(root);
   muAssertStrEq(n, "root", "Expected name");
@@ -130,28 +144,28 @@ char *test_attr_collection(void) {
   s32_t h = get_height(root);
   muAssert(h == 0, "Expected default height");
 
-  free_node(root);
+  arena_free();
   return NULL;
 }
 
 char *test_node_types(void) {
+  init_arena();
   node_t *elem;
 
   elem = box(name("box"));
   muAssert(elem->type == BeamTypeBox, "Expected Box");
-  free_node(elem);
 
   elem = vbox(name("vbox"));
   muAssert(elem->type == BeamTypeVBox, "Expected VBox");
-  free_node(elem);
 
   elem = hbox(name("hbox"));
   muAssert(elem->type == BeamTypeHBox, "Expected HBox");
-  free_node(elem);
+  arena_free();
   return NULL;
 }
 
 char *test_element_children(void) {
+  init_arena();
   node_t *root = vbox(children(
     box(name("one")),
     box(name("two")),
@@ -165,12 +179,13 @@ char *test_element_children(void) {
   muAssertStrEq(get_name(kids[1]), "two", "two");
   muAssertStrEq(get_name(kids[2]), "three", "three");
   muAssertStrEq(get_name(kids[3]), "four", "four");
-  free_node(root);
 
+  arena_free();
   return NULL;
 }
 
 char *test_element_children_itr(void) {
+  init_arena();
   node_t *root = vbox(children(
     box(name("one")),
     box(name("two")),
@@ -203,6 +218,6 @@ char *test_element_children_itr(void) {
   }
 
   muAssert(went_inside, "Expected loop inside");
-  free_node(root);
+  arena_free();
   return NULL;
 }
