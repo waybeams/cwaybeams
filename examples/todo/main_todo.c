@@ -19,6 +19,7 @@
 // NOTE(lbayes): Required for time.h to provide nanosleep
 #define _POSIX_C_SOURCE 199309L
 
+#include "renderer.h"
 #include "arena.h"
 #include "beam.h"
 #include <stdio.h>

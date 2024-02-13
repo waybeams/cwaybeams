@@ -1,7 +1,8 @@
+#include "renderer.h"
 #include "beam.h"
 #include "node.h"
 #include "node_visitor.h"
-#include "render/sdl2.h"
+#include "renderer/sdl2.h"
 #include <SDL2/SDL.h>
 #include <stdio.h>
 

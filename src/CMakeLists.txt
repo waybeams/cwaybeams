@@ -9,12 +9,12 @@ set(BEAM_SOURCES
   )
 
 set(SDL_RENDERER_SOURCES
-  "${CMAKE_CURRENT_SOURCE_DIR}/render/sdl2.c"
+  "${CMAKE_CURRENT_SOURCE_DIR}/renderer/sdl2.c"
   PARENT_SCOPE
   )
 
 set(GLFW_RENDERER_SOURCES
-  "${CMAKE_CURRENT_SOURCE_DIR}/render/glfw.c"
+  "${CMAKE_CURRENT_SOURCE_DIR}/renderer/glfw.c"
   PARENT_SCOPE
   )
 

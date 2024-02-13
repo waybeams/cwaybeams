@@ -13,15 +13,6 @@ typedef enum {
   BeamAllocationFailure,
 }beam_return_codes;
 
-typedef enum beam_surface_type {
-  BeamSurfaceGlfw = 1,
-  BeamSurfaceGles,
-  BeamSurfaceDirectX,
-  BeamSurfaceMetal,
-  BeamSurfaceVulkan,
-  BeamSurfaceSDL3
-}beam_surface_type;
-
 typedef enum beam_signal_type {
   // User Gestures:
   BeamSignalKeyPressed = 1,
@@ -106,12 +97,6 @@ typedef struct {
   u8_t *payload;
 }beam_signal_t;
 
-typedef struct beam_surface_t {
-  beam_surface_type type;
-  bool should_close;
-  void *platform;
-}beam_surface_t;
-
 /**
  * Variadic macros for node creation
  */
@@ -151,13 +136,5 @@ char *get_title(node_t *node);
 s32_t get_x(node_t *node);
 s32_t get_y(node_t *node);
 s32_t get_z(node_t *node);
-
-beam_surface_t *beam_create_surface(beam_surface_type t);
-int beam_render(beam_surface_t *s, beam_signal_t *signals, node_t *node);
-
-beam_signal_t *beam_signals_gather(beam_surface_t *s);
-int beam_window_should_close(beam_surface_t *s);
-
-void beam_surface_free(beam_surface_t *s);
 
 #endif // __beam_h__
