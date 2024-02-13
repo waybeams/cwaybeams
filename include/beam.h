@@ -147,6 +147,7 @@ beam_layout_t get_layout(node_t *node);
 
 s32_t get_width(node_t *node);
 s32_t get_height(node_t *node);
+char *get_title(node_t *node);
 s32_t get_x(node_t *node);
 s32_t get_y(node_t *node);
 s32_t get_z(node_t *node);

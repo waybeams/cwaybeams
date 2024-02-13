@@ -8,8 +8,10 @@
 #include <SDL2/SDL.h>
 
 typedef struct sdl2_context_t {
-  SDL_Window *window;
-  SDL_Surface *surface;
+  SDL_Window **windows;
+  SDL_Surface **surfaces;
+  size_t window_count;
+  size_t window_index;
 }sdl2_context_t;
 
 #endif // __sdl2_h__

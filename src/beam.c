@@ -27,6 +27,20 @@ beam_signal_t *beam_signals_gather(UNUSED beam_surface_t *s) {
 }
 */
 
+// node_t *beam_get_windows(UNUSED node_t *root) {
+//   node_t **kids = get_children(root);
+//   s32_t count = get_child_count(root);
+// 
+//   for (s32_t i = 0; i < count; i++) {
+//     node_t *n = kids[i];
+//     if (n->type == BeamTypeWindow) {
+//       printf("YOOOOOOOOOOOOOOOOOOOOO\n");
+//     }
+//   }
+// 
+//   return NULL;
+// }
+
 attr_t *name(char *value) {
   return new_char_attr(BeamAttrKeysName, value);
 }
@@ -85,6 +99,10 @@ char *get_label(node_t *node) {
 
 beam_layout_t get_layout(node_t *node) {
   return get_u32_attr_from_node(node, BeamAttrKeysLayout, LayoutDefault);
+}
+
+char *get_title(node_t *node) {
+  return get_char_attr_from_node(node, BeamAttrKeysTitle, DEFAULT_CHAR);
 }
 
 s32_t get_width(node_t *node) {

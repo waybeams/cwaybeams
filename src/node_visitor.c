@@ -57,8 +57,8 @@ static char *matching_value;
 static attr_type_t matching_type;
 static node_t *matched_node;
 
-static visit_status_t matching_char_visit_handler(node_t *node,
-    UNUSED void *payload) {
+static visit_status_t matching_char_visit_handler(node_t *node, void *payload) {
+  UNUSED(payload);
   char *data = get_char_attr_from_node(node, matching_type, "");
   if (strcmp(data, matching_value) == 0) {
     matched_node = node;

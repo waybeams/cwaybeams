@@ -82,11 +82,13 @@ node_t* create_projection(app_services_t *s) {
           name("main-window"),
           title(s->model.title),
           width(1280),
-          height(1024),
+          height(720),
           children(
             create_content(s)
           )
-        )
+        ),
+        window(title("other-window")),
+        window(title("yet-another-window"))
       )
     );
 }
@@ -107,7 +109,7 @@ int main(void) {
 
   app_services_t services = {
     .model = {
-      .title = "TODO App",
+      .title = "TOODOO",
       .task_count = task_count,
       .tasks = tasks,
     },

@@ -11,6 +11,12 @@
 #define DEFAULT_CHAR ""
 
 /**
+ * Macro to silence the -Wunused-parameter warning/error for cases when the
+ * parameter cannot be removed, e.g., pre-defined callback handlers.
+ */
+#define UNUSED(x) (void)(x)
+
+/**
  * Node is the central composable and configurable type for constructing trees
  * that represent a variety of data structures, including user interface
  * elements.

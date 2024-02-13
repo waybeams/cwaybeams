@@ -1,5 +1,6 @@
 #include "beam.h"
 #include "node.h"
+#include "node_visitor.h"
 #include "render/sdl2.h"
 #include <SDL2/SDL.h>
 #include <stdio.h>
@@ -12,6 +13,56 @@ const int SCREEN_HEIGHT = 480;
     SDL_WINDOW_SHOWN | \
     SDL_WINDOW_RESIZABLE | \
     SDL_WINDOW_ALLOW_HIGHDPI)
+
+static visit_status_t window_visitor(node_t *node, void *payload) {
+  sdl2_context_t *p = (sdl2_context_t *)payload;
+
+  if (node->type != BeamTypeWindow) {
+    return VISIT_SUCCESS;
+  }
+
+  s32_t width = get_width(node);
+  if (width == 0) {
+    width = SCREEN_WIDTH;
+  }
+
+  s32_t height = get_height(node);
+  if (height == 0) {
+    height = SCREEN_HEIGHT;
+  }
+  char *title = get_title(node);
+  if (strlen(title) == 0) {
+    title = "Default Title";
+  }
+
+  size_t index = p->window_index++;
+  SDL_Window *window = p->windows[index];
+  SDL_Surface *surface = p->surfaces[index];
+
+  // Initialize SDL
+  if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+    printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+  } else {
+    window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED,
+        SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WIN_FLAGS);
+
+    if (window == NULL) {
+      printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+      return VISIT_FAILURE;
+    }
+
+    // Get window surface
+    surface = SDL_GetWindowSurface(window);
+
+    // Fill the surface
+    SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 0x16, 0x16, 0x16));
+
+    // Update the surface
+    SDL_UpdateWindowSurface(window);
+  }
+
+  return VISIT_SUCCESS;
+}
 
 beam_signal_t *beam_signals_gather(beam_surface_t *s) {
   // TODO(lbayes): Return a stream of beam signals allocated on the arena
@@ -60,7 +111,9 @@ void beam_surface_free(beam_surface_t *s) {
 
   if (p != NULL) {
     // Destroy window
-    SDL_DestroyWindow(p->window);
+    for (size_t i = 0; i < p->window_count; i++) {
+      SDL_DestroyWindow(p->windows[i]);
+    }
   }
 
   // Quit SDL subsystems
@@ -81,38 +134,30 @@ s32_t beam_render(beam_surface_t *surface, beam_signal_t *signals,
     // log_info("beam_render with: %d", surface->type);
   }
 
-  if (root != NULL) {
-    printf("root: %d", root->type);
-
-  }
-
   sdl2_context_t *p = surface->platform;
+
+  if (root != NULL) {
+    printf("-----------\n");
+    p->window_count = get_child_count(root);
+  
+    if (p->windows == NULL && p->window_count > 0) {
+      p->windows = (SDL_Window**)malloc(p->window_count * sizeof(SDL_Window *));
+      p->surfaces = (SDL_Surface**)malloc(p->window_count * sizeof(SDL_Surface *));
+
+      each_child(root, window_visitor, p);
+    }
+  }
 
   if (p == NULL) {
     printf("PLATFORM IS NULL\n");
     return -1;
   }
 
-  if (p->window == NULL) {
-    // Initialize SDL
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-      printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-    } else {
-      p->window = SDL_CreateWindow("SDL2 Hello World", SDL_WINDOWPOS_UNDEFINED,
-          SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WIN_FLAGS);
-      // Get window surface
-      p->surface = SDL_GetWindowSurface(p->window);
-      if (p->window == NULL) {
-        printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
-      }
-    }
-  }
+  // // Fill the surface
+  // SDL_FillRect(p->surface, NULL, SDL_MapRGB(p->surface->format, 0x16, 0x16, 0x16));
 
-  // Fill the surface
-  SDL_FillRect(p->surface, NULL, SDL_MapRGB(p->surface->format, 0x16, 0x16, 0x16));
-
-  // Update the surface
-  SDL_UpdateWindowSurface(p->window);
+  // // Update the surface
+  // SDL_UpdateWindowSurface(p->window);
 
   return BeamSuccess;
 }
