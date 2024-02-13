@@ -5,8 +5,8 @@
 #include <stdio.h>
 
 // Screen dimension constants
-const int SCREEN_WIDTH = 1280;
-const int SCREEN_HEIGHT = 1080;
+const int SCREEN_WIDTH = 640;
+const int SCREEN_HEIGHT = 480;
 
 #define SDL_WIN_FLAGS ( \
     SDL_WINDOW_SHOWN | \
@@ -71,7 +71,7 @@ void beam_surface_free(beam_surface_t *s) {
 }
 
 s32_t beam_render(beam_surface_t *surface, beam_signal_t *signals,
-                 node_t *node) {
+                 node_t *root) {
   if (signals != NULL) {
     // beam_signal_t *s = *signals;
     // log_info("and signals: %d", s->type);
@@ -81,8 +81,9 @@ s32_t beam_render(beam_surface_t *surface, beam_signal_t *signals,
     // log_info("beam_render with: %d", surface->type);
   }
 
-  if (node != NULL) {
-    // log_info("and node: %d", node->type);
+  if (root != NULL) {
+    printf("root: %d", root->type);
+
   }
 
   sdl2_context_t *p = surface->platform;
