@@ -2,7 +2,7 @@
 // Created by lukebayes on 5/13/21.
 //
 #include "beam.h"
-#include "glfw.h"
+#include "render/glfw.h"
 #include "log.h"
 #include "node_visitor.h"
 #include "shared.h"

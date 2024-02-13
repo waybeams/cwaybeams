@@ -9,6 +9,8 @@ void arena_free(void);
 
 void *arena_alloc(size_t size);
 
+void *arena_calloc(size_t size, u32_t count);
+
 void arena_reset(void);
 
 #endif // __arena_h__

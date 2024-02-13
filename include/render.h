@@ -4,7 +4,7 @@
 #include "node.h"
 #include "beam.h"
 
-typedef node_t *(*AppRenderer)(BoxServices *s);
+typedef node_t *(AppRenderer)(BoxServices *s);
 
 typedef struct Rendered {
   node_t *node;

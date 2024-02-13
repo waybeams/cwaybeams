@@ -18,7 +18,8 @@ typedef enum beam_surface_type {
   BeamSurfaceGles,
   BeamSurfaceDirectX,
   BeamSurfaceMetal,
-  BeamSurfaceVulkan
+  BeamSurfaceVulkan,
+  BeamSurfaceSDL3
 }beam_surface_type;
 
 typedef enum beam_signal_type {
@@ -107,6 +108,7 @@ typedef struct {
 
 typedef struct beam_surface_t {
   beam_surface_type type;
+  bool should_close;
   void *platform;
 }beam_surface_t;
 

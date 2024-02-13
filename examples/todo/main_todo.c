@@ -105,6 +105,15 @@ int main(void) {
     {.label = "seven", .is_done = false}
   };
 
+  app_services_t services = {
+    .model = {
+      .title = "Main Page",
+      .task_count = task_count,
+      .tasks = tasks,
+    },
+  };
+
+  // Initialize the arena allocator
   u32_t node_count = 250;
   s8_t status = arena_init(sizeof(node_t) * node_count + sizeof(attr_t) * node_count * 4);
   if (status != 0) {
@@ -112,38 +121,36 @@ int main(void) {
     return -1;
   }
 
-  app_services_t services = {
-    .model = {
-      .title = "Main Page",
-      .task_count = task_count,
-      .tasks = tasks
-    }
-  };
+  beam_surface_t *surface = beam_create_surface(BeamSurfaceSDL3);
+  // beam_surface_t *surface = beam_create_surface(BeamSurfaceGlfw);
+  if (surface == NULL) {
+    printf("beam_create_surface failed\n");
+    return -1;
+  }
 
-  beam_surface_t *surface = beam_create_surface(BeamSurfaceGlfw);
-  beam_signal_t *signals;
+  // struct timespec req, rem = {0};
+  // req.tv_sec = 2;
+  // req.tv_nsec = 1000000000 / 60;
 
-  struct timespec req, rem = {0};
-  req.tv_sec = 5;
-  req.tv_nsec = 1000000000 / 60;
-
-  do {
-    // printf("Looping\n");
-    if (nanosleep(&req, &rem) == -1) {
-      printf("nanosleep failed\n");
-      if (errno == EINTR) {
-        printf("Interrupted\n");
-        req = rem;
-        continue;
-      }
-    }
-
-    signals = beam_signals_gather(surface);
+  while (!beam_window_should_close(surface)) {
+    beam_signal_t *signals = beam_signals_gather(surface);
     node_t *node = create_projection(&services);
     beam_render(surface, signals, node);
-    arena_reset();
-  } while (!beam_window_should_close(surface));
 
+    // printf("Looping\n");
+    // if (nanosleep(&req, &rem) == -1) {
+    //   printf("nanosleep failed\n");
+    //   if (errno == EINTR) {
+    //     printf("Interrupted\n");
+    //     req = rem;
+    //     continue;
+    //   }
+    // }
+
+    arena_reset();
+  }
+
+  printf("Main while loop exited\n");
   arena_free();
   beam_surface_free(surface);
   printf("Exiting\n");

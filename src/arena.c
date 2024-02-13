@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct arena_t {
   size_t size;
@@ -36,6 +37,22 @@ void *arena_alloc(size_t size) {
 
   void *ptr = _arena.data + _arena.used;
   _arena.used += size;
+  return ptr;
+}
+
+void *arena_calloc(size_t size, u32_t count) {
+  u64_t total = size * count;
+  if (total > SIZE_MAX) {
+    printf("arena_calloc: size too large\n");
+    return NULL;
+  }
+
+  void *ptr = arena_alloc(total);
+  if (ptr == NULL) {
+    return NULL;
+  }
+
+  memset(ptr, 0, total);
   return ptr;
 }
 
