@@ -11,7 +11,7 @@ project(cwaybeams LANGUAGES C VERSION 0.1)
 configure_file(include/version.h.in include/version.h)
 
 if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Debug)
+  set(CMAKE_BUILD_TYPE Release)
 endif()
 
 set(OpenGL_GL_PREFERENCE GLVND)

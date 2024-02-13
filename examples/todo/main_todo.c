@@ -64,9 +64,9 @@ node_t *create_content(app_services_t *s) {
         label("Task List"),
         vbox(
           children_list(m->task_count, task_views)
-          )
         )
-      );
+      )
+    );
 }
 
 /**
@@ -86,9 +86,7 @@ node_t* create_projection(app_services_t *s) {
           children(
             create_content(s)
           )
-        ),
-        window(title("other-window")),
-        window(title("yet-another-window"))
+        )
       )
     );
 }

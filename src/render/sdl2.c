@@ -42,7 +42,7 @@ static visit_status_t window_visitor(node_t *node, void *payload) {
   // Initialize SDL
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-  } else {
+  } else if (window == NULL) {
     window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WIN_FLAGS);
 
@@ -53,13 +53,13 @@ static visit_status_t window_visitor(node_t *node, void *payload) {
 
     // Get window surface
     surface = SDL_GetWindowSurface(window);
-
-    // Fill the surface
-    SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 0x16, 0x16, 0x16));
-
-    // Update the surface
-    SDL_UpdateWindowSurface(window);
   }
+
+  // Fill the surface
+  SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 0x16, 0x16, 0x16));
+
+  // Update the surface
+  SDL_UpdateWindowSurface(window);
 
   return VISIT_SUCCESS;
 }
@@ -137,7 +137,6 @@ s32_t beam_render(beam_surface_t *surface, beam_signal_t *signals,
   sdl2_context_t *p = surface->platform;
 
   if (root != NULL) {
-    printf("-----------\n");
     p->window_count = get_child_count(root);
   
     if (p->windows == NULL && p->window_count > 0) {

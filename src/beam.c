@@ -4,43 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/*
-beam_surface_t *beam_create_surface(beam_surface_type t) {
-  beam_surface_t *s = calloc(sizeof(beam_surface_t), 1);
-  s->type = t;
-  return s;
-}
-
-void beam_render(beam_surface_t *surface, beam_signal_t **signals, node_t
-*node) {
-  beam_signal_t *s = *signals;
-  printf("beam_render with: %d\n", surface->type);
-  printf("and node: %d\n", node->type);
-  printf("and signals: %d\n", s->type);
-}
-*/
-
-/*
-beam_signal_t *beam_signals_gather(UNUSED beam_surface_t *s) {
-  // log_info("beam_signals_gather with type: %d", s->type);
-  return NULL;
-}
-*/
-
-// node_t *beam_get_windows(UNUSED node_t *root) {
-//   node_t **kids = get_children(root);
-//   s32_t count = get_child_count(root);
-// 
-//   for (s32_t i = 0; i < count; i++) {
-//     node_t *n = kids[i];
-//     if (n->type == BeamTypeWindow) {
-//       printf("YOOOOOOOOOOOOOOOOOOOOO\n");
-//     }
-//   }
-// 
-//   return NULL;
-// }
-
 attr_t *name(char *value) {
   return new_char_attr(BeamAttrKeysName, value);
 }
