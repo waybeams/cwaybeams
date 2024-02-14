@@ -2,8 +2,8 @@
 // Created by lukebayes on 2/2/2024
 //
 
-#ifndef __sdl2_h__
-#define __sdl2_h__
+#ifndef _sdl2_h_
+#define _sdl2_h_
 
 #include <SDL2/SDL.h>
 
@@ -14,6 +14,4 @@ typedef struct sdl2_context_t {
   size_t window_index;
 }sdl2_context_t;
 
-#endif // __sdl2_h__
-
-
+#endif // _sdl2_h_

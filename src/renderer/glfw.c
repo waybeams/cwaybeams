@@ -5,7 +5,6 @@
 #include "renderer/glfw.h"
 #include "log.h"
 #include "node_visitor.h"
-#include "shared.h"
 #include <stdio.h>
 #include <stdlib.h>
 

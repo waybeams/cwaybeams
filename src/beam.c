@@ -1,8 +1,4 @@
 #include "beam.h"
-#include "log.h"
-#include "shared.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 attr_t *name(char *value) {
   return new_char_attr(BeamAttrKeysName, value);

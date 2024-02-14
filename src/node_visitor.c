@@ -1,5 +1,4 @@
 #include "node_visitor.h"
-#include "shared.h"
 #include <stddef.h>
 #include <string.h>
 
@@ -81,4 +80,3 @@ node_t *find_element_with_matching_char_attr(node_t *node, attr_type_t type,
   }
   return NULL;
 }
-
