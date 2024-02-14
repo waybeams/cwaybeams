@@ -1,5 +1,5 @@
-#ifndef __beam_renderer_h__
-#define __beam_renderer_h__
+#ifndef _beam_renderer_h_
+#define _beam_renderer_h_
 
 #include "beam.h"
 #include "node.h"
@@ -34,4 +34,4 @@ void beam_surface_free(beam_surface_t *s);
 
 
 
-#endif // __beam_renderer_h__
+#endif // _beam_renderer_h_

@@ -1,5 +1,5 @@
-#ifndef __arena_h__
-#define __arena_h__
+#ifndef _arena_h_
+#define _arena_h_
 
 #include "node.h"
 
@@ -47,27 +47,26 @@ void arena_free(arena_t *a);
  *
  * @return NULL if malloc fails, otherwise a pointer to the arena.
  */
-s8_t arena_ginit(size_t size);
+s8_t arena_global_init(size_t size);
 
 /**
  * Free the global module-scope arena.
  */
-void arena_gfree(void);
+void arena_global_free(void);
 
 /**
  * Allocate memory from the global module-scope arena.
  */
-void *arena_gmalloc(size_t size);
+void *arena_global_malloc(size_t size);
 
 /**
  * Allocate and zero memory from the global module-scope arena.
  */
-void *arena_gcalloc(size_t size, u32_t count);
+void *arena_global_calloc(size_t size, u32_t count);
 
 /**
  * Reset the global module-scope arena.
  */
-void arena_greset(void);
+void arena_global_reset(void);
 
-#endif // __arena_h__
-
+#endif // _arena_h_

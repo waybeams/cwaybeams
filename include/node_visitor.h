@@ -1,5 +1,5 @@
-#ifndef __node_visitor_h__
-#define __node_visitor_h__
+#ifndef _node_visitor_h_
+#define _node_visitor_h_
 
 #include "node.h"
 
@@ -46,5 +46,5 @@ visit_status_t breadth_first(node_t *node, visit_handler_t handler,
 node_t *find_element_with_matching_char_attr(node_t *node, attr_type_t type,
     char *value, void *payload);
 
-#endif // __node_visitor_h__
+#endif // _node_visitor_h_
 

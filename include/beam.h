@@ -1,5 +1,5 @@
-#ifndef __beam_h__
-#define __beam_h__
+#ifndef _beam_h_
+#define _beam_h_
 
 #include "node.h"
 
@@ -137,4 +137,4 @@ s32_t get_x(node_t *node);
 s32_t get_y(node_t *node);
 s32_t get_z(node_t *node);
 
-#endif // __beam_h__
+#endif // _beam_h_

@@ -1,5 +1,5 @@
-#ifndef __node_h__
-#define __node_h__
+#ifndef _node_h_
+#define _node_h_
 
 #include <limits.h>
 #include <stdarg.h>
@@ -168,4 +168,4 @@ s32_t get_s32_attr_from_node(node_t *node, attr_type_t type,
     s32_t default_value);
 unsigned char *get_raw_attr_from_node(node_t *node, attr_type_t type);
 
-#endif // __node_h__
+#endif // _node_h_

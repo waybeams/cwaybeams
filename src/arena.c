@@ -59,22 +59,22 @@ void arena_free(arena_t *a) {
   a->data = NULL;
 }
 
-s8_t arena_ginit(size_t size) {
+s8_t arena_global_init(size_t size) {
   return arena_init(&global_arena, size);
 }
 
-void *arena_gmalloc(size_t size) {
+void *arena_global_malloc(size_t size) {
   return arena_malloc(&global_arena, size);
 }
 
-void *arena_gcalloc(size_t size, u32_t count) {
+void *arena_global_calloc(size_t size, u32_t count) {
   return arena_calloc(&global_arena, size, count);
 }
 
-void arena_greset(void) {
+void arena_global_reset(void) {
   arena_reset(&global_arena);
 }
 
-void arena_gfree(void) {
+void arena_global_free(void) {
   arena_free(&global_arena);
 }

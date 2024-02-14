@@ -58,9 +58,9 @@ node_t *create_content(app_services_t *s) {
   app_model_t *m = &s->model;
 
   // Build a task view for each task record.
-  node_t **task_views = arena_gmalloc(sizeof(intptr_t) * m->task_count);
+  node_t **task_views = arena_global_malloc(sizeof(intptr_t) * m->task_count);
   if (task_views == NULL) {
-    printf("arena_gmalloc failed\n");
+    printf("arena_global_malloc failed\n");
     return NULL;
   }
 
@@ -123,7 +123,7 @@ int main(void) {
   };
 
   // Initialize the arena allocator
-  s8_t status = arena_ginit(ARENA_SIZE);
+  s8_t status = arena_global_init(ARENA_SIZE);
   if (status != 0) {
     printf("arena_init failed\n");
     return -1;
@@ -155,11 +155,11 @@ int main(void) {
     //   }
     // }
 
-    arena_greset();
+      arena_global_reset();
   }
 
   printf("Main while loop exited\n");
-  arena_gfree();
+    arena_global_free();
   beam_surface_free(surface);
   printf("Exiting\n");
   return 0;
