@@ -1,4 +1,5 @@
 #include "arena.h"
+#include "log.h"
 #include "node.h"
 #include <stdarg.h>
 #include <stdlib.h>
@@ -21,6 +22,12 @@ static u8_t POINTER_SIZE = sizeof(void *);
  */
 static node_id_t getNextId() {
   return lastId++;
+}
+
+static arena_t *module_arena = NULL;
+
+inline void node_set_arena(arena_t *arena) {
+  module_arena = arena;
 }
 
 /**
@@ -96,8 +103,9 @@ void free_node(node_t *node) {
  * These entities must be sent to 'free_attr' at some point in the future.
  */
 attr_t *new_attr(void) {
-  attr_t *attr = arena_global_malloc(sizeof(attr_t));
+  attr_t *attr = arena_malloc(module_arena, sizeof(attr_t));
   if (attr == NULL) {
+    log_err("new_attr: failed to allocate\n");
     return NULL;
   }
   attr->type = NodeAttrTypeNone;
@@ -120,7 +128,7 @@ attr_t *new_char_attr(attr_key_t key, char *value) {
   attr->key = key;
   attr->type = NodeAttrTypesChars;
   attr->data_size = strlen(value) + 1;
-  attr->data = (u8_t *) arena_global_malloc(attr->data_size);
+  attr->data = (u8_t *) arena_malloc(module_arena, attr->data_size);
   memcpy(attr->data, value, attr->data_size);
   return attr;
 }
@@ -151,7 +159,7 @@ attr_t *new_s32_attr(attr_key_t key, s32_t value) {
   attr->key = key;
   attr->type = NodeAttrTypesS32;
   attr->data_size = sizeof(s32_t);
-  attr->data = arena_global_malloc(attr->data_size);
+  attr->data = arena_malloc(module_arena, attr->data_size);
   memcpy(attr->data, &value, attr->data_size);
   return attr;
 }
@@ -184,7 +192,7 @@ attr_t *new_u32_attr(attr_key_t key, u32_t value) {
   attr->key = key;
   attr->type = NodeAttrTypesU32;
   attr->data_size = sizeof(u32_t);
-  attr->data = arena_global_malloc(attr->data_size);
+  attr->data = arena_malloc(module_arena, attr->data_size);
   memcpy(attr->data, &value, attr->data_size);
   return attr;
 }
@@ -291,7 +299,7 @@ attr_t *new_children(u32_t count, ...) {
   }
   va_end(vargs);
 
-  attr->data = (u8_t *) arena_global_malloc(attr->data_size);
+  attr->data = (u8_t *) arena_malloc(module_arena, attr->data_size);
   if (attr->data == NULL) {
     return NULL;
   }
@@ -309,7 +317,7 @@ attr_t *children_list(u32_t count, node_t **children) {
   attr->key = NodeAttrKeysChildren;
   attr->data_size = count * POINTER_SIZE;
 
-  attr->data = (u8_t *) arena_global_malloc(attr->data_size);
+  attr->data = (u8_t *) arena_malloc(module_arena, attr->data_size);
   if (attr->data == NULL) {
     free(attr);
     return NULL;
@@ -337,11 +345,11 @@ static NodeHash hash_node(Node *node) {
  * Create a new Node with the provided attributes.
  */
 node_t *new_node(node_type_t type, u32_t attr_count, ...) {
-  attr_t **attrs = arena_global_malloc(attr_count * POINTER_SIZE);
+  attr_t **attrs = arena_malloc(module_arena, attr_count * POINTER_SIZE);
   if (NULL == attrs) {
     return NULL;
   }
-  node_t *node = arena_global_malloc(sizeof(node_t));
+  node_t *node = arena_malloc(module_arena, sizeof(node_t));
   node->id = getNextId();
   node->type = type;
   node->parent_id = 0;

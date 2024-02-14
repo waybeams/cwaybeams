@@ -74,6 +74,12 @@ typedef enum node_types {
   NodeTypeNode = 0,
 } node_types;
 
+typedef struct arena_t {
+  size_t size;
+  size_t used;
+  u8_t *data;
+} arena_t;
+
 /**
  * Container for arbitrary data
  * values.
@@ -124,6 +130,8 @@ typedef struct node_t {
 
 #define node(...) new_node(NodeTypeNode, PP_NARG(__VA_ARGS__), __VA_ARGS__)
 #define children(...) new_children(PP_NARG(__VA_ARGS__), __VA_ARGS__)
+
+void node_set_arena(arena_t *arena);
 
 // Attribute custom factories
 node_t *new_node(node_type_t type, u32_t count, ...);

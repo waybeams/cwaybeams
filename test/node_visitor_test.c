@@ -1,4 +1,3 @@
-#include "arena.h"
 #include "beam.h"
 #include "minunit.h"
 #include "node.h"
@@ -52,7 +51,7 @@ static node_t *create_tree(void) {
 }
 
 char *test_find_element_with_matching_attr(void) {
-  init_arena();
+  setup_arena(0);
   node_t *root = create_tree();
   node_t *missing = find_element_with_matching_char_attr(root,
       BeamAttrKeysName, "not-in-tree", NULL);
@@ -66,12 +65,12 @@ char *test_find_element_with_matching_attr(void) {
   muAssert(title != NULL, "Expected to find title");
   muAssert(title->parent_id == body->id, "Expected child/parent relationship");
 
-  arena_global_free_all();
+  teardown_arena();
   return NULL;
 }
 
 char *test_breadth_first(void) {
-  init_arena();
+  setup_arena(0);
   node_t *root = create_tree();
   visited_context_t *c = calloc(sizeof(visited_context_t), 1);
   breadth_first(root, node_handler, c);
@@ -91,13 +90,13 @@ char *test_breadth_first(void) {
   muAssertStrEq(get_name(c->nodes[11]), "about", "about");
   muAssertStrEq(get_name(c->nodes[12]), "press", "press");
 
-  arena_global_free_all();
+  teardown_arena();
   free(c);
   return NULL;
 }
 
 char *test_depth_first(void) {
-  init_arena();
+  setup_arena(0);
   node_t *root = create_tree();
   visited_context_t *c = calloc(sizeof(visited_context_t), 1);
   depth_first(root, node_handler, c);
@@ -117,7 +116,7 @@ char *test_depth_first(void) {
   muAssertStrEq(get_name(c->nodes[11]), "foot", "foot");
   muAssertStrEq(get_name(c->nodes[12]), "root", "root");
 
-  arena_global_free_all();
+  teardown_arena();
   free(c);
   return NULL;
 }

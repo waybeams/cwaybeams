@@ -90,7 +90,6 @@ typedef enum beam_layout_t {
   LayoutHorizontal,
 } beam_layout_t;
 
-
 typedef struct {
   u32_t type;
   u8_t *source;

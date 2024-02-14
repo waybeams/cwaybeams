@@ -66,7 +66,6 @@ static visit_status_t window_visitor(node_t *node, void *payload) {
 }
 
 beam_signal_t *beam_signals_gather(beam_surface_t *s) {
-  // TODO(lbayes): Return a stream of beam signals allocated on the arena
   SDL_Event e;
   while (SDL_PollEvent(&e)) {
     switch (e.type) {

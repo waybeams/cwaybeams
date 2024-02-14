@@ -3,15 +3,11 @@
 
 #include "node.h"
 
-typedef struct arena_t {
-  size_t size;
-  size_t used;
-  u8_t *data;
-} arena_t;
-
 //------------------------------------------------------------------------------
 // Instance Arena
 //------------------------------------------------------------------------------
+
+arena_t arena_new(size_t size);
 
 /**
  * Initialize the arena with the provided number of bytes.
@@ -36,7 +32,7 @@ void arena_reset(arena_t *a);
 /**
  * Free the provided arena.
  */
-void arena_free_all(arena_t *a);
+void arena_free(arena_t *a);
 
 //------------------------------------------------------------------------------
 // Global / Module Arena

@@ -74,6 +74,7 @@ target_include_directories(cwaybeams PRIVATE
 # target_link_libraries(cwaybeams glfw)
 # target_link_libraries(cwaybeams OpenGL::GL)
 
+set(CMAKE_BUILD_TYPE Debug)
 add_subdirectory(test)
 
 # Test executable

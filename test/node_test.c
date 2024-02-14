@@ -8,25 +8,25 @@
 
 char *test_new_char_attr(void) {
   printf("SIZE?: %ld\n", sizeof(node_t));
-  init_arena();
+  setup_arena(0);
   attr_t *attr = new_char_attr(FakeNodeKeysName, "abcd");
   char *data = get_char_attr_data(attr);
   muAssertStrEq(data, "abcd", "Expected abcd");
-    arena_global_free_all();
+  teardown_arena();
   return NULL;
 }
 
 char *test_new_uint_attr(void) {
-  init_arena();
+  setup_arena(0);
   attr_t *attr = new_u32_attr(FakeNodeKeysSize, 1234);
   u32_t data = get_u32_attr_data(attr);
   muAssertIntEq(data, 1234, "Expected 1234");
-    arena_global_free_all();
+  teardown_arena();
   return NULL;
 }
 
 char *test_new_children(void) {
-  init_arena();
+  setup_arena(0);
 
   node_t *root = vbox(name("root"));
   attr_t *attr = new_children(1, root);
@@ -35,12 +35,12 @@ char *test_new_children(void) {
   char *name = fake_get_name(kids[0]);
   muAssertStrEq(name, "root", "Expected name root");
 
-    arena_global_free_all();
+  teardown_arena();
   return NULL;
 }
 
 char *test_element_with_child(void) {
-  init_arena();
+  setup_arena(0);
 
   node_t *root = box(
     name("root"),
@@ -50,12 +50,12 @@ char *test_element_with_child(void) {
   );
   muAssert(root != NULL, "Expected root node");
 
-    arena_global_free_all();
+  teardown_arena();
   return NULL;
 }
 
 char *test_is_root(void) {
-  init_arena();
+  setup_arena(0);
   node_t *root = box(
     name("root"),
     children(
@@ -73,7 +73,7 @@ char *test_is_root(void) {
   muAssert(!is_root(kids[2]), "Expected child to not be root");
   muAssert(!is_root(kids[3]), "Expected child to not be root");
 
-  arena_global_free_all();
+  teardown_arena();
   return NULL;
 }
 
@@ -86,7 +86,7 @@ s32_t sum_func(s32_t a, s32_t b) {
 }
 
 char *test_pointer_attr(void) {
-  init_arena();
+  setup_arena(0);
   attr_t *attr = new_ext_ptr_attr(FakeNodeKeysFunc, (unsigned char *)sum_func);
   FakeAddFunc *f = (FakeAddFunc *)get_attr_data(attr);
   // #include <inttypes.h>
@@ -94,12 +94,12 @@ char *test_pointer_attr(void) {
   s32_t result = f(2, 3);
   muAssertIntEq(result, 5, "Expected function to work");
 
-    arena_global_free_all();
+  teardown_arena();
   return NULL;
 }
 
 char *test_leaf_hash(void) {
-  init_arena();
+  setup_arena(0);
 
   node_t *one = box(name("abcd"));
   node_t *two = box(name("abcd"));
@@ -109,19 +109,19 @@ char *test_leaf_hash(void) {
   muAssert(one->hash != three->hash, "Expected one and three");
   muAssert(two->hash != three->hash, "Expected one and three");
 
-    arena_global_free_all();
+  teardown_arena();
   return NULL;
 }
 
 // char *test_str_one(void) {
-//   init_arena();
+//   setup_arena(0);
 //   char result[256] = {0};
 //   node_t *root = node(name("abcd"));
 //   node_to_str(result, root);
 //   char *expected = "\nnode.type=0 attr_104.type=2 attr_104.chars=abcd";
 //   muAssertStrEq(result, expected, "Expect string match");
 //
-//   arena_global_free_all();
+//   teardown_arena();
 //   return NULL;
 // }
 //
@@ -142,6 +142,6 @@ char *test_leaf_hash(void) {
 // \tnode.type=0 attr_104.type=2 attr_104.chars=ijkl";
 //   muAssertStrEq(result, expected, "Expect string match");
 //
-//   arena_global_free_all();
+//   teardown_arena();
 //   return NULL;
 // }
