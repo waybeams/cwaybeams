@@ -14,10 +14,10 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
 
-set(OpenGL_GL_PREFERENCE GLVND)
+# set(OpenGL_GL_PREFERENCE GLVND)
 
-find_package(glfw3 3.3 REQUIRED)
-find_package(OpenGL REQUIRED)
+#find_package(glfw3 3.3 REQUIRED)
+#find_package(OpenGL REQUIRED)
 
 find_package(sdl2 REQUIRED)
 
