@@ -156,7 +156,7 @@ int main(void) {
       x: 0,
       y: 0,
       w: 100,
-      h: 100,
+      h: 2,
     },
     .b_color = {
       r: 0xff,
