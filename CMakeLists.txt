@@ -86,7 +86,8 @@ add_executable(cwaybeams-test
   )
 
 target_compile_definitions(cwaybeams-test PRIVATE
-  TEST_MODE=1
+  # LOG_VERBOSE_FILE=1 <- Enables full path display on log output
+  LOG_TEST_MODE=1
   )
 
 target_include_directories(cwaybeams-test PRIVATE

@@ -94,7 +94,22 @@ typedef struct {
   u32_t type;
   u8_t *source;
   u8_t *payload;
-}beam_signal_t;
+} beam_signal_t;
+
+// ABI compatible with SDL_Rect
+typedef struct {
+  s32_t x;
+  s32_t y;
+  s32_t w;
+  s32_t h;
+} beam_rect_t;
+
+typedef struct {
+  u8_t r;
+  u8_t g;
+  u8_t b;
+  u8_t a;
+} beam_color_t;
 
 /**
  * Variadic macros for node creation

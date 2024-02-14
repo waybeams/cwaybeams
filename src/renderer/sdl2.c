@@ -16,63 +16,89 @@ const int SCREEN_HEIGHT = 480;
     SDL_WINDOW_RESIZABLE | \
     SDL_WINDOW_ALLOW_HIGHDPI)
 
-static visit_status_t window_visitor(node_t *node, void *payload) {
+
+static visit_status_t visit_child(node_t *node, void *payload) {
+  SDL_Renderer *renderer = (SDL_Renderer *)payload;
+  switch (node->type) {
+    case BeamTypeBox:
+
+      SDL_SetRenderDrawColor(renderer, 0xff, 0xcc, 0x00, 0xff);
+      SDL_Rect r = {
+        .x = 100,
+        .y = 100,
+        .w = get_width(node),
+        .h = get_height(node)
+      };
+
+      // Draw a rectangle
+      SDL_RenderFillRect(renderer, &r);
+      break;
+    default:
+      log_info("FOUND UNKNOWN NODE TYPE: %d", node->type);
+      break;
+  }
+
+  return VISIT_SUCCESS;
+}
+
+static visit_status_t create_window_visitor(node_t *win, void *payload) {
   sdl2_context_t *p = (sdl2_context_t *)payload;
 
-  if (node->type != BeamTypeWindow) {
+  if (win->type != BeamTypeWindow) {
+    log_info("not a window");
     return VISIT_SUCCESS;
   }
 
-  s32_t width = get_width(node);
+  s32_t width = get_width(win);
   if (width == 0) {
     width = SCREEN_WIDTH;
   }
 
-  s32_t height = get_height(node);
+  s32_t height = get_height(win);
   if (height == 0) {
     height = SCREEN_HEIGHT;
   }
-  char *title = get_title(node);
+  char *title = get_title(win);
   if (strlen(title) == 0) {
     title = "Default Title";
   }
 
   size_t index = p->window_index++;
   SDL_Window *window = p->windows[index];
-  // SDL_Surface *surface = p->surfaces[index];
-  SDL_Renderer *renderer = p->renderers[index];
+  // SDL_Renderer *renderer = p->renderers[index];
 
   // Initialize SDL
   // if (SDL_Init(SDL_INIT_VIDEO) < 0) {
   if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
-    log_info("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+    log_info("SDL could not initialize! SDL_Error: %s", SDL_GetError());
   } else if (window == NULL) {
     window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WIN_FLAGS);
 
     if (window == NULL) {
-      log_info("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+      log_fatal("Window could not be created! SDL_Error: %s", SDL_GetError());
       return VISIT_FAILURE;
     }
 
-    // Get window surface
-    // surface = SDL_GetWindowSurface(window);
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    p->renderers[index] = renderer;
   }
 
+  return VISIT_SUCCESS;
+}
+
+
+static visit_status_t render_window_visitor(node_t *win, void *payload) {
+  sdl2_context_t *p = (sdl2_context_t *)payload;
+
+  size_t index = p->window_index++;
+  // SDL_Window *window = p->windows[index];
+  SDL_Renderer *renderer = p->renderers[index];
+
+  // Clear the screen with the window background
   SDL_SetRenderDrawColor(renderer, 0x16, 0x16, 0x16, 0xff);
   SDL_RenderClear(renderer);
-
-  SDL_SetRenderDrawColor(renderer, 0xff, 0xcc, 0x00, 0xff);
-  SDL_Rect r = {
-    .x = 100,
-    .y = 100,
-    .w = 480,
-    .h = 240
-  };
-
-  // Draw a rectangle
-  SDL_RenderFillRect(renderer, &r);
+  each_child(win, visit_child, renderer);
   SDL_RenderPresent(renderer);
 
   return VISIT_SUCCESS;
@@ -144,13 +170,13 @@ s32_t beam_render(beam_surface_t *surface, beam_signal_t *signals,
   }
 
   if (surface == NULL) {
-    log_info("SURFACE is null\n");
+    log_info("SURFACE is null");
     return -1;
   }
 
   sdl2_context_t *p = surface->platform;
   if (p == NULL) {
-    log_info("PLATFORM IS NULL\n");
+    log_info("PLATFORM IS NULL");
     return -1;
   }
 
@@ -161,16 +187,18 @@ s32_t beam_render(beam_surface_t *surface, beam_signal_t *signals,
       p->windows = (SDL_Window**)malloc(p->window_count * sizeof(SDL_Window *));
       // p->surfaces = (SDL_Surface**)malloc(p->window_count * sizeof(SDL_Surface *));
       p->renderers = (SDL_Renderer**)malloc(p->window_count * sizeof(SDL_Renderer *));
-
-      each_child(root, window_visitor, p);
+      each_child(root, create_window_visitor, p);
+      p->window_index = 0;
     }
+
+    each_child(root, render_window_visitor, p);
+    p->window_index = 0;
+  } else {
+    log_info("ROOT IS NULL?");
+    printf("SDSDF\n");
   }
 
-  // // Fill the surface
-  // SDL_FillRect(p->surface, NULL, SDL_MapRGB(p->surface->format, 0x16, 0x16, 0x16));
-
-  // // Update the surface
-  // SDL_UpdateWindowSurface(p->window);
+  SDL_Delay(3);
 
   return BeamSuccess;
 }

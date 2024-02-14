@@ -19,13 +19,14 @@
 // NOTE(lbayes): Required for time.h to provide nanosleep
 #define _POSIX_C_SOURCE 199309L
 
-#include "renderer.h"
 #include "arena.h"
 #include "beam.h"
-#include <stdio.h>
-#include <stdbool.h>
-#include <time.h>
+#include "log.h"
+#include "renderer.h"
 #include <errno.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <time.h>
 
 // Malloc block for the arena allocator.
 #define ARENA_SIZE (512 * 1024)
@@ -41,7 +42,10 @@ typedef struct {
   task_t *tasks;
 }app_model_t;
 
+
 typedef struct app_services_t  {
+  beam_rect_t b_rect;
+  beam_color_t b_color;
   arena_t arena;
   app_model_t model;
 }app_services_t;
@@ -55,29 +59,40 @@ node_t *create_task_view(task_t *t) {
       );
 }
 
-node_t *create_content(app_services_t *s) {
-  app_model_t *m = &s->model;
-
-  // Build a task view for each task record.
-  node_t **task_views = arena_malloc(&s->arena, sizeof(intptr_t) * m->task_count);
-  if (task_views == NULL) {
-    printf("arena_malloc failed\n");
-    return NULL;
-  }
-
-  for (size_t i = 0; i < m->task_count; i++) {
-    task_views[i] = create_task_view(&m->tasks[i]);
-  }
-
-  return vbox(
-      children(
-        label("Task List"),
-        vbox(
-          children_list(m->task_count, task_views)
-        )
-      )
+node_t *create_moving_box(app_services_t *s) {
+  beam_rect_t *rect = &s->b_rect;
+  return box(
+      name("moving-box"),
+      width(rect->w),
+      height(rect->h)
+      // color(s->b_color)
+      // color(s->b_color),
     );
 }
+
+// node_t *create_content(app_services_t *s) {
+//   app_model_t *m = &s->model;
+// 
+//   // Build a task view for each task record.
+//   node_t **task_views = arena_malloc(&s->arena, sizeof(intptr_t) * m->task_count);
+//   if (task_views == NULL) {
+//     printf("arena_malloc failed\n");
+//     return NULL;
+//   }
+// 
+//   for (size_t i = 0; i < m->task_count; i++) {
+//     task_views[i] = create_task_view(&m->tasks[i]);
+//   }
+// 
+//   return vbox(
+//       children(
+//         label("Task List"),
+//         vbox(
+//           children_list(m->task_count, task_views)
+//         )
+//       )
+//     );
+// }
 
 /**
  * Transform the provided data into a concrete projection / user interface.
@@ -94,11 +109,32 @@ node_t* create_projection(app_services_t *s) {
           width(1280),
           height(720),
           children(
-            create_content(s)
+            create_moving_box(s)
+            // create_content(s)
           )
         )
       )
     );
+}
+
+static bool direction = true;
+static s32_t render(app_services_t *servies, beam_surface_t *surface,
+    beam_signal_t *signals, node_t *root) {
+
+  beam_rect_t *rect = &servies->b_rect;
+  if (direction) {
+    rect->w += 3;
+  } else {
+    rect->w -= 3;
+  }
+  if (rect->w < 10) {
+    direction = true;
+  }
+  if (rect->w > 1024) {
+    direction = false;
+  }
+
+  return beam_render(surface, signals, root);
 }
 
 int main(void) {
@@ -116,6 +152,18 @@ int main(void) {
   };
 
   app_services_t services = {
+    .b_rect = {
+      x: 0,
+      y: 0,
+      w: 100,
+      h: 100,
+    },
+    .b_color = {
+      r: 0xff,
+      g: 0x00,
+      b: 0x00,
+      a: 0xff,
+    },
     .model = {
       .title = "TOODOO",
       .task_count = task_count,
@@ -145,7 +193,7 @@ int main(void) {
   while (!beam_window_should_close(surface)) {
     beam_signal_t *signals = beam_signals_gather(surface);
     node_t *node = create_projection(&services);
-    beam_render(surface, signals, node);
+    render(&services, surface, signals, node);
 
     // printf("Looping\n");
     // if (nanosleep(&req, &rem) == -1) {

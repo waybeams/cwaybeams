@@ -16,7 +16,30 @@
 #include <errno.h>
 #include <string.h>
 
-#ifdef TEST_MODE
+// Silence the compiler warnings when we don't have failures
+static const char* render_file_name(const char* path) __attribute__((unused));
+
+// Toggle between full file paths and just file name on log statements
+static const char* render_file_name(const char* path) {
+#ifdef LOG_VERBOSE_FILE
+  return path;
+#else
+  const char* filename = path;
+  const char* p = path;
+
+  while (*p) {
+    if (*p == '/' || *p == '\\') {
+      filename = p + 1;
+    }
+    p++;
+  }
+
+  return filename;
+#endif // LOG_VERBOSE_FILE
+}
+
+// Hide log statements when we're in test mode
+#ifdef LOG_TEST_MODE
 
 #define debug(M, ...)
 #define log_err(M, ...)
@@ -27,29 +50,29 @@
 #else
 
 #define debug(M, ...) fprintf(stderr, "DEBUG %s:%d: " M "\n", \
-    __FILE__, __LINE__, ##__VA_ARGS__)
+    render_file_name(__FILE__), __LINE__, ##__VA_ARGS__)
 
 #define log_err(M, ...) fprintf(stderr, \
-    "[ERROR] (%s:%d: errno: %s) " M "\n", __FILE__, __LINE__, \
+    "[ERROR] (%s:%d: errno: %s) " M "\n", render_file_name(__FILE__), __LINE__, \
     clean_errno(), ##__VA_ARGS__)
 
 #define log_warn(M, ...) fprintf(stdout, \
     "[WARN] (%s:%d: errno: %s) " M "\n", \
-    __FILE__, __LINE__, clean_errno(), ##__VA_ARGS__)
+    render_file_name(__FILE__), __LINE__, clean_errno(), ##__VA_ARGS__)
 
 #define log_info(M, ...) fprintf(stdout, "[INFO] (%s:%d) " M "\n", \
-    __FILE__, __LINE__, ##__VA_ARGS__)
+    render_file_name(__FILE__), __LINE__, ##__VA_ARGS__)
 
 #define log_fatal(M, ...) fprintf(stderr, \
-    "[FATAL] (%s:%d: errno: %s) " M "\n", __FILE__, __LINE__, \
+    "[FATAL] (%s:%d: errno: %s) " M "\n", render_file_name(__FILE__), __LINE__, \
     clean_errno(), ##__VA_ARGS__)
 
-#endif // TEST_MODE
+#endif // LOG_TEST_MODE
 
 #define clean_errno() (errno == 0 ? "None" : strerror(errno))
 
 #define log_err_minunit(M, ...) fprintf(stderr, \
-    "[ERROR] (%s:%d: errno: %s) " M "\n", __FILE__, __LINE__, \
+    "[ERROR] (%s:%d: errno: %s) " M "\n", render_file_name(__FILE__), __LINE__, \
     clean_errno(), ##__VA_ARGS__)
 
 #define check(A, M, ...) if (!(A)) {\
