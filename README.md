@@ -11,28 +11,23 @@ Also, check out the [blog](blog) for more info.
 Here's how I build and run for development and testing:
 
 ```bash
-premake5 gmake && \
-make && \
-valgrind ./dist/Debug/beam-test
+mkdir -p cmake-build
+cd cmake-build
+cmake ../ && \
+  make && \
+  valgrind ./cwaybeams-test && \
+  ./todo-example"
 ```
 
 # File Watcher
 ```bash
 when-changed.py \
-  src/* \
-  include/* \
-  test/* examples/*  \
-  -c "premake5 gmake && \
-    make && valgrind \
-    ./dist/Debug/beam-test"
+  ../src/* ../include/* \
+  ../test/** \
+  ../examples/todo/** \
+  -c "cmake ../ && \
+  make && \
+  valgrind ./cwaybeams-test && \
+  ./todo-example"
 ```
 
-# Debugging
-Here's how I build and run with GDB:
-
-```bash
-premake5 gmake && \
-make clean && \
-make && \
-gdb ./dist/Debug/beam-test
-```
