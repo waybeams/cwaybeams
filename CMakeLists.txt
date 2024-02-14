@@ -57,7 +57,10 @@ add_library(cwaybeams SHARED
 #     )
 # endif()
 
-target_link_libraries(cwaybeams SDL2 SDL2main)
+target_link_libraries(cwaybeams SDL2
+  SDL2main
+  SDL2_ttf
+  )
 
 set_target_properties(cwaybeams PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(cwaybeams PROPERTIES SOVERSION 0)
@@ -100,7 +103,10 @@ add_executable(todo-example
   ${SDL_RENDERER_SOURCES}
   )
 
-target_link_libraries(todo-example SDL2 SDL2main)
+target_link_libraries(todo-example SDL2
+  SDL2main
+  SDL2_ttf
+  )
 
 target_include_directories(todo-example PRIVATE
   examples/todo

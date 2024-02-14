@@ -30,11 +30,12 @@
 *.su
 *.x86_64
 .tmp_versions/
+
 CMakeCache.txt
-CMakeFiles
 Makefile
 Mkfile.old
 Module.symvers
+build-*
 cmake-build*
 cmake_install.cmake
 compile_commands.json
