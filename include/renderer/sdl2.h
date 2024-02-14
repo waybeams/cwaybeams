@@ -9,7 +9,8 @@
 
 typedef struct sdl2_context_t {
   SDL_Window **windows;
-  SDL_Surface **surfaces;
+  SDL_Renderer **renderers;
+  // SDL_Surface **surfaces;
   size_t window_count;
   size_t window_index;
 }sdl2_context_t;

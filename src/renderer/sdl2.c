@@ -39,10 +39,12 @@ static visit_status_t window_visitor(node_t *node, void *payload) {
 
   size_t index = p->window_index++;
   SDL_Window *window = p->windows[index];
-  SDL_Surface *surface = p->surfaces[index];
+  // SDL_Surface *surface = p->surfaces[index];
+  SDL_Renderer *renderer = p->renderers[index];
 
   // Initialize SDL
-  if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+  // if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+  if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
     log_info("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
   } else if (window == NULL) {
     window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED,
@@ -54,14 +56,24 @@ static visit_status_t window_visitor(node_t *node, void *payload) {
     }
 
     // Get window surface
-    surface = SDL_GetWindowSurface(window);
+    // surface = SDL_GetWindowSurface(window);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
   }
 
-  // Fill the surface
-  SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 0x16, 0x16, 0x16));
+  SDL_SetRenderDrawColor(renderer, 0x16, 0x16, 0x16, 0xff);
+  SDL_RenderClear(renderer);
 
-  // Update the surface
-  SDL_UpdateWindowSurface(window);
+  SDL_SetRenderDrawColor(renderer, 0xff, 0xcc, 0x00, 0xff);
+  SDL_Rect r = {
+    .x = 100,
+    .y = 100,
+    .w = 480,
+    .h = 240
+  };
+
+  // Draw a rectangle
+  SDL_RenderFillRect(renderer, &r);
+  SDL_RenderPresent(renderer);
 
   return VISIT_SUCCESS;
 }
@@ -147,7 +159,8 @@ s32_t beam_render(beam_surface_t *surface, beam_signal_t *signals,
   
     if (p->windows == NULL && p->window_count > 0) {
       p->windows = (SDL_Window**)malloc(p->window_count * sizeof(SDL_Window *));
-      p->surfaces = (SDL_Surface**)malloc(p->window_count * sizeof(SDL_Surface *));
+      // p->surfaces = (SDL_Surface**)malloc(p->window_count * sizeof(SDL_Surface *));
+      p->renderers = (SDL_Renderer**)malloc(p->window_count * sizeof(SDL_Renderer *));
 
       each_child(root, window_visitor, p);
     }

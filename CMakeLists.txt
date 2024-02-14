@@ -1,12 +1,12 @@
-include(FindPkgConfig)
-include(GNUInstallDirs)
-
 #########################################
 # Prepare primary library project
 #########################################
 message(STATUS "Configuring cwaybeams now")
 cmake_minimum_required(VERSION 3.10)
 project(cwaybeams LANGUAGES C VERSION 0.1)
+
+include(FindPkgConfig)
+include(GNUInstallDirs)
 
 configure_file(include/version.h.in include/version.h)
 
