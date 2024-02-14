@@ -49,9 +49,9 @@ void arena_reset(arena_t *a) {
   a->used = 0;
 }
 
-void arena_free(arena_t *a) {
+void arena_free_all(arena_t *a) {
   if (a->data == NULL) {
-    printf("arena_free called, but not initialized\n");
+    printf("arena_free_all called, but not initialized\n");
     return;
   }
   free(a->data);
@@ -74,6 +74,6 @@ void arena_global_reset(void) {
   arena_reset(&global_arena);
 }
 
-void arena_global_free(void) {
-  arena_free(&global_arena);
+void arena_global_free_all(void) {
+    arena_free_all(&global_arena);
 }

@@ -1,5 +1,5 @@
-#ifndef __test_helper_h__
-#define __test_helper_h__
+#ifndef _test_helper_h_
+#define _test_helper_h_
 
 #include <stdint.h>
 
@@ -11,4 +11,4 @@ void loadFixtureData(char *path, uint32_t *lines);
 
 void init_arena(void);
 
-#endif // __test_helper_h__
+#endif // _test_helper_h__

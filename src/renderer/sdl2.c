@@ -136,6 +136,10 @@ s32_t beam_render(beam_surface_t *surface, beam_signal_t *signals,
   }
 
   sdl2_context_t *p = surface->platform;
+  if (p == NULL) {
+    printf("PLATFORM IS NULL\n");
+    return -1;
+  }
 
   if (root != NULL) {
     p->window_count = get_child_count(root);
@@ -146,11 +150,6 @@ s32_t beam_render(beam_surface_t *surface, beam_signal_t *signals,
 
       each_child(root, window_visitor, p);
     }
-  }
-
-  if (p == NULL) {
-    printf("PLATFORM IS NULL\n");
-    return -1;
   }
 
   // // Fill the surface

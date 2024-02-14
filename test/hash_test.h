@@ -1,6 +1,6 @@
-#ifndef __hash_test_h__
-#define __hash_test_h__
+#ifndef _hash_test_h_
+#define _hash_test_h_
 
 char *test_new_hash(void);
 
-#endif // __hash_test_h__
+#endif // _hash_test_h_

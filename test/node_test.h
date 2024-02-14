@@ -1,5 +1,5 @@
-#ifndef __node_test_h__
-#define __node_test_h__
+#ifndef _node_test_h_
+#define _node_test_h_
 
 #include "beam.h"
 
@@ -24,4 +24,4 @@ char *test_leaf_hash(void);
 char *test_str_one(void);
 char *test_str_kids(void);
 
-#endif // __node_test_h__
+#endif // _node_test_h_

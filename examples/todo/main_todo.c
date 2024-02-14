@@ -159,7 +159,7 @@ int main(void) {
   }
 
   printf("Main while loop exited\n");
-    arena_global_free();
+    arena_global_free_all();
   beam_surface_free(surface);
   printf("Exiting\n");
   return 0;

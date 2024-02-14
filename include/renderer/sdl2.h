@@ -1,5 +1,5 @@
 //
-// Created by lukebayes on 2/2/2024
+// Created by Luke Bayes on 2/2/2024
 //
 
 #ifndef _sdl2_h_

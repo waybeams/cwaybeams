@@ -7,7 +7,7 @@ char *test_arena_init(void) {
   s8_t status = arena_init(&a, 1024);
   muAssertIntEq(status, 0, "arena_global_init: arena initialized");
 
-  arena_free(&a);
+    arena_free_all(&a);
   return NULL;
 }
 
@@ -18,7 +18,7 @@ char *test_arena_malloc(void) {
   void *ptr = arena_malloc(&a, 128);
   muAssert(ptr != NULL, "arena_malloc: ptr is NULL");
 
-  arena_free(&a);
+    arena_free_all(&a);
   return NULL;
 }
 
@@ -31,7 +31,7 @@ char *test_arena_malloc_fail(void) {
   void *fail = arena_malloc(&a, 1);
   muAssert(fail == NULL, "Expected failure to allocate");
 
-  arena_free(&a);
+    arena_free_all(&a);
   return NULL;
 }
 
@@ -50,29 +50,29 @@ char *test_arena_malloc_reset(void) {
   muAssertLongEq(*two, 22L, "Expected two to be 22");
   muAssertLongEq(*one, 22L, "The one pointer is no longer valid");
 
-  arena_free(&a);
+    arena_free_all(&a);
   return NULL;
 }
 
-char *test_arena_ginit(void) {
+char *test_arena_global_init(void) {
   s8_t status = arena_global_init(1024);
   muAssertIntEq(status, 0, "arena_global_init: arena initialized");
 
-    arena_global_free();
+    arena_global_free_all();
   return NULL;
 }
 
-char *test_arena_gmalloc(void) {
+char *test_arena_global_malloc(void) {
   s8_t status = arena_global_init(1024);
   muAssertIntEq(status, 0, "arena_global_init: arena initialized");
   void *ptr = arena_global_malloc(128);
   muAssert(ptr != NULL, "arena_global_malloc: ptr is NULL");
 
-    arena_global_free();
+    arena_global_free_all();
   return NULL;
 }
 
-char *test_arena_gmalloc_fail(void) {
+char *test_arena_global_malloc_fail(void) {
     arena_global_init(128);
   void *ptr = arena_global_malloc(128);
   muAssert(ptr != NULL, "arena_global_malloc: ptr is NULL");
@@ -80,11 +80,11 @@ char *test_arena_gmalloc_fail(void) {
   void *fail = arena_global_malloc(1);
   muAssert(fail == NULL, "Expected failure to allocate");
 
-    arena_global_free();
+    arena_global_free_all();
   return NULL;
 }
 
-char *test_arena_gmalloc_reset(void) {
+char *test_arena_global_malloc_reset(void) {
     arena_global_init(128);
   u64_t *one = arena_global_malloc(sizeof(u64_t));
   *one = 11;
@@ -98,6 +98,6 @@ char *test_arena_gmalloc_reset(void) {
   muAssertLongEq(*two, 22L, "Expected two to be 22");
   muAssertLongEq(*one, 22L, "The one pointer is no longer valid");
 
-    arena_global_free();
+    arena_global_free_all();
   return NULL;
 }

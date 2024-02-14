@@ -1,5 +1,5 @@
-#ifndef __beam_test_h__
-#define __beam_test_h__
+#ifndef _beam_test_h_
+#define _beam_test_h_
 
 #include "node.h"
 #include "beam.h"
@@ -20,4 +20,4 @@ char *test_node_types(void);
 char *test_element_children(void);
 char *test_element_children_itr(void);
 
-#endif // __beam_test_h__
+#endif // _beam_test_h_

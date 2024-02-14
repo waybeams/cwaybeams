@@ -12,7 +12,7 @@ char *test_new_char_attr(void) {
   attr_t *attr = new_char_attr(FakeNodeKeysName, "abcd");
   char *data = get_char_attr_data(attr);
   muAssertStrEq(data, "abcd", "Expected abcd");
-    arena_global_free();
+    arena_global_free_all();
   return NULL;
 }
 
@@ -21,7 +21,7 @@ char *test_new_uint_attr(void) {
   attr_t *attr = new_u32_attr(FakeNodeKeysSize, 1234);
   u32_t data = get_u32_attr_data(attr);
   muAssertIntEq(data, 1234, "Expected 1234");
-    arena_global_free();
+    arena_global_free_all();
   return NULL;
 }
 
@@ -35,7 +35,7 @@ char *test_new_children(void) {
   char *name = fake_get_name(kids[0]);
   muAssertStrEq(name, "root", "Expected name root");
 
-    arena_global_free();
+    arena_global_free_all();
   return NULL;
 }
 
@@ -50,7 +50,7 @@ char *test_element_with_child(void) {
   );
   muAssert(root != NULL, "Expected root node");
 
-    arena_global_free();
+    arena_global_free_all();
   return NULL;
 }
 
@@ -73,7 +73,7 @@ char *test_is_root(void) {
   muAssert(!is_root(kids[2]), "Expected child to not be root");
   muAssert(!is_root(kids[3]), "Expected child to not be root");
 
-    arena_global_free();
+    arena_global_free_all();
   return NULL;
 }
 
@@ -94,7 +94,7 @@ char *test_pointer_attr(void) {
   s32_t result = f(2, 3);
   muAssertIntEq(result, 5, "Expected function to work");
 
-    arena_global_free();
+    arena_global_free_all();
   return NULL;
 }
 
@@ -109,7 +109,7 @@ char *test_leaf_hash(void) {
   muAssert(one->hash != three->hash, "Expected one and three");
   muAssert(two->hash != three->hash, "Expected one and three");
 
-    arena_global_free();
+    arena_global_free_all();
   return NULL;
 }
 
@@ -121,7 +121,7 @@ char *test_leaf_hash(void) {
 //   char *expected = "\nnode.type=0 attr_104.type=2 attr_104.chars=abcd";
 //   muAssertStrEq(result, expected, "Expect string match");
 //
-//   arena_global_free();
+//   arena_global_free_all();
 //   return NULL;
 // }
 //
@@ -142,6 +142,6 @@ char *test_leaf_hash(void) {
 // \tnode.type=0 attr_104.type=2 attr_104.chars=ijkl";
 //   muAssertStrEq(result, expected, "Expect string match");
 //
-//   arena_global_free();
+//   arena_global_free_all();
 //   return NULL;
 // }

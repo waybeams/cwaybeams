@@ -36,7 +36,7 @@ void arena_reset(arena_t *a);
 /**
  * Free the provided arena.
  */
-void arena_free(arena_t *a);
+void arena_free_all(arena_t *a);
 
 //------------------------------------------------------------------------------
 // Global / Module Arena
@@ -52,7 +52,7 @@ s8_t arena_global_init(size_t size);
 /**
  * Free the global module-scope arena.
  */
-void arena_global_free(void);
+void arena_global_free_all(void);
 
 /**
  * Allocate memory from the global module-scope arena.
