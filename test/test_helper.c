@@ -39,12 +39,16 @@ void loadFixtureData(char *path, u32_t *lines) {
 
 static arena_t *module_arena = NULL;
 void setup_arena(size_t size) {
+  if (size == 0) {
+    log_fatal("setup_arena: size must be greater than 0\n");
+    exit(1);
+  }
   module_arena = malloc(sizeof(arena_t));
   if (module_arena == NULL) {
     log_fatal("Failed to allocate memory for module_arena\n");
     exit(1);
   }
-  arena_init(module_arena, size == 0 ? DEFAULT_ARENA_SIZE : size);
+  arena_init(module_arena, size);
   node_set_arena(module_arena);
 }
 

@@ -51,7 +51,7 @@ static node_t *create_tree(void) {
 }
 
 char *test_find_element_with_matching_attr(void) {
-  setup_arena(0);
+  setup_arena(DEFAULT_ARENA_SIZE);
   node_t *root = create_tree();
   node_t *missing = find_element_with_matching_char_attr(root,
       BeamAttrKeysName, "not-in-tree", NULL);
@@ -70,7 +70,7 @@ char *test_find_element_with_matching_attr(void) {
 }
 
 char *test_breadth_first(void) {
-  setup_arena(0);
+  setup_arena(DEFAULT_ARENA_SIZE);
   node_t *root = create_tree();
   visited_context_t *c = calloc(sizeof(visited_context_t), 1);
   breadth_first(root, node_handler, c);
@@ -96,7 +96,7 @@ char *test_breadth_first(void) {
 }
 
 char *test_depth_first(void) {
-  setup_arena(0);
+  setup_arena(DEFAULT_ARENA_SIZE);
   node_t *root = create_tree();
   visited_context_t *c = calloc(sizeof(visited_context_t), 1);
   depth_first(root, node_handler, c);

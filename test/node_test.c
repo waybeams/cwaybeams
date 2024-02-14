@@ -7,8 +7,7 @@
 #include <string.h>
 
 char *test_new_char_attr(void) {
-  printf("SIZE?: %ld\n", sizeof(node_t));
-  setup_arena(0);
+  setup_arena(DEFAULT_ARENA_SIZE);
   attr_t *attr = new_char_attr(FakeNodeKeysName, "abcd");
   char *data = get_char_attr_data(attr);
   muAssertStrEq(data, "abcd", "Expected abcd");
@@ -17,7 +16,7 @@ char *test_new_char_attr(void) {
 }
 
 char *test_new_uint_attr(void) {
-  setup_arena(0);
+  setup_arena(DEFAULT_ARENA_SIZE);
   attr_t *attr = new_u32_attr(FakeNodeKeysSize, 1234);
   u32_t data = get_u32_attr_data(attr);
   muAssertIntEq(data, 1234, "Expected 1234");
@@ -26,7 +25,7 @@ char *test_new_uint_attr(void) {
 }
 
 char *test_new_children(void) {
-  setup_arena(0);
+  setup_arena(DEFAULT_ARENA_SIZE);
 
   node_t *root = vbox(name("root"));
   attr_t *attr = new_children(1, root);
@@ -40,7 +39,7 @@ char *test_new_children(void) {
 }
 
 char *test_element_with_child(void) {
-  setup_arena(0);
+  setup_arena(DEFAULT_ARENA_SIZE);
 
   node_t *root = box(
     name("root"),
@@ -55,7 +54,7 @@ char *test_element_with_child(void) {
 }
 
 char *test_is_root(void) {
-  setup_arena(0);
+  setup_arena(DEFAULT_ARENA_SIZE);
   node_t *root = box(
     name("root"),
     children(
@@ -86,7 +85,7 @@ s32_t sum_func(s32_t a, s32_t b) {
 }
 
 char *test_pointer_attr(void) {
-  setup_arena(0);
+  setup_arena(DEFAULT_ARENA_SIZE);
   attr_t *attr = new_ext_ptr_attr(FakeNodeKeysFunc, (unsigned char *)sum_func);
   FakeAddFunc *f = (FakeAddFunc *)get_attr_data(attr);
   // #include <inttypes.h>
@@ -99,7 +98,7 @@ char *test_pointer_attr(void) {
 }
 
 char *test_leaf_hash(void) {
-  setup_arena(0);
+  setup_arena(DEFAULT_ARENA_SIZE);
 
   node_t *one = box(name("abcd"));
   node_t *two = box(name("abcd"));
@@ -114,7 +113,7 @@ char *test_leaf_hash(void) {
 }
 
 // char *test_str_one(void) {
-//   setup_arena(0);
+//   setup_arena(DEFAULT_ARENA_SIZE);
 //   char result[256] = {0};
 //   node_t *root = node(name("abcd"));
 //   node_to_str(result, root);

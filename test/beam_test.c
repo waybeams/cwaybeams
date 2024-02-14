@@ -6,7 +6,7 @@
 #include <string.h>
 
 char *test_new_name_attr(void) {
-  setup_arena(0);
+  setup_arena(DEFAULT_ARENA_SIZE);
   attr_t *attr = name("abcd");
   char *data = get_char_attr_data(attr);
   muAssertStrEq(data, "abcd", "Expected abcd");
@@ -15,7 +15,7 @@ char *test_new_name_attr(void) {
 }
 
 char *test_new_height(void) {
-  setup_arena(0);
+  setup_arena(DEFAULT_ARENA_SIZE);
   attr_t *one = height(23);
   u32_t data = get_u32_attr_data(one);
   muAssertIntEq(data, 23, "Expected data to be 23");
@@ -24,7 +24,7 @@ char *test_new_height(void) {
 }
 
 char *test_new_width(void) {
-  setup_arena(0);
+  setup_arena(DEFAULT_ARENA_SIZE);
   attr_t *one = width(20);
   s32_t data = get_s32_attr_data(one);
   muAssertIntEq(data, 20, "Expected data to be 20");
@@ -33,7 +33,7 @@ char *test_new_width(void) {
 }
 
 char *test_new_larger_width(void) {
-  setup_arena(0);
+  setup_arena(DEFAULT_ARENA_SIZE);
   attr_t *attr = new_s32_attr(BeamAttrKeysWidth, 801);
   s32_t value = get_s32_attr_data(attr);
 
@@ -43,7 +43,7 @@ char *test_new_larger_width(void) {
 }
 
 char *test_new_box(void) {
-  setup_arena(0);
+  setup_arena(DEFAULT_ARENA_SIZE);
   node_t *one = new_node(BeamTypeNone, 0);
   muAssert(one->parent_id == 0, "Expected empty parent_id");
   teardown_arena();
@@ -51,7 +51,7 @@ char *test_new_box(void) {
 }
 
 char *test_new_box_with_name(void) {
-  setup_arena(0);
+  setup_arena(DEFAULT_ARENA_SIZE);
   node_t *one = box(name("abcd"));
   muAssert(one->parent_id == 0, "Expected empty parent_id");
   attr_t *attr = one->attrs[0];
@@ -62,7 +62,7 @@ char *test_new_box_with_name(void) {
 }
 
 char *test_get_name(void) {
-  setup_arena(0);
+  setup_arena(DEFAULT_ARENA_SIZE);
   node_t *elem = box(name("root"));
   char *elemName = get_name(elem);
   muAssertStrEq(elemName, "root", "Expected name root");
@@ -71,7 +71,7 @@ char *test_get_name(void) {
 }
 
 char *test_default_vbox_layout(void) {
-  setup_arena(0);
+  setup_arena(DEFAULT_ARENA_SIZE);
   node_t *root = vbox(name("root"));
   beam_layout_t layout = get_layout(root);
   muAssert(layout == LayoutVertical, "Expected VBox");
@@ -80,7 +80,7 @@ char *test_default_vbox_layout(void) {
 }
 
 char *test_default_box_layout(void) {
-  setup_arena(0);
+  setup_arena(DEFAULT_ARENA_SIZE);
   node_t *root = box(name("root"));
   beam_layout_t layout = get_layout(root);
   muAssert(layout == LayoutDefault, "Expected default layout");
@@ -89,7 +89,7 @@ char *test_default_box_layout(void) {
 }
 
 char *test_default_attr_values(void) {
-  setup_arena(0);
+  setup_arena(DEFAULT_ARENA_SIZE);
   node_t *root = box(name("root"));
   s32_t w = get_width(root);
   s32_t h = get_height(root);
@@ -108,7 +108,7 @@ char *test_default_attr_values(void) {
 }
 
 char *test_configured_attr_values(void) {
-  setup_arena(0);
+  setup_arena(DEFAULT_ARENA_SIZE);
   node_t *root = box(
     name("root"),
     width(-1001),
@@ -135,7 +135,7 @@ char *test_configured_attr_values(void) {
 }
 
 char *test_attr_collection(void) {
-  setup_arena(0);
+  setup_arena(DEFAULT_ARENA_SIZE);
   node_t *root = vbox(name("root"), width(3000));
   char *n = get_name(root);
   muAssertStrEq(n, "root", "Expected name");
@@ -149,7 +149,7 @@ char *test_attr_collection(void) {
 }
 
 char *test_node_types(void) {
-  setup_arena(0);
+  setup_arena(DEFAULT_ARENA_SIZE);
   node_t *elem;
 
   elem = box(name("box"));
@@ -165,7 +165,7 @@ char *test_node_types(void) {
 }
 
 char *test_element_children(void) {
-  setup_arena(0);
+  setup_arena(DEFAULT_ARENA_SIZE);
   node_t *root = vbox(children(
     box(name("one")),
     box(name("two")),
@@ -185,7 +185,7 @@ char *test_element_children(void) {
 }
 
 char *test_element_children_itr(void) {
-  setup_arena(0);
+  setup_arena(DEFAULT_ARENA_SIZE);
   node_t *root = vbox(children(
     box(name("one")),
     box(name("two")),
