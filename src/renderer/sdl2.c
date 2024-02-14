@@ -126,13 +126,14 @@ void beam_surface_free(beam_surface_t *s) {
 
 s32_t beam_render(beam_surface_t *surface, beam_signal_t *signals,
                  node_t *root) {
-  if (signals != NULL) {
+  if (signals == NULL) {
     // beam_signal_t *s = *signals;
     // log_info("and signals: %d", s->type);
   }
 
-  if (surface != NULL) {
-    // log_info("beam_render with: %d", surface->type);
+  if (surface == NULL) {
+    printf("SURFACE is null\n");
+    return -1;
   }
 
   sdl2_context_t *p = surface->platform;

@@ -14,11 +14,13 @@ char *allTests(void) {
   muRunTest(test_arena_malloc);
   muRunTest(test_arena_malloc_fail);
   muRunTest(test_arena_malloc_reset);
+  muRunTest(test_arena_calloc);
 
   muRunTest(test_arena_global_init);
   muRunTest(test_arena_global_malloc);
   muRunTest(test_arena_global_malloc_fail);
   muRunTest(test_arena_global_malloc_reset);
+  muRunTest(test_arena_global_calloc);
 
    // box_test.h
    muRunTest(test_new_name_attr);

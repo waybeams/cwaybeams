@@ -46,13 +46,13 @@ typedef unsigned long node_id_t;
 typedef u32_t node_hash_t;
 typedef void (*gesture_handler_t)(void);
 
-#define NODE_ATTR_CHILDREN "children"
-#define NODE_ATTR_CHARS "chars"
-#define NODE_ATTR_CHARS_LEN strlen(NODE_ATTR_CHARS)
-#define NODE_ATTR_U32 "u32"
-#define NODE_ATTR_S32 "s32"
-#define NODE_ATTR_PTR "ptr"
-#define NODE_ATTR_EXT_PTR "extptr"
+// #define NODE_ATTR_CHILDREN "children"
+// #define NODE_ATTR_CHARS "chars"
+// #define NODE_ATTR_CHARS_LEN strlen(NODE_ATTR_CHARS)
+// #define NODE_ATTR_U32 "u32"
+// #define NODE_ATTR_S32 "s32"
+// #define NODE_ATTR_PTR "ptr"
+// #define NODE_ATTR_EXT_PTR "extptr"
 
 typedef enum node_attr_types {
   NodeAttrTypeNone = 0,

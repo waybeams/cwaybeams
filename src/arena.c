@@ -14,7 +14,6 @@ s8_t arena_init(arena_t *a, size_t size) {
 
   a->size = size;
   a->used = 0;
-
   return 0;
 }
 
