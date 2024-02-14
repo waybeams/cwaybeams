@@ -6,6 +6,10 @@
 static arena_t global_arena = {0};
 
 s8_t arena_init(arena_t *a, size_t size) {
+  if (a == NULL) {
+    printf("arena_init called with NULL context\n");
+    return -1;
+  }
   a->data = malloc(size);
   if (a->data == NULL) {
     printf("arena_init: failed to allocate\n");
@@ -18,8 +22,14 @@ s8_t arena_init(arena_t *a, size_t size) {
 }
 
 void *arena_malloc(arena_t *a, size_t size) {
+  if (a->size == 0) {
+    printf("arena_init() must be called before malloc or calloc\n");
+    return NULL;
+  }
   if (a->used + size > a->size) {
     printf("arena_malloc: out of memory\n");
+    printf("arena_malloc requested %ld, but only had %ld\n", size, a->size -
+      a->used);
     return NULL;
   }
 

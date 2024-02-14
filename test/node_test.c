@@ -73,7 +73,7 @@ char *test_is_root(void) {
   muAssert(!is_root(kids[2]), "Expected child to not be root");
   muAssert(!is_root(kids[3]), "Expected child to not be root");
 
-    arena_global_free_all();
+  arena_global_free_all();
   return NULL;
 }
 
