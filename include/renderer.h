@@ -32,6 +32,4 @@ int beam_window_should_close(beam_surface_t *s);
 
 void beam_surface_free(beam_surface_t *s);
 
-
-
 #endif // _beam_renderer_h_
