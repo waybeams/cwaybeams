@@ -10,18 +10,18 @@ typedef struct arena_t {
   u8_t *data;
 } arena_t;
 
-static arena_t _arena = {0};
+static arena_t global_arena = {0};
 
-s8_t arena_init(size_t size) {
-  if (_arena.data != NULL) {
+s8_t arena_ginit(size_t size) {
+  if (global_arena.data != NULL) {
     printf("arena_init: already initialized\n");
     return -1;
   }
 
-  _arena.size = size;
-  _arena.used = 0;
-  _arena.data = malloc(size);
-  if (_arena.data == NULL) {
+  global_arena.size = size;
+  global_arena.used = 0;
+  global_arena.data = malloc(size);
+  if (global_arena.data == NULL) {
     printf("arena_new: malloc failed\n");
     return -1;
   }
@@ -29,25 +29,25 @@ s8_t arena_init(size_t size) {
   return 0;
 }
 
-void *arena_malloc(size_t size) {
-  if (_arena.used + size > _arena.size) {
+void *arena_gmalloc(size_t size) {
+  if (global_arena.used + size > global_arena.size) {
     printf("arena_malloc: out of memory\n");
     return NULL;
   }
 
-  void *ptr = _arena.data + _arena.used;
-  _arena.used += size;
+  void *ptr = global_arena.data + global_arena.used;
+  global_arena.used += size;
   return ptr;
 }
 
-void *arena_calloc(size_t size, u32_t count) {
+void *arena_gcalloc(size_t size, u32_t count) {
   u64_t total = size * count;
   if (total > SIZE_MAX) {
     printf("arena_calloc: size too large\n");
     return NULL;
   }
 
-  void *ptr = arena_malloc(total);
+  void *ptr = arena_gmalloc(total);
   if (ptr == NULL) {
     return NULL;
   }
@@ -56,15 +56,15 @@ void *arena_calloc(size_t size, u32_t count) {
   return ptr;
 }
 
-void arena_reset(void) {
-  _arena.used = 0;
+void arena_greset(void) {
+  global_arena.used = 0;
 }
 
-void arena_free(void) {
-  if (_arena.data == NULL) {
+void arena_gfree(void) {
+  if (global_arena.data == NULL) {
     printf("arena_free called, but not initialized\n");
     return;
   }
-  free(_arena.data);
-  _arena.data = NULL;
+  free(global_arena.data);
+  global_arena.data = NULL;
 }

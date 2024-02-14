@@ -66,7 +66,7 @@ char *test_find_element_with_matching_attr(void) {
   muAssert(title != NULL, "Expected to find title");
   muAssert(title->parent_id == body->id, "Expected child/parent relationship");
 
-  arena_free();
+  arena_gfree();
   return NULL;
 }
 
@@ -91,7 +91,7 @@ char *test_breadth_first(void) {
   muAssertStrEq(get_name(c->nodes[11]), "about", "about");
   muAssertStrEq(get_name(c->nodes[12]), "press", "press");
 
-  arena_free();
+  arena_gfree();
   free(c);
   return NULL;
 }
@@ -117,7 +117,7 @@ char *test_depth_first(void) {
   muAssertStrEq(get_name(c->nodes[11]), "foot", "foot");
   muAssertStrEq(get_name(c->nodes[12]), "root", "root");
 
-  arena_free();
+  arena_gfree();
   free(c);
   return NULL;
 }

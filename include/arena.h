@@ -3,15 +3,15 @@
 
 #include "node.h"
 
-s8_t arena_init(size_t size);
+s8_t arena_ginit(size_t size);
 
-void arena_free(void);
+void arena_gfree(void);
 
-void *arena_malloc(size_t size);
+void *arena_gmalloc(size_t size);
 
-void *arena_calloc(size_t size, u32_t count);
+void *arena_gcalloc(size_t size, u32_t count);
 
-void arena_reset(void);
+void arena_greset(void);
 
 #endif // __arena_h__
 

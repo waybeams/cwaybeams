@@ -11,9 +11,9 @@ char *allTests(void) {
 
   // arena_test.h
   muRunTest(test_arena_init);
-  muRunTest(test_arena_malloc);
-  muRunTest(test_arena_malloc_fail);
-  muRunTest(test_arena_malloc_reset);
+  muRunTest(test_arena_gmalloc);
+  muRunTest(test_arena_gmalloc_fail);
+  muRunTest(test_arena_gmalloc_reset);
 
    // box_test.h
    muRunTest(test_new_name_attr);

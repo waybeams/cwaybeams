@@ -36,6 +36,6 @@ void loadFixtureData(char *path, u32_t *lines) {
 }
 
 void init_arena(void) {
-  arena_init(sizeof(node_t) * 100);
+  arena_ginit(sizeof(node_t) * 100);
 }
 
