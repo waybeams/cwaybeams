@@ -74,5 +74,5 @@ void arena_global_reset(void) {
 }
 
 void arena_global_free_all(void) {
-    arena_free_all(&global_arena);
+  arena_free_all(&global_arena);
 }

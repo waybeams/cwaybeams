@@ -49,7 +49,7 @@ static s32_t get_attr_index_by_key(node_t *node, attr_key_t key) {
 static int attr_should_be_freed(attr_t *attr) {
   return (attr->type == NodeAttrTypesChars &&
           attr->data_size > 0) // is *char & len > 0
-       || attr->type != NodeAttrTypesExtPtr; // Is not a pointer.
+         || attr->type != NodeAttrTypesExtPtr; // Is not a pointer.
 }
 
 /**
@@ -164,7 +164,7 @@ s32_t get_s32_attr_data(attr_t *attr) {
 }
 
 s32_t get_s32_attr_from_node(node_t *node, attr_key_t key,
-                                     s32_t default_value) {
+                             s32_t default_value) {
   s32_t index = get_attr_index_by_key(node, key);
   if (index > -1) {
     return get_s32_attr_data(node->attrs[index]);
@@ -239,7 +239,7 @@ node_t **get_children(node_t *node) {
 }
 
 char *get_char_attr_from_node(node_t *node, attr_key_t key,
-    char *default_value) {
+                              char *default_value) {
   s32_t index = get_attr_index_by_key(node, key);
   if (index > -1) {
     return get_char_attr_data(node->attrs[index]);
@@ -249,7 +249,7 @@ char *get_char_attr_from_node(node_t *node, attr_key_t key,
 }
 
 u32_t get_u32_attr_from_node(node_t *node, attr_key_t key,
-                                     u32_t default_value) {
+                             u32_t default_value) {
   s32_t index = get_attr_index_by_key(node, key);
   if (index > -1) {
     return get_u32_attr_data(node->attrs[index]);
@@ -353,11 +353,11 @@ node_t *new_node(node_type_t type, u32_t attr_count, ...) {
   for (u32_t i = 0; i < attr_count; ++i) {
     attr_t *attr = va_arg(vargs, attr_t *);
     if (attr->key == NodeAttrKeysChildren) {
-        node->child_count += (attr->data_size / POINTER_SIZE);
-        node_t **kids = get_children_attr_data(attr);
-        for (u32_t k = 0; k < node->child_count; k++) {
-            kids[k]->parent_id = node->id;
-        }
+      node->child_count += (attr->data_size / POINTER_SIZE);
+      node_t **kids = get_children_attr_data(attr);
+      for (u32_t k = 0; k < node->child_count; k++) {
+        kids[k]->parent_id = node->id;
+      }
     }
     attrs[i] = attr;
   }
