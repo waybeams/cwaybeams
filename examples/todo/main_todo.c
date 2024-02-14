@@ -27,6 +27,9 @@
 #include <time.h>
 #include <errno.h>
 
+// Malloc block for the arena allocator.
+#define ARENA_SIZE (512 * 1024)
+
 typedef struct {
   char *label;
   bool is_done;
@@ -55,7 +58,12 @@ node_t *create_content(app_services_t *s) {
   app_model_t *m = &s->model;
 
   // Build a task view for each task record.
-  node_t *task_views[m->task_count];
+  node_t **task_views = arena_malloc(sizeof(intptr_t) * m->task_count);
+  if (task_views == NULL) {
+    printf("arena_malloc failed\n");
+    return NULL;
+  }
+
   for (size_t i = 0; i < m->task_count; i++) {
     task_views[i] = create_task_view(&m->tasks[i]);
   }
@@ -115,8 +123,7 @@ int main(void) {
   };
 
   // Initialize the arena allocator
-  u32_t node_count = 250;
-  s8_t status = arena_init(sizeof(node_t) * node_count + sizeof(attr_t) * node_count * 4);
+  s8_t status = arena_init(ARENA_SIZE);
   if (status != 0) {
     printf("arena_init failed\n");
     return -1;

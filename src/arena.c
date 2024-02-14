@@ -29,9 +29,9 @@ s8_t arena_init(size_t size) {
   return 0;
 }
 
-void *arena_alloc(size_t size) {
+void *arena_malloc(size_t size) {
   if (_arena.used + size > _arena.size) {
-    printf("arena_alloc: out of memory\n");
+    printf("arena_malloc: out of memory\n");
     return NULL;
   }
 
@@ -47,7 +47,7 @@ void *arena_calloc(size_t size, u32_t count) {
     return NULL;
   }
 
-  void *ptr = arena_alloc(total);
+  void *ptr = arena_malloc(total);
   if (ptr == NULL) {
     return NULL;
   }

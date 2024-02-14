@@ -7,6 +7,7 @@
 #include <string.h>
 
 char *test_new_char_attr(void) {
+  printf("SIZE?: %ld\n", sizeof(node_t));
   init_arena();
   attr_t *attr = new_char_attr(FakeNodeKeysName, "abcd");
   char *data = get_char_attr_data(attr);
