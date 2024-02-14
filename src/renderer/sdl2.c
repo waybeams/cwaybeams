@@ -1,4 +1,5 @@
 #include "beam.h"
+#include "log.h"
 #include "node.h"
 #include "node_visitor.h"
 #include "renderer.h"
@@ -42,13 +43,13 @@ static visit_status_t window_visitor(node_t *node, void *payload) {
 
   // Initialize SDL
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-    printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+    log_info("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
   } else if (window == NULL) {
     window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WIN_FLAGS);
 
     if (window == NULL) {
-      printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+      log_info("Window could not be created! SDL_Error: %s\n", SDL_GetError());
       return VISIT_FAILURE;
     }
 
@@ -82,14 +83,14 @@ beam_signal_t *beam_signals_gather(beam_surface_t *s) {
         break;
     }
   }
-  // printf("beam_signals_gather with type: %d", s->type);
+  // log_info("beam_signals_gather with type: %d", s->type);
   return NULL;
 }
 
 beam_surface_t *beam_create_surface(beam_surface_type t) {
   beam_surface_t *s = calloc(sizeof(beam_surface_t), 1);
   if (s == NULL) {
-    printf("failed to allocate beam_surface_t");
+    log_info("failed to allocate beam_surface_t");
     return NULL;
   }
 
@@ -131,13 +132,13 @@ s32_t beam_render(beam_surface_t *surface, beam_signal_t *signals,
   }
 
   if (surface == NULL) {
-    printf("SURFACE is null\n");
+    log_info("SURFACE is null\n");
     return -1;
   }
 
   sdl2_context_t *p = surface->platform;
   if (p == NULL) {
-    printf("PLATFORM IS NULL\n");
+    log_info("PLATFORM IS NULL\n");
     return -1;
   }
 

@@ -85,7 +85,9 @@ add_executable(cwaybeams-test
   # ${GLFW_RENDERER_SOURCES}
   )
 
-target_compile_definitions(cwaybeams-test PRIVATE TEST_MODE=1)
+target_compile_definitions(cwaybeams-test PRIVATE
+  TEST_MODE=1
+  )
 
 target_include_directories(cwaybeams-test PRIVATE
   include

@@ -17,11 +17,15 @@
 #include <string.h>
 
 #ifdef TEST_MODE
+
 #define debug(M, ...)
 #define log_err(M, ...)
 #define log_warn(M, ...)
 #define log_info(M, ...)
+#define log_fatal(M, ...)
+
 #else
+
 #define debug(M, ...) fprintf(stderr, "DEBUG %s:%d: " M "\n", \
     __FILE__, __LINE__, ##__VA_ARGS__)
 
@@ -35,13 +39,14 @@
 
 #define log_info(M, ...) fprintf(stdout, "[INFO] (%s:%d) " M "\n", \
     __FILE__, __LINE__, ##__VA_ARGS__)
-#endif
-
-#define clean_errno() (errno == 0 ? "None" : strerror(errno))
 
 #define log_fatal(M, ...) fprintf(stderr, \
     "[FATAL] (%s:%d: errno: %s) " M "\n", __FILE__, __LINE__, \
     clean_errno(), ##__VA_ARGS__)
+
+#endif // TEST_MODE
+
+#define clean_errno() (errno == 0 ? "None" : strerror(errno))
 
 #define log_err_minunit(M, ...) fprintf(stderr, \
     "[ERROR] (%s:%d: errno: %s) " M "\n", __FILE__, __LINE__, \

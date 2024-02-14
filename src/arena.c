@@ -35,7 +35,6 @@ void *arena_malloc(arena_t *a, size_t size) {
   }
 
   if (a->used + size > a->size) {
-    log_fatal("arena_malloc: out of memory\n");
     log_fatal("arena_malloc requested %ld, but only had %ld remaining from %ld bytes\n", size, a->size -
       a->used, a->size);
     return NULL;

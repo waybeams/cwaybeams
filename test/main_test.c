@@ -1,6 +1,7 @@
 #include "arena_test.h"
 #include "beam_test.h"
 #include "hash_test.h"
+#include "log.h"
 #include "minunit.h"
 #include "node_test.h"
 #include "node_visitor_test.h"
@@ -43,16 +44,16 @@ char *allTests(void) {
   muRunTest(test_element_with_child);
   muRunTest(test_is_root);
   muRunTest(test_pointer_attr);
-  printf("SKIPPED: test_leaf_hash\n");
+  log_info("SKIPPED: test_leaf_hash\n");
   // muRunTest(test_leaf_hash);
 
   // node_visitor_test.h
   muRunTest(test_depth_first);
   muRunTest(test_breadth_first);
   muRunTest(test_find_element_with_matching_attr);
-  printf("SKIPPED: test_str_one\n");
+  log_info("SKIPPED: test_str_one\n");
   // muRunTest(test_str_one);
-  printf("SKIPPED: test_str_kids\n");
+  log_info("SKIPPED: test_str_kids\n");
   // muRunTest(test_str_kids);
 
   return NULL;
