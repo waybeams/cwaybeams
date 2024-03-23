@@ -44,6 +44,7 @@ typedef struct {
 
 
 typedef struct app_services_t  {
+  bool rect_direction;
   beam_rect_t b_rect;
   beam_color_t b_color;
   arena_t arena;
@@ -117,12 +118,11 @@ node_t* create_projection(app_services_t *s) {
     );
 }
 
-static bool direction = true;
-static s32_t render(app_services_t *servies, beam_surface_t *surface,
+static s32_t render(app_services_t *services, beam_surface_t *surface,
     beam_signal_t *signals, node_t *root) {
 
-  beam_rect_t *rect = &servies->b_rect;
-  if (direction) {
+  beam_rect_t *rect = &services->b_rect;
+  if (services->rect_direction) {
     rect->w += 3;
     rect->h += 1.3;
   } else {
@@ -133,10 +133,10 @@ static s32_t render(app_services_t *servies, beam_surface_t *surface,
     }
   }
   if (rect->w < 10) {
-    direction = true;
+    services->rect_direction = true;
   }
   if (rect->w > 1024) {
-    direction = false;
+    services->rect_direction = false;
   }
 
   return beam_render(surface, signals, root);
