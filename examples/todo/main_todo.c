@@ -124,8 +124,13 @@ static s32_t render(app_services_t *servies, beam_surface_t *surface,
   beam_rect_t *rect = &servies->b_rect;
   if (direction) {
     rect->w += 3;
+    rect->h += 1.3;
   } else {
     rect->w -= 3;
+    rect->h -= 1.3;
+    if (rect->h < 1) {
+      rect->h = 1;
+    }
   }
   if (rect->w < 10) {
     direction = true;
@@ -165,7 +170,7 @@ int main(void) {
       a: 0xff,
     },
     .model = {
-      .title = "TOODOO",
+      .title = "TOODOOLOO",
       .task_count = task_count,
       .tasks = tasks,
     },
